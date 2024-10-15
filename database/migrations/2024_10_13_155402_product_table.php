@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
             $table->string('name');
-            $table->text('details')->nullable();
+            $table->text('description')->nullable();
             $table->string('img_path')->nullable();
             $table->decimal('price', 10, 2);
             $table->timestamps(); // Adds created_at and updated_at
+        });
+        Schema::create('product_image', function (Blueprint $table) {
+            $table->id(); // Auto-incrementing primary key
+            $table->string('img_path');
+            $table->foreignId('product_id')->constrained('product')->onDelete('cascade');
         });
         
     }

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_type', function (Blueprint $table) {
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('type_id')->constrained('types')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('product')->onDelete('cascade');
+            $table->foreignId('type_id')->constrained('type')->onDelete('cascade');
             $table->primary(['product_id', 'type_id']); // Composite primary key
         });
     }
