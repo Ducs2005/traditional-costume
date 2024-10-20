@@ -1,12 +1,16 @@
-
-
-.container {
-    width: calc(100vm - 10px);
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Roboto', sans-serif;
+body {
     margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f7f9fc; /* Light background for contrast */
+}
+.container {
+    width: calc(100vw - 20px); /* Ensure full width minus some margin */
+    margin: 0 auto;
+    padding: 20px; /* Padding for the container */
+    font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
+    overflow: hidden; /* Hide any overflow */
 }
 
 .product-details {
@@ -18,6 +22,8 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 1200px; /* Set a max width for larger screens */
+    margin: 0 auto; /* Center the container */
 }
 
 .product-image-gallery {
@@ -27,38 +33,79 @@
     text-align: center;
 }
 
+.product-info {
+    flex: 2;
+    padding: 20px; /* Padding to create space around the content */
+    max-width: 100%; /* Ensure it doesn't overflow */
+}
+
+.product-info h1 {
+    font-size: 36px; /* Increased title size */
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    color: #333; /* Darker color for better readability */
+    overflow-wrap: break-word; /* Prevent long words from breaking layout */
+}
+
+.product-info p {
+    font-size: 18px;
+    margin-bottom: 15px;
+    line-height: 1.6; /* Increased line height for readability */
+    max-width: 100%; /* Limit the width of the paragraph */
+    word-wrap: break-word; /* Break long words */
+}
+
+.product-image-gallery {
+    flex: 1;
+    max-width: 650px;
+    margin-right: 30px;
+    text-align: center;
+}
+
 .carousel {
     position: relative;
+    overflow: hidden; /* Hide overflowing images */
+    border-radius: 12px;
 }
 
 .carousel img {
     width: 100%;
     height: auto;
-    max-height: 700px; /* Ensures the image stays large but doesn't exceed 700px */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 700px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease; /* Smooth zoom effect */
+}
+
+.carousel img:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
 }
 
 .arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 40px; /* Increased font size for larger arrows */
-    color: #333;
-    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 40px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     padding: 15px;
     cursor: pointer;
     user-select: none;
     z-index: 100;
+    transition: background-color 0.3s ease; /* Smooth transition */
 }
 
 .prev {
-    left: 0;
+    left: 10px;
 }
 
 .next {
-    right: 0;
+    right: 10px;
+}
+
+.arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Darker on hover */
 }
 
 .thumbnail-container {
@@ -68,79 +115,124 @@
 }
 
 .thumbnail {
-    width: 80px; /* Increased thumbnail size */
+    width: 80px;
     margin: 5px;
     border: 2px solid transparent;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: border-color 0.3s ease;
+    border-radius: 8px; /* Softer corners */
+    transition: border-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
 }
 
-.thumbnail:hover, .thumbnail.active {
-    border-color: #3498db;
+.thumbnail:hover {
+    border-color: #3498db; /* Blue border on hover */
+    transform: scale(1.05); /* Zoom effect on hover */
 }
 
-.product-info {
-    flex: 2;
-}
 
-.product-info h1 {
-    font-size: 32px;
-    margin-bottom: 20px;
-    font-family: 'Playfair Display', serif;
-}
-
-.product-info p {
-    font-size: 18px;
-    margin-bottom: 15px;
-}
 
 #productPrice {
-    font-size: 24px;
-    color: #e74c3c;
+    font-size: 28px; /* Larger price size */
+    color: #e74c3c; /* Price color */
     font-weight: bold;
 }
 
-.back-button {
+.add-to-cart-btn {
     display: inline-block;
-    margin-bottom: 20px;
-    padding: 12px 24px;
-    background-color: #3498db;
+    background-color: #e74c3c;
     color: white;
-    text-decoration: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
 }
 
-.back-button:hover {
-    background-color: #2980b9;
+.add-to-cart-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05); /* Slight scale on hover */
 }
 
-/* Responsive Styles */
+.product-tags {
+    margin-top: 20px;
+}
+
+.product-tags ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-tags li {
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.product-tags a {
+    display: inline-block;
+    background-color: #3498db; /* Changed color for a vibrant look */
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.product-tags a:hover {
+    background-color: #2980b9; /* Darker shade on hover */
+    transform: scale(1.05); /* Zoom effect on hover */
+}
+
+.thumbnail:hover {
+    transform: scale(1.1); /* Increased zoom effect for thumbnails */
+}
 @media (max-width: 768px) {
     .product-details {
-        flex-direction: column;
-        text-align: center;
-        width: calc(100vw - 10px); /* Adjust width for smaller screens */
-        margin: 0 5px; /* Reduce left and right alignment to 5px on small screens */
+        flex-direction: column; /* Stack elements vertically */
+        text-align: center; /* Center-align text */
+        padding: 20px; /* Add padding around the container */
     }
-  
+
     .product-image-gallery {
-        margin-right: 0;
-        margin-bottom: 20px;
-        max-width: 90%; /* Slightly reduce the size for smaller screens */
+        max-width: 100%; /* Ensure images are responsive */
+        margin: 0; /* Reset margin for better layout */
+    }
+
+    .product-info {
+        padding: 10px; /* Ensure there’s space around the text */
+        max-width: 100%; /* Allow full width */
     }
 
     .product-info h1 {
-        font-size: 28px;
+        font-size: 30px; /* Adjust heading size */
+        line-height: 1.4; /* Improve line height for readability */
+        margin-bottom: 15px; /* Add space below the title */
     }
 
     .product-info p {
-        font-size: 16px;
+        font-size: 16px; /* Ensure text size is readable */
+        margin-bottom: 10px; /* Add space between paragraphs */
+        word-wrap: break-word; /* Allow words to break onto the next line */
+        overflow-wrap: break-word; /* Support breaking long words */
+        max-width: 100%; /* Prevent overflow */
+    }
+
+    .product-tags ul {
+        flex-direction: column; /* Stack tags vertically */
+        align-items: center; /* Center tags */
+    }
+
+    .product-tags li {
+        margin-bottom: 5px; /* Space between tags */
     }
 
     .thumbnail {
-        width: 60px;
+        width: 60px; /* Adjust thumbnail size for better layout */
+    }
+
+    .arrow {
+        font-size: 35px; /* Adjust arrow size for better usability */
     }
 }
 
@@ -157,46 +249,4 @@
     .arrow {
         font-size: 30px; /* Slightly smaller arrows on mobile */
     }
-}
-.add-to-cart-btn {
-    display: inline-block;
-    background-color: #e74c3c;
-    color: white;
-    padding: 12px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.add-to-cart-btn:hover {
-    background-color: #c0392b;
-}
-.product-tags ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.product-tags li {
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-
-.product-tags a {
-    display: inline-block;
-    background-color: #dd4416;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.product-tags a:hover {
-    background-color: #2980b9;
-    cursor: pointer;
 }

@@ -1,13 +1,14 @@
-
 .product {
     width: calc(100vw - 60px); /* Subtracting padding/margin for alignment */
     margin: 0 20px; /* Left and right alignment for large screens */
     position: relative;
-    text-align: center;
+    text-align: left;
     display: inline-block;
     background-color: rgb(228, 226, 226);
     border-radius: 20px;
     padding: 20px;
+    font-family: Poppins;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
 }
 
 /* Filter container styling */
@@ -26,14 +27,22 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
+    transition: border-color 0.3s; /* Smooth transition on focus */
 }
 
+.product .filter-container input[type="text"]:focus,
+.product .filter-container select:focus {
+    border-color: #f4500e; /* Highlight on focus */
+}
+
+/* Tag container styling */
 .product .tag-container {
     text-align: center;
-    height: 30px;
+    height: 40px; /* Slightly increased height for better spacing */
     background-color: rgb(230, 62, 62);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    margin-bottom: 15px; /* Space below the tag */
 }
 .product .tag-container .centered-text {
     height: 100%;
@@ -42,6 +51,8 @@
     align-items: center; /* Centers vertically */
     border: 1px solid #ccc; /* Optional, just for visualization */
     font-family: 'Playfair Display', serif; 
+    color: white; /* White text for contrast */
+    font-weight: bold; /* Bold text for emphasis */
 }
 
 /* List item container as a flexbox */
@@ -49,32 +60,64 @@
     display: flex;
     flex-wrap: wrap; /* Allows items to wrap to the next line */
     justify-content: flex-start; /* Align items to the left */
-    gap: 10px; /* Space between items */
+    gap: 15px; /* Increased space between items */
     border-radius: 10px;
 }
 
 /* Product item styling */
 .product .list-item .item {
-    flex: 1 1 calc(33% - 5px); /* 2 items per row with a small gap */
-    max-width: calc(33% - 5px); /* Ensures items don't exceed 50% width */
+    flex: 1 1 calc(33% - 10px); /* 3 items per row with a gap */
+    max-width: calc(33% - 10px); /* Ensures items don't exceed 33% width */
     border-radius: 10px;
     padding: 15px;
-    margin: 10px 0; /* Margin only on top and bottom to reduce horizontal spacing */
+    margin: 0; /* Remove margin to use gap instead */
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition on hover */
+}
+
+.product .list-item .item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 .product .list-item .item img {
     border-radius: 5px;
     width: 100%; /* Adjust image size to fill item */
+    height: auto; /* Maintain aspect ratio */
 }
 
-/* Responsive styling */
+.product .list-item .item .product-attributes {
+    display: flex;
+    gap: 10px; /* Space between attribute labels */
+    flex-wrap: wrap; /* Allows wrapping of labels if they overflow */
+}
 
+/* Individual category label styling */
+.product .list-item .item .category-label {
+    display: inline-block; /* Makes the link act like a block element */
+    background-color: #ea5e2b; /* Light greenish background for labels */
+    color: #511a0f; /* Dark green text color */
+    padding: 5px 10px; /* Padding around the text */
+    border-radius: 5px; /* Rounded corners for labels */
+    font-family: Poppins; /* Consistent font for attributes */
+    font-size: 14px; /* Font size for attributes */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+/* Hover effect for clickable labels */
+.product .list-item .item .category-label:hover {
+    background-color: #af230d; /* Darker green on hover */
+    color: white; /* White text color on hover */
+}
+
+
+/* Responsive styling */
 @media only screen and (max-width: 888px) {
     .product .list-item .item {
-        flex: 1 1 48%; /* Each item takes full width */
+        flex: 1 1 48%; /* Each item takes almost full width */
         max-width: 48%; /* Each item should not exceed full width */
     }
 }
@@ -99,10 +142,11 @@
     }
     
     .product .list-item .item img {
-        width: 90%;
+        width: 90%; /* Slightly reduce image width */
     }
 }
 
+/* Pagination styling */
 .pagination {
     display: flex;
     justify-content: center; /* Center the pagination controls */
@@ -119,7 +163,7 @@
     color: white; /* Button text color */
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s; /* Transition for background color and scale */
 }
 
 .pagination-button:disabled {
@@ -129,4 +173,5 @@
 
 .pagination-button:hover:not(:disabled) {
     background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
 }

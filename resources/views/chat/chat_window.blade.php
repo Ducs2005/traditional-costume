@@ -34,6 +34,6 @@
     </div>
 
     <!-- External JS -->
-<script src="{{asset('frontent/php/js/chat.js')}}"></script>
+<script src="{{asset('frontend/js/chat.js')}}"></script>
 </body>
 </html>

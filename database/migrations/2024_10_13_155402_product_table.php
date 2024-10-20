@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('img_path')->nullable();
+            $table->string('material')->nullable();
+            $table->string('button')->nullable();
+            $table->string('color')->nullable();
             $table->decimal('price', 10, 2);
             $table->timestamps(); // Adds created_at and updated_at
         });
@@ -29,7 +32,7 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('product');
     }
 
     

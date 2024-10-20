@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/home', function () {
     return view('home');
@@ -39,3 +41,5 @@ Route::get('profile', [LoginController::class, 'profile'])->name('account.profil
 Route::get('/view_cart', function () {
     return view('view_cart');
 });
+Route::get('/api/products', [ProductController::class, 'getProducts']);
+Route::get('/product_description/{id}', [ProductController::class, 'show'])->name('product.description');

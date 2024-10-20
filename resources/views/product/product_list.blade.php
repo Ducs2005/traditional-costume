@@ -10,7 +10,7 @@
 
 <body>
     @include ('header_footer.header')
-    @include ('chat.chat_window')
+   @include ('chat.chat_window')
     
     <br><br><br><br> <br><br><br>
 
@@ -26,7 +26,7 @@
 
    
 <!-- Include the products.js script -->
-<script src="{{asset('frontend/js/products.js')}}"></script>
+
 
 </body>
 
