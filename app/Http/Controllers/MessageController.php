@@ -10,26 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    public function chatWindow()
+    public function fetchMessages($userId)
     {
-        // Get the current user's ID
-        $userId = Auth::id();
+        $authUserId = Auth::id();
 
-        // Fetch distinct user IDs of users the current user has chatted with
-        $chattedUserIds = Message::where('sender_id', $userId)
-                                ->orWhere('recipient_id', $userId)
-                                ->pluck('sender_id', 'recipient_id')
-                                ->flatten()
-                                ->unique()
-                                ->filter(function ($id) use ($userId) {
-                                    return $id != $userId; // Exclude the current user from the list
-                                })
-                                ->values(); // Re-index the collection after filtering
+        // Retrieve messages between the authenticated user and the selected user
+        $messages = Message::where(function ($query) use ($authUserId, $userId) {
+                $query->where('sender_id', $authUserId)->where('recipient_id', $userId);
+            })
+            ->orWhere(function ($query) use ($authUserId, $userId) {
+                $query->where('sender_id', $userId)->where('recipient_id', $authUserId);
+            })
+            ->orderBy('created_at', 'asc')
+            ->get();
 
-        // Fetch the user details of the users that the current user has chatted with
-        $chattedUsers = User::whereIn('id', $chattedUserIds)->get();
-
-        // Pass the list of chatted users to the view
-        return view('chat_window', compact('chattedUsers'));
+        return response()->json(['messages' => $messages]);
     }
 }

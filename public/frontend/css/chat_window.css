@@ -1,120 +1,194 @@
-/* Chat window (initially hidden) */
+/* Chat window container */
 .chat-window {
-    display: none; /* Initially hidden */
-    position: fixed;
-    bottom: 0;
-    right: 20px;
     width: 300px;
     height: 400px;
-    background-color: white;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff;
     border-radius: 8px;
-    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 2000;
 }
 
 /* Chat header */
 .chat-header {
-    background-color: #007bff;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    position: relative;
+    background-color: #d13917;
+    color: #fff;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
-/* Close button inside chat window */
+/* Close button */
 .close-chat-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
     background: none;
     border: none;
-    color: white;
+    color: #fff;
     font-size: 20px;
     cursor: pointer;
 }
 
+.close-chat-btn:hover {
+    color: #ffcccc;
+}
+
 /* Chat body */
 .chat-body {
+    flex-grow: 1;
     padding: 10px;
     overflow-y: auto;
-    height: calc(100% - 60px); /* Adjust height to leave space for header */
 }
 
-/* Accounts list */
-.accounts-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+/* Search bar */
+.search-bar {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
 }
 
-.accounts-list li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.search-bar input[type="text"] {
+    flex-grow: 1;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Search button styling */
+.search-bar button {
+    background-color: #bf442f;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
-.accounts-list li:hover {
-    background-color: #f0f0f0;
+.search-bar button:hover {
+    background-color: #8b1e1e;
 }
 
-/* Chat content (hidden by default) */
-.chat-content {
-    display: none; /* Will be shown when an account is clicked */
+/* Account list */
+.accounts-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.account {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.account:hover {
+    background-color: #f1f1f1;
+}
+
+/* Chat interface */
+.chat-interface {
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
-.chat-messages {
-    max-height: 300px;
+.chat-content {
+    flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 10px;
-    position: relative;
-}
-
-/* Individual message */
-.message {
-    padding: 8px;
-    margin: 10px;
-    border-radius: 8px;
-    max-width: 70%; /* Controls maximum width of message bubbles */
-    position: relative;
-    clear: both;
-    word-wrap: break-word; /* Breaks long words to prevent overflow */
-    white-space: pre-wrap; /* Maintains whitespace formatting and wraps text */
-    background-color: #f1f0f0;
-    color: black;
-}
-
-/* Messages from the user */
-.message.me {
-    background-color: #007bff;
-    color: white;
-    margin-left: auto; /* Aligns the user's messages to the right */
-    text-align: right;
-}
-
-/* Messages from others */
-.message.other {
-    margin-right: auto; /* Aligns other messages to the left */
-    text-align: left;
-}
-
-/* Input area styling */
-#messageInput {
-    width: calc(100% - 22px); /* Full width minus padding */
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
-#sendMessageBtn {
-    background-color: #007bff;
-    color: white;
+.message-input {
+    display: flex;
+    gap: 5px;
+}
+
+.message-input input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.message-input button {
+    background-color: #c6340c;
+    color: #fff;
     border: none;
     padding: 10px 15px;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
-    float: right;
-    margin: 5px 10px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.message-input button:hover {
+    background-color: #c31714;
+}
+
+/* Chat toggle button */
+#openChatBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 350px;
+    background-color: #eb1212;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+#openChatBtn:hover {
+    background-color: #fcfcfd;
+}
+
+/* Back button */
+#backToAccountsBtn {
+    background-color: #d75e40;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+#backToAccountsBtn:hover {
+    background-color: #c64328;
+}
+
+/* Message styling */
+.message {
+    padding: 8px;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.message.sent {
+    background-color: #bd9559;
+    color: #fff;
+    align-self: flex-end;
+}
+
+.message.received {
+    background-color: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
 }

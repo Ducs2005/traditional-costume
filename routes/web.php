@@ -45,4 +45,5 @@ Route::get('/api/products', [ProductController::class, 'getProducts']);
 Route::get('/product_description/{id}', [ProductController::class, 'show'])->name('product.description');
 
 
+Route::get('/fetch-messages/{userId}', [MessageController::class, 'fetchMessages'])->name('fetch.messages');
 
