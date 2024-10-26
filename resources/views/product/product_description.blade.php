@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $product->name }}</title>
-    <link rel="stylesheet" href="../frontend/css/product_description.css">
+    <link rel="stylesheet" href="{{ asset('frontend/css/product_description.css') }}">
+
+
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
@@ -23,9 +25,10 @@
                     <span class="arrow next" onclick="nextImage()">&#8250;</span> <!-- Right arrow -->
                 </div>
                 <div class="thumbnail-container">
-                    @foreach ($product->images as $image)
-                        <img class="thumbnail" src="{{ asset('frontend/img/product/' . $image->img_path) }}" alt="Thumbnail" onclick="setImage('{{ asset('frontend/img/product/' . $image->path) }}')">
-                    @endforeach
+                @foreach ($product->images as $image)
+                    <img class="thumbnail" src="{{ asset('frontend/img/product/' . $image->img_path) }}" alt="Thumbnail" onclick="setImage('{{ asset('frontend/img/product/' . $image->img_path) }}')">
+                @endforeach
+
                 </div>
             </div>
             
@@ -55,6 +58,11 @@
     </div>
 
     @include ('header_footer.footer')
+    <script>
+        function setImage(imagePath) {
+            document.getElementById('productImage').src = imagePath;
+        }
+    </script>
 </body>
 
 </html>

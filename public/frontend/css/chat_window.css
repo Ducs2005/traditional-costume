@@ -1,4 +1,4 @@
-/* Chat window (hidden by default) */
+/* Chat window (initially hidden) */
 .chat-window {
     display: none; /* Initially hidden */
     position: fixed;
@@ -8,7 +8,7 @@
     height: 400px;
     background-color: white;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 1001;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -33,6 +33,7 @@
     font-size: 20px;
     cursor: pointer;
 }
+
 /* Chat body */
 .chat-body {
     padding: 10px;
@@ -97,6 +98,7 @@
     margin-right: auto; /* Aligns other messages to the left */
     text-align: left;
 }
+
 /* Input area styling */
 #messageInput {
     width: calc(100% - 22px); /* Full width minus padding */

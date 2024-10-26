@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -43,3 +43,7 @@ Route::get('/view_cart', function () {
 });
 Route::get('/api/products', [ProductController::class, 'getProducts']);
 Route::get('/product_description/{id}', [ProductController::class, 'show'])->name('product.description');
+
+
+Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('sendMessage');
+Route::get('/fetch-messages/{userId}', [MessageController::class, 'fetchMessages'])->name('fetchMessages');
