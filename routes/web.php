@@ -57,7 +57,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');  
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');  
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy'); // Route cho xóa
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');  
 });
 
 
