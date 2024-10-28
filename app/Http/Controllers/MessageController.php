@@ -28,4 +28,39 @@ class MessageController extends Controller
 
         return response()->json(['messages' => $messages]);
     }
+
+    public function sendMessage(Request $request)
+    {
+        // Validate incoming data
+        $request->validate([
+            'message' => 'required|string',
+            'receiver_id' => 'required|integer|exists:users,id'
+        ]);
+
+        try {
+            // Create and save the message
+            $message = new Message();
+            $message->sender_id = Auth::id(); // Current authenticated user
+            $message->recipient_id = $request->receiver_id;
+            $message->message = $request->message;
+            $message->save();
+
+            // Return success response
+            return response()->json([
+                'success' => true,
+                'message' => 'Message sent successfully!',
+                'data' => [
+                    'id' => $message->id,
+                    'message' => $message->message,
+                    'created_at' => $message->created_at->toDateTimeString()
+                ]
+            ]);
+        } catch (\Exception $e) {
+            // Return error response in case of failure
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to send message. Please try again.'
+            ], 500);
+        }
+    }
 }

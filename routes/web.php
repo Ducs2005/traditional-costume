@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    //Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); ??
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
     
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
@@ -62,5 +62,7 @@ Route::prefix('admin')->group(function () {
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');  
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');  
 });
+
+Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
 
 
