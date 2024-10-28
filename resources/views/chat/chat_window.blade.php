@@ -55,52 +55,87 @@
     </div>
 
     <script>
-        var chatWindow = document.getElementById('chat-window');
-        var closeChatBtn = document.getElementById('closeChat');
-        var accountsView = document.getElementById('accountsView');
-        var chatInterface = document.getElementById('chatInterface');
-        var backToAccountsBtn = document.getElementById('backToAccountsBtn');
-        var chatContent = document.getElementById('chatContent');
-        var selectedAccountId = null;
+    var chatWindow = document.getElementById('chat-window');
+    var closeChatBtn = document.getElementById('closeChat');
+    var accountsView = document.getElementById('accountsView');
+    var chatInterface = document.getElementById('chatInterface');
+    var chatContent = document.getElementById('chatContent');
+    var sendMessage =document.getElementById('sendMessageBtn');
+    var selectedAccountId = null;
 
-        // Close button functionality
-        closeChatBtn.addEventListener('click', function() {
-            chatWindow.style.display = "none";
-            console.log("click");
-        });
+    // Close button functionality
+    closeChatBtn.addEventListener('click', function() {
+        chatWindow.style.display = "none";
+        console.log("Chat window closed");
+    });
 
-        // Search functionality (display only, no backend integration)
-        var searchBtn = document.getElementById('searchBtn');
-        var searchInput = document.getElementById('searchInput');
-        searchBtn.addEventListener('click', function() {
-            const searchTerm = searchInput.value.toLowerCase();
-            document.querySelectorAll('.account').forEach(function(account) {
-                const userName = account.innerText.toLowerCase();
-                account.style.display = userName.includes(searchTerm) ? 'block' : 'none';
-            });
-        });
-
-
-        //Load message
-        var chatContent = document.getElementById('chatContent');
-        var selectedAccountId = null; // Track the selected user's ID
-
-        // Event listener for clicking on an account
+    // Search functionality
+    var searchBtn = document.getElementById('searchBtn');
+    var searchInput = document.getElementById('searchInput');
+    searchBtn.addEventListener('click', function() {
+        const searchTerm = searchInput.value.toLowerCase();
         document.querySelectorAll('.account').forEach(function(account) {
-            account.addEventListener('click', function() {
-                selectedAccountId = this.getAttribute('data-account-id');
-                loadChatMessages(selectedAccountId);
-            });
+            const userName = account.innerText.toLowerCase();
+            account.style.display = userName.includes(searchTerm) ? 'block' : 'none';
         });
+    });
 
-        // Function to fetch and display messages for the selected user
-        function loadChatMessages(accountId) {
-            chatContent.innerHTML = ''; // Clear previous messages
+    // Event listener for accounts list with event delegation
+    document.getElementById('accountsList').addEventListener('click', function(event) {
+        if (event.target.classList.contains('account')) {
+            const account = event.target;
 
-            fetch(`/fetch-messages/${accountId}`)
-                .then(response => response.json())
-                .then(data => {
-                    data.messages.forEach(function(message) {
+            // Check if the account is already clicked
+            if (account.classList.contains('unclickable')) {
+                return; // Ignore click if account is unclickable
+            }
+
+            console.log("Account clicked: ", account.innerText);
+            selectedAccountId = account.getAttribute('data-account-id');
+
+            // Make this account unclickable
+            account.classList.add('unclickable'); // Visually indicate it's unclickable
+            account.style.pointerEvents = 'none'; // Disable pointer events for the account
+
+            // Hide accounts view and show chat interface
+            accountsView.style.display = 'none';
+            chatInterface.style.display = 'block';
+
+            // Load chat messages for the selected account
+            loadChatMessages(selectedAccountId);
+        }
+    });
+
+    // Back button functionality
+    var backToAccountsBtn = document.getElementById('backToAccountsBtn');
+    backToAccountsBtn.addEventListener('click', function() {
+        var selectedAccountId = null;
+        // Hide chat interface and show accounts view
+        chatInterface.style.display = 'none';
+        accountsView.style.display = 'block';
+
+        // Make all accounts clickable again
+        document.querySelectorAll('.account').forEach(function(account) {
+            account.classList.remove('unclickable'); // Remove unclickable class
+            account.style.pointerEvents = 'auto'; // Restore pointer events
+        });
+    });
+
+    // Function to fetch and display messages for the selected user
+    function loadChatMessages(accountId) {
+        chatContent.innerHTML = ''; // Clear previous messages
+        let count = 0;
+        const displayedMessageIds = new Set();
+
+        console.log("Loading messages for account:", accountId); // Debug
+
+        fetch(`{{ url('/fetch-messages') }}/${accountId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.messages.forEach(function(message) {
+                    if (!displayedMessageIds.has(message.id)) { // Only add unique messages
+                        displayedMessageIds.add(message.id);
+                        
                         const messageElement = document.createElement('div');
                         messageElement.classList.add('message');
 
@@ -111,13 +146,19 @@
                             messageElement.classList.add('sent');
                         }
 
-                        messageElement.innerText = message.content;
+                        count += 1;
+                        console.log("Message count:", count); // Logs each unique message count
+                        
+                        messageElement.innerText = message.message;
                         chatContent.appendChild(messageElement);
-                    });
-                })
-                .catch(error => console.error('Error fetching messages:', error));
-        }
+                    }
+                });
 
-    </script>
+                console.log("Total messages displayed:", count); // Final total count
+            })
+            .catch(error => console.error('Error fetching messages:', error));
+    }
+</script>
+
 </body>
 </html>
