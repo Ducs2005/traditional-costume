@@ -34,7 +34,7 @@ class LoginController extends Controller
     }
 
      //This method will show register page for customer
-    public function register() { 
+    public function register() {
         return view('account.register');
     }
 
@@ -51,6 +51,8 @@ class LoginController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->role = 'customer';
+            $user->confirm_otp = rand(100000, 999999);
+            $user->token_forgot = '';
             $user->save();
 
             return redirect()->route('account.login')->with('success', 'You have registed successfully.');

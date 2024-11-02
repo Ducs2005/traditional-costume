@@ -3,7 +3,6 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PusherController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +18,7 @@ Route::get('/product_type', function () {
     return view('product.product_type');
 });
 
+
 Route::group(['prefix' => 'account'], function() {
 
     // Guest middleware
@@ -27,7 +27,7 @@ Route::group(['prefix' => 'account'], function() {
         Route::get('register', [LoginController::class, 'register'])->name('account.register');
         Route::post('process-register', [LoginController::class, 'processRegister'])->name('account.processRegister');
         Route::post('authenticate', [LoginController::class, 'authenticate'])->name('account.authenticate');
-       
+
     });
 
     // Authentiated middleware
@@ -53,25 +53,18 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::prefix('admin')->group(function () {
-    //Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); ??
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
-    
+
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
     Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');  
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');  
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');  
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
+Route::get('/forgot_password', [ForgotPasswordController::class, 'forgotpass']);
+Route::post('/reset_pwd', [ForgotPasswordController::class, 'reset_pwd']);
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('api/pusher-config', function () {
-        return response()->json([
-            'key' => config('broadcasting.connections.pusher.key'), // Pusher Key
-            'cluster' => config('broadcasting.connections.pusher.options.cluster'), // Pusher Cluster
-        ]);
-    });
-});
