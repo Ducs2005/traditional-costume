@@ -25,14 +25,19 @@ class AppServiceProvider extends ServiceProvider
         //
         View::composer('chat.chat_window', function ($view) {
             $userId = Auth::id();
+            
+            // Get all user IDs that the authenticated user has chatted with
             $chattedUserIds = Message::where('sender_id', $userId)
-                                    ->orWhere('recipient_id', $userId)
-                                    ->pluck('sender_id', 'recipient_id')
-                                    ->flatten()
-                                    ->unique()
-                                    ->filter(fn ($id) => $id != $userId)
-                                    ->values();
+                ->pluck('recipient_id') // Get all recipient IDs where the user is the sender
+                ->merge(
+                    Message::where('recipient_id', $userId)
+                    ->pluck('sender_id') // Get all sender IDs where the user is the recipient
+                )
+                ->unique() // Ensure the IDs are unique
+                ->filter(fn ($id) => $id != $userId) // Exclude the current user
+                ->values();
     
+            // Fetch the user objects for the unique user IDs
             $chattedUsers = User::whereIn('id', $chattedUserIds)->get();
             $view->with('chattedUsers', $chattedUsers);
         });

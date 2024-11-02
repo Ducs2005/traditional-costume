@@ -91,7 +91,8 @@
             .catch(error => console.error('Error fetching messages:', error));
     }
     
-
+    // This code should only run once
+if (!sendMessage.hasAttribute('data-listener-attached')) {
     sendMessage.addEventListener('click', function (event) {
         event.preventDefault(); // Prevent default form submission
         const messageInput = document.getElementById('messageInput');
@@ -106,7 +107,7 @@
     
             // Disable the send button to prevent multiple clicks
             sendMessage.disabled = true;
-    
+            console.log('sending message');
             fetch(`${sendMessageUrl}`, {
                 method: 'POST',
                 headers: {
@@ -115,11 +116,18 @@
                 },
                 body: JSON.stringify(messageData)
             })
-            .then(response => response.json())
+            .then(response => {
+                
+                // Check if the response is okay (status in the range 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+
             .then(data => {
                 sendMessage.disabled = false; // Re-enable the send button
-    
-                if (data.success) {
+                if (data.status_code == 200) {
                     // Clear the input field
                     messageInput.value = '';
     
@@ -132,14 +140,17 @@
                     // Scroll to the bottom of the chat
                     chatContent.scrollTop = chatContent.scrollHeight;
                 } else {
-                    console.error('Failed to send message:', data.error);
+                    console.log('Response:', response);
+                    console.error('Failed to send message:', data);
                 }
             })
             .catch(error => {
                 sendMessage.disabled = false; // Re-enable the send button in case of error
                 console.error('Error sending message:', error);
             });
+        } else {
+            console.warn('Message input is empty or no recipient selected.');
         }
     });
-    
-    
+    sendMessage.setAttribute('data-listener-attached', 'true');
+}

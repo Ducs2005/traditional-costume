@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Message;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use App\Events\MessageSent; // Ensure to include the MessageSent event
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Support\Facades\Http; 
 class MessageController extends Controller
 {
     public function fetchMessages($userId)
@@ -23,8 +24,6 @@ class MessageController extends Controller
             })
             ->orderBy('created_at', 'asc')
             ->get();
-
-        Log::info("Messages found: ", $messages->toArray());
 
         return response()->json(['messages' => $messages]);
     }
@@ -44,23 +43,86 @@ class MessageController extends Controller
             $message->recipient_id = $request->receiver_id;
             $message->message = $request->message;
             $message->save();
+            //Log::info('Broadcasting message to Pusher', ['message' => $message->message]);
+            //broadcast(new MessageSent($message->message, $request->receiver_id))->toOthers()->via('pusher');
+            //Log::info('Message broadcasted');
 
+            
             // Return success response
-            return response()->json([
-                'success' => true,
-                'message' => 'Message sent successfully!',
-                'data' => [
-                    'id' => $message->id,
-                    'message' => $message->message,
-                    'created_at' => $message->created_at->toDateTimeString()
-                ]
-            ]);
+            return $this->broadcastMessage($request->message, $request->receiver_id);
         } catch (\Exception $e) {
-            // Return error response in case of failure
+            Log::error('Error sending message:', ['exception' => $e]);
+        
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to send message. Please try again.'
+                'error' => 'Failed to send message. Please try again.',
+                'exception' => $e->getMessage() // Optional: Include the exception message for debugging
             ], 500);
         }
+    }
+
+
+    public function broadcastMessage($message, $recipient_id)
+    {
+        // Retrieve Pusher credentials from configuration
+        $app_id = config('broadcasting.connections.pusher.app_id');
+        $app_key = config('broadcasting.connections.pusher.key');
+        $app_secret = config('broadcasting.connections.pusher.secret');
+        $cluster = config('broadcasting.connections.pusher.options.cluster');
+        Log::info($app_id . 'gdfgdf' .  $app_key);
+        $data = ['message' => $message, 'sender' => auth()->id() ]; // Your actual payload
+        $channel = 'chat.' . $recipient_id; // Specify the channel to send the event to
+        $data = [
+            'name' => 'SendMessage', // Event name
+            'data' => json_encode($data), // Convert the message array to JSON
+            'channel' => $channel // Add the channel parameter
+        ];
+        $body = json_encode($data); // JSON-encode the data
+
+        // Calculate the MD5 hash of the body
+        $body_md5 = md5($body);
+
+        // Get the current timestamp
+        $timestamp = time();
+
+        // Create query parameters
+        $queryParams = [
+            'auth_key' => $app_key,
+            'auth_timestamp' => $timestamp,
+            'auth_version' => '1.0',
+            'body_md5' => $body_md5,
+        ];
+
+        // Build the query string
+        $queryString = http_build_query($queryParams);
+
+        // Create the string to sign
+        $stringToSign = "POST\n/apps/$app_id/events\n$queryString";
+
+        // Generate the HMAC SHA256 signature
+        $auth_signature = hash_hmac('sha256', $stringToSign, $app_secret);
+
+        // Add the signature to the query parameters
+        $queryParams['auth_signature'] = $auth_signature;
+
+        // Prepare the full URL
+        $fullUrl = "https://api-{$cluster}.pusher.com/apps/{$app_id}/events?" . http_build_query($queryParams);
+
+        // Send the request using Laravel's Http client
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json'
+        ])->post($fullUrl, $data);
+
+        // Return response for debugging
+        return response()->json([
+            'status_code' => $response->status(),
+            'response' => $response->body(),
+            'full_url' => $fullUrl,
+            'body_md5' => $body_md5,
+            'auth_signature' => $auth_signature,
+            'timestamp' => $timestamp,
+            'string_to_sign' => $stringToSign,
+            'query_params' => $queryParams,
+        ]);
     }
 }

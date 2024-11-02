@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="auth-id" content="{{ auth()->id() }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/chat_window.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- CSRF token for future AJAX if needed -->
-    <script>
-        const fetchMessagesUrl = "{{ url('/fetch-messages') }}";
-        const sendMessageUrl = "{{ url('/send-message') }}";
-    </script>
-    <script src="{{asset('frontend/js/chat.js')}}"></script>
+    
     <title>Chat Window</title>
 </head>
 <body>
@@ -59,6 +56,13 @@
         </div>
     </div>
 
+    @vite(['resources/js/app.js'])
+    <script>
+        const fetchMessagesUrl = "{{ url('/fetch-messages') }}";
+        const sendMessageUrl = "{{ url('/send-message') }}";
+        
+    </script>
+    <script src="{{asset('frontend/js/chat.js')}}"></script>
   
 
 </body>

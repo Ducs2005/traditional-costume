@@ -3,6 +3,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PusherController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -66,3 +67,11 @@ Route::prefix('admin')->group(function () {
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
 
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('api/pusher-config', function () {
+        return response()->json([
+            'key' => config('broadcasting.connections.pusher.key'), // Pusher Key
+            'cluster' => config('broadcasting.connections.pusher.options.cluster'), // Pusher Cluster
+        ]);
+    });
+});
