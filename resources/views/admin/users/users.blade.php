@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h2>Người dùng</h2>
+    <h2 class="text-center">Người dùng</h2>
     <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Thêm người dùng</a>
 
     @if(session('success'))
