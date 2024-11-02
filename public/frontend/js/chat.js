@@ -107,7 +107,6 @@ if (!sendMessage.hasAttribute('data-listener-attached')) {
     
             // Disable the send button to prevent multiple clicks
             sendMessage.disabled = true;
-            console.log('sending message');
             fetch(`${sendMessageUrl}`, {
                 method: 'POST',
                 headers: {
