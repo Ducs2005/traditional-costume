@@ -21,10 +21,15 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
+        
         if ($validator->passes()) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                return redirect()->route('account.home');
+                $user = Auth::user();
+                if ($user->role === 'admin') {
+                    return redirect()->route('admin.products.index');  
+                } else {
+                    return redirect()->route('account.home');
+                }
             } else {
                 return redirect()->route('account.login')->with('error','Either email or password is incorrect.');
             }
