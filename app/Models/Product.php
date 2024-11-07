@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
     protected $table = 'product';
     // Define the properties if needed, like fillable fields
-    protected $fillable = ['id', 'name', 'description',  'price', 'image', 'category', 'color', 'material', 'button'];
+    protected $fillable = ['name', 'description', 'price', 'image_path']; // Exclude id and category if not relevant
 
     public function images()
     {
@@ -21,5 +21,21 @@ class Product extends Model
     {
         return $this->belongsToMany(Type::class, 'product_type', 'product_id', 'type_id');
     }
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
+
+    public function button()
+    {
+        return $this->belongsTo(Button::class);
+    }
+    
+
 
 }

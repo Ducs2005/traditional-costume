@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\View;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Color;
+use App\Models\Button;
+use App\Models\Material;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -39,7 +41,19 @@ class AppServiceProvider extends ServiceProvider
     
             // Fetch the user objects for the unique user IDs
             $chattedUsers = User::whereIn('id', $chattedUserIds)->get();
+            
             $view->with('chattedUsers', $chattedUsers);
+
+            View::composer('product.product', function ($view) {
+                // Fetch colors, materials, and buttons
+                $colors = Color::all();
+                $materials = Material::all();
+                $buttons = Button::all();
+        
+                // Pass the variables to the view
+                $view->with(compact('colors', 'materials', 'buttons'));
+            });
+        
         });
     }
 }

@@ -45,6 +45,8 @@ Route::get('/view_cart', function () {
     return view('view_cart');
 });
 Route::get('/api/products', [ProductController::class, 'getProducts']);
+Route::post('api/products/filter', [ProductController::class, 'filterProducts']);
+
 Route::get('/product_description/{id}', [ProductController::class, 'show'])->name('product.description');
 
 
