@@ -1,0 +1,100 @@
+/* General Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+}
+
+.container-fluid {
+    display: flex;
+    flex-direction: row;  /* Đảm bảo layout theo hướng ngang */
+    height: 100vh;  /* Chiều cao đầy đủ */
+}
+
+.row {
+    display: flex;
+    flex-wrap: nowrap; /* Đảm bảo các phần tử không bị wrap */
+    width: 100%;
+}
+
+#sidebar {
+    flex: 0 0 250px;  /* Chiều rộng cố định cho sidebar */
+}
+
+main {
+    flex: 1 1 auto;  /* Nội dung chính chiếm phần không gian còn lại */
+}
+/* Sidebar Styling */
+#sidebar {
+    background: linear-gradient(135deg, #6d597a 0%, #b56576 100%);
+    height: 100vh;
+    padding-top: 20px;
+    color: white;
+    transition: all 0.3s;
+}
+
+#sidebar .nav-link {
+    color: #f4e1e6;
+    font-weight: bold;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+    transition: background 0.3s;
+}
+
+#sidebar .nav-link:hover {
+    background-color: #9e83a5;
+    color: white;
+}
+
+/* Main Content Area */
+main {
+    background: #fff3e6;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Table Styles */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(248, 215, 218, 0.1); /* Light pink */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(253, 245, 245, 0.7); /* Light beige */
+}
+
+.table-header {
+    background: linear-gradient(to right, #6d597a, #b56576);
+    color: white;
+}
+
+/* Header */
+.content-header h2 {
+    color: #6d597a;
+    text-align: center;
+    font-weight: 700;
+    font-size: 32px;
+    padding-bottom: 10px;
+}
+
+/* Sidebar Toggle Button (hidden on large screens) */
+#sidebarToggle {
+    position: fixed;
+    width: 100px;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    display: none;
+    background-color: #6d597a;
+}
+
+@media (max-width: 900px) {
+    #sidebar {
+        display: none;
+    }
+
+    #sidebarToggle {
+        display: block;
+    }
+}
