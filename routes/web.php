@@ -9,7 +9,7 @@ use App\Http\Controllers\PusherController;
 use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
-
+use App\Http\Controllers\TypeController;
 
 Route::get('/', function () {
     return view('home');
