@@ -6,11 +6,15 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Login;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         MessageSent::class => [
             // You can define listeners here if needed
+        ],
+        Login::class => [
+            'App\Listeners\LogSuccessfulLogin',
         ],
     ];
 
