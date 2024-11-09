@@ -95,7 +95,7 @@ public function update(Request $request, $id)
         'name' => 'required',
         'description' => 'nullable',
         'price' => 'required|numeric',
-        'type_id' => 'required|exists:types,id',
+        'type_id' => 'required|exists:type,id',
         'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
     ]);
 
