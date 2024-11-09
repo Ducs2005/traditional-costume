@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('confirm_otp')->default(NULL);
-            $table->string('token_forgot')->default(NULL);
+            if (!Schema::hasColumn('users', 'confirm_otp')) {
+                $table->string('confirm_otp')->nullable();
+            }
+
+            if (!Schema::hasColumn('users', 'token_forgot')) {
+                $table->string('token_forgot')->nullable();
+            }
         });
     }
 
@@ -28,3 +33,4 @@ return new class extends Migration
         });
     }
 };
+
