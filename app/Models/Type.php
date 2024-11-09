@@ -8,7 +8,7 @@ class Type extends Model
 {
     use HasFactory;
 
-    protected $table = 'types';
+    protected $table = 'type';
     protected $fillable = ['id', 'name'];
 
     public function products()
