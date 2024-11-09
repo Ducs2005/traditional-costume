@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = 'products';
+    protected $table = 'product';
     // Define the properties if needed, like fillable fields
     protected $fillable = ['id', 'name', 'details',  'price', 'image', 'type_id', 'color', 'material', 'button'];
 
