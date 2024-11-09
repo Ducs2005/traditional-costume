@@ -68,6 +68,13 @@ Route::prefix('admin')->middleware('checkadminrole')->group(function () {
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
+    Route::get('/types', [TypeController::class, 'index'])->name('admin.types.index');
+    Route::get('/types/create', [TypeController::class, 'create'])->name('admin.types.create');
+    Route::post('/types', [TypeController::class, 'store'])->name('admin.types.store');
+    Route::get('/types/{id}/edit', [TypeController::class, 'edit'])->name('admin.types.edit');
+    Route::put('/types/{id}', [TypeController::class, 'update'])->name('admin.types.update');
+    Route::delete('/types/{id}', [TypeController::class, 'destroy'])->name('admin.types.destroy');
+
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
     Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
