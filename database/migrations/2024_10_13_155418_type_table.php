@@ -11,13 +11,13 @@ return new class extends Migration
         Schema::create('type', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->default('')->nullable();
             $table->timestamps(); // Adds created_at and updated_at
         });
         Schema::create('subtype', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
             $table->foreignId('type_id')->constrained('type')->onDelete('cascade');
-            $table->text('description')->nullable();
+            $table->text('description')->default('')->nullable();
             $table->string('img_path')->nullable();
             $table->timestamps(); // Adds created_at ancd updated_at
         });
