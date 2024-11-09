@@ -37,8 +37,13 @@ return new class extends Migration
             $table->foreignId('color_id')->nullable()->constrained('colors')->onDelete('set null');
             $table->foreignId('material_id')->nullable()->constrained('materials')->onDelete('set null');
             $table->foreignId('size_id')->nullable()->constrained('sizes')->onDelete('set null');
+            
+            // Seller ID (nullable) related to the users table
+            $table->foreignId('seller_id')->nullable()->constrained('users')->onDelete('set null');
+        
             $table->timestamps(); // Adds created_at and updated_at
         });
+        
         Schema::create('product_image', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
             $table->string('img_path');

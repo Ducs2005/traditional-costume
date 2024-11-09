@@ -45,20 +45,29 @@ class Pagination {
     displayProducts(productsArray) {
         // Clear existing content in the product container
         this.productContainer.innerHTML = '';
+        console.log(productsArray);
 
         // Loop through the products array and create product elements
         productsArray.forEach(product => {
             const productItem = document.createElement('div');
             productItem.classList.add('item', 'product-item');
-
+        
             productItem.addEventListener('click', () => {
-                window.location.href = `/traditional_costume/public/product_description/${product.id}`;
+                window.location.href = `${baseUrl}/product_description/${product.id}`;
             });
-
+        
+            // Generate HTML for types by mapping over the types array
+            const typesHtml = product.types && product.types.length > 0
+                ? product.types.map(type => `<a href="/products/category/${type.name}" class="category-label">${type.name}</a>`).join(', ')
+                : `<span class="category-label">No Types</span>`;
+            const formattedPrice = Number(product.price).toLocaleString('vi-VN');
+            console.log(formattedPrice);
             productItem.innerHTML = `
                 <img src="frontend/img/product/${product.img_path}" alt="${product.name}">
                 <h4>${product.name}</h4>
-                <p>${product.price}</p>
+                    <div class="price">
+                        ${formattedPrice} <span class="vnd-icon">₫</span>
+                    </div>
                 <div class="product-attributes">
                     <div class="attribute-group">
                         <a href="/products/category/${product.color ? product.color.name : 'No Color'}" class="category-label">
@@ -75,10 +84,16 @@ class Pagination {
                             ${product.button ? product.button.name : 'No Button'}
                         </a>
                     </div>
+                    <div class="attribute-group">
+                        <!-- Display all type names as links -->
+                        ${typesHtml}
+                    </div>
                 </div>
             `;
+        
             this.productContainer.appendChild(productItem);
         });
+        
 
         // Update pagination controls
         this.updatePagination();

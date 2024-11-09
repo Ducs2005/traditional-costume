@@ -1,14 +1,11 @@
 .product {
-    width: calc(100vw - 60px); /* Subtracting padding/margin for alignment */
-    margin: 0 20px; /* Left and right alignment for large screens */
-    position: relative;
-    text-align: left;
-    display: inline-block;
-    background-color: rgb(228, 226, 226);
-    border-radius: 20px;
+    width: calc(100vw - 40px); /* Adjusted for better alignment */
+    margin: 0 20px; /* Centering for larger screens */
     padding: 20px;
-    font-family: Poppins;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 /* Filter container styling */
@@ -16,18 +13,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    margin: 10px 0;
+    gap: 12px;
+    margin-bottom: 15px;
 }
 
 /* Styling for search input and dropdown */
 .product .filter-container input[type="text"],
 .product .filter-container select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 14px;
-    transition: border-color 0.3s; /* Smooth transition on focus */
+    transition: border-color 0.3s;
 }
 
 .product .filter-container input[type="text"]:focus,
@@ -38,93 +35,105 @@
 /* Tag container styling */
 .product .tag-container {
     text-align: center;
-    height: 40px; /* Slightly increased height for better spacing */
-    background-color: rgb(230, 62, 62);
+    height: 40px;
+    background-color: #e63e3e;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    margin-bottom: 15px; /* Space below the tag */
+    margin-bottom: 15px;
 }
+
 .product .tag-container .centered-text {
     height: 100%;
-    display: flex; /* Enables flexbox */
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically */
-    border: 1px solid #ccc; /* Optional, just for visualization */
-    font-family: 'Playfair Display', serif; 
-    color: white; /* White text for contrast */
-    font-weight: bold; /* Bold text for emphasis */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-weight: bold;
 }
 
 /* List item container as a flexbox */
 .product .list-item {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap to the next line */
-    justify-content: flex-start; /* Align items to the left */
-    gap: 15px; /* Increased space between items */
+    flex-wrap: wrap;
+    gap: 15px;
     border-radius: 10px;
 }
 
 /* Product item styling */
 .product .list-item .item {
-    flex: 1 1 calc(33% - 10px); /* 3 items per row with a gap */
-    max-width: calc(33% - 10px); /* Ensures items don't exceed 33% width */
+    flex: 1 1 calc(32% - 10px);
+    max-width: calc(32% - 10px);
     border-radius: 10px;
     padding: 15px;
-    margin: 0; /* Remove margin to use gap instead */
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition on hover */
+    background-color: #ffffff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product .list-item .item:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .product .list-item .item img {
-    border-radius: 5px;
-    width: 100%; /* Adjust image size to fill item */
-    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
 }
 
+/* Product attributes styling */
 .product .list-item .item .product-attributes {
     display: flex;
-    gap: 10px; /* Space between attribute labels */
-    flex-wrap: wrap; /* Allows wrapping of labels if they overflow */
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
 }
 
-/* Individual category label styling */
+/* Category label styling */
 .product .list-item .item .category-label {
-    display: inline-block; /* Makes the link act like a block element */
-    background-color: #ea5e2b; /* Light greenish background for labels */
-    color: #511a0f; /* Dark green text color */
-    padding: 5px 10px; /* Padding around the text */
-    border-radius: 5px; /* Rounded corners for labels */
-    font-family: Poppins; /* Consistent font for attributes */
-    font-size: 14px; /* Font size for attributes */
-    text-decoration: none; /* Remove underline */
-    transition: background-color 0.3s; /* Smooth background transition */
+    background-color: #ea5e2b;
+    color: #511a0f;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
 }
 
-/* Hover effect for clickable labels */
 .product .list-item .item .category-label:hover {
-    background-color: #af230d; /* Darker green on hover */
-    color: white; /* White text color on hover */
+    background-color: #af230d;
+    color: #fff;
 }
 
+/* Price styling */
+.product .list-item .item .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e63e3e; /* Emphasis color for price */
+    margin-top: 10px;
+}
 
-/* Responsive styling */
+/* Display price with "VND" */
+.product .list-item .item .price::after {
+    content: ' VND';
+    font-size: 16px;
+    color: #555; /* Slightly subdued color for currency symbol */
+}
+
+/* Responsive adjustments */
 @media only screen and (max-width: 888px) {
     .product .list-item .item {
-        flex: 1 1 48%; /* Each item takes almost full width */
-        max-width: 48%; /* Each item should not exceed full width */
+        flex: 1 1 48%;
+        max-width: 48%;
     }
 }
+
 @media only screen and (max-width: 598px) {
     .product {
-        width: calc(100vw - 10px); /* Adjust width for smaller screens */
-        margin: 0 5px; /* Reduce left and right alignment to 5px on small screens */
+        width: calc(100vw - 20px);
+        margin: 0 10px;
     }
 
     .product .filter-container {
@@ -137,21 +146,17 @@
     }
 
     .product .list-item .item {
-        flex: 1 1 100%; /* Each item takes full width */
-        max-width: 100%; /* Each item should not exceed full width */
-    }
-    
-    .product .list-item .item img {
-        width: 90%; /* Slightly reduce image width */
+        flex: 1 1 100%;
+        max-width: 100%;
     }
 }
 
 /* Pagination styling */
 .pagination {
     display: flex;
-    justify-content: center; /* Center the pagination controls */
+    justify-content: center;
     align-items: center;
-    margin-top: 20px; /* Add space above pagination */
+    margin-top: 20px;
 }
 
 .pagination-button {
@@ -159,19 +164,19 @@
     margin: 0 5px;
     border: none;
     border-radius: 5px;
-    background-color: #f4500e; /* Button background color */
-    color: white; /* Button text color */
+    background-color: #f4500e;
+    color: white;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s, transform 0.3s; /* Transition for background color and scale */
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .pagination-button:disabled {
-    background-color: #ccc; /* Disabled button color */
-    cursor: not-allowed; /* Change cursor for disabled buttons */
+    background-color: #ddd;
+    cursor: not-allowed;
 }
 
 .pagination-button:hover:not(:disabled) {
-    background-color: #0056b3; /* Darker shade on hover */
-    transform: scale(1.05); /* Slight scale effect on hover */
+    background-color: #d1400b;
+    transform: scale(1.05);
 }

@@ -35,6 +35,17 @@ class Product extends Model
     {
         return $this->belongsTo(Button::class);
     }
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+    // In Product model
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');  // Assuming 'seller_id' is the foreign key for the user
+    }
+
+
     
 
 

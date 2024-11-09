@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/home', function () {
@@ -84,3 +85,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/new_pwd', [ForgotPasswordController::class, 'new_pwd']);
 Route::post('/reset_new_pwd', [ForgotPasswordController::class, 'reset_new_pwd']);
+
+
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/contact-seller/{seller_id}', [MessageController::class, 'show'])->name('contact.seller');
