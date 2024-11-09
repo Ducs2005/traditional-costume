@@ -34,10 +34,9 @@ class ProductController extends Controller
  
     public function productList()
 {
-    $products = Product::with('type')->get(); 
-    $type = Type::all(); 
-
-    return view('product.product_list', compact('products', 'type'));  
+        $products = Product::with('type')->get(); 
+        $type = Type::all(); 
+        return view('product.product_list', compact('products', 'type'));  
 }
 
     public function create()
@@ -58,15 +57,15 @@ class ProductController extends Controller
 {
     $request->validate([
         'name' => 'required',
-        'details' => 'nullable',
+        'description' => 'nullable',
         'price' => 'required|numeric',
-        'type_id' => 'required|exists:types,id',  
+        'type_id' => 'required|exists:type,id',  
         'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', 
     ]);
 
     $product = new Product();
     $product->name = $request->name;
-    $product->details = $request->details;
+    $product->description = $request->description;
     $product->price = $request->price;
 
     if ($request->hasFile('img')) {
@@ -94,7 +93,7 @@ public function update(Request $request, $id)
 {
     $request->validate([
         'name' => 'required',
-        'details' => 'nullable',
+        'description' => 'nullable',
         'price' => 'required|numeric',
         'type_id' => 'required|exists:types,id',
         'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
@@ -102,7 +101,7 @@ public function update(Request $request, $id)
 
     $product = Product::findOrFail($id);
     $product->name = $request->name;
-    $product->details = $request->details;
+    $product->description = $request->description;
     $product->price = $request->price;
     $product->type_id = $request->type_id;
 
