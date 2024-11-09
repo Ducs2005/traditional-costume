@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        
+        $middleware->alias([
+            'checkadminrole' => \App\Http\Middleware\CheckAdminRole::class,
+        ]);
         $middleware->redirectTo(
             guests: '/account/login',
             users: '/account/home'

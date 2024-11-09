@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 
 
 Route::get('/', function () {
@@ -59,16 +60,27 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::prefix('admin')->group(function () {
-    //Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); ??
+Route::prefix('admin')->middleware('checkadminrole')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
+    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
     Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
-    Route::get('/users/{id}/edit', action: [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::get('/administrators', [AdminController::class, 'create'])->name('admin.administrators.index');
+    Route::post('/administrators', [AdminController::class, 'store'])->name('admin.administrators.store');
+    Route::get('/administrators/show', [AdminController::class, 'show'])->name('admin.administrators.show');
+    Route::get('/administrators/{id}/edit', [AdminController::class, 'edit'])->name('admin.administrators.edit');
+    Route::put('/administrators/{id}', [AdminController::class, 'update'])->name('admin.administrators.update');
+    Route::delete('/administrators/{id}', [AdminController::class, 'destroy'])->name('admin.administrators.destroy');
 });
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');

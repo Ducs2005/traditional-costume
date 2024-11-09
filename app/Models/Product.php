@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = 'product';
+    protected $table = 'products';
     // Define the properties if needed, like fillable fields
-    protected $fillable = ['id', 'name', 'description',  'price', 'image', 'category', 'color', 'material', 'button'];
+    protected $fillable = ['id', 'name', 'details',  'price', 'image', 'type_id', 'color', 'material', 'button'];
 
-    public function images()
+    public function image()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->hasOne(ProductImage::class);
     }
     // In Product.php model
-    public function types()
+    public function type()
     {
-        return $this->belongsToMany(Type::class, 'product_type', 'product_id', 'type_id');
+        return $this->belongsTo(Type::class, 'type_id');
     }
-
+    
 }
