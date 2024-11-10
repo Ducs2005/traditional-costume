@@ -15,7 +15,6 @@ class ProductController extends Controller
     {
         // Fetch all products with their related attributes
         $products = Product::with(['color', 'material', 'button', 'types'])->get();
-
         // Return products as a JSON response
         return response()->json($products);
     }
@@ -24,7 +23,7 @@ class ProductController extends Controller
     public function show($id)
     {
         // Eager load the product with its related attributes including the seller (User)
-        $product = Product::with(['color', 'material', 'button', 'types', 'seller'])->findOrFail($id);
+        $product = Product::with(['color', 'images', 'material', 'button', 'types', 'seller'])->findOrFail($id);
 
         // Pass the product to the view
         return view('product.product_description', compact('product'));
@@ -67,5 +66,96 @@ class ProductController extends Controller
 
    
 
-                
+    public function index()
+    {
+        $products = Product::with('types')->get(); 
+        $types = Type::all();
+        return view('admin.products.index', compact('products', 'types'));  
+
+    }
+ 
+    public function productList()
+{
+    $products = Product::with('type')->get(); 
+    $type = Type::all(); 
+
+    return view('product.product_list', compact('products', 'type'));  
 }
+
+    public function create()
+    {
+        $type = Type::all(); 
+        return view('admin.products.create', compact('type'));
+    }
+
+        public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được xóa thành công.');
+    }
+
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'details' => 'nullable',
+        'price' => 'required|numeric',
+        'type_id' => 'required|exists:types,id',  
+        'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', 
+    ]);
+
+    $product = new Product();
+    $product->name = $request->name;
+    $product->details = $request->details;
+    $product->price = $request->price;
+
+    if ($request->hasFile('img')) {
+        $imagePath = $request->file('img')->store('products', 'public'); // Lưu vào thư mục public/products
+        $product->img_path = $imagePath;  
+    }
+
+    // Lưu loại sản phẩm
+    $product->type_id = $request->type_id; // Gán loại sản phẩm vào product
+
+    $product->save();
+    
+    return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được thêm thành công.');
+}
+
+public function edit($id)
+{
+    $product = Product::findOrFail($id);
+    $types = Type::all(); 
+
+    return view('admin.products.edit', compact('product', 'types'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required',
+        'details' => 'nullable',
+        'price' => 'required|numeric',
+        'type_id' => 'required|exists:types,id',
+        'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
+
+    $product = Product::findOrFail($id);
+    $product->name = $request->name;
+    $product->details = $request->details;
+    $product->price = $request->price;
+    $product->type_id = $request->type_id;
+
+    if ($request->hasFile('img')) {
+        $imagePath = $request->file('img')->store('products', 'public');
+        $product->img_path = $imagePath;
+    }
+
+    $product->save();
+
+    return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật thành công.');
+    }
+}
+

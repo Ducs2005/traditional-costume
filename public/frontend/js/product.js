@@ -51,17 +51,16 @@ class Pagination {
         productsArray.forEach(product => {
             const productItem = document.createElement('div');
             productItem.classList.add('item', 'product-item');
-        
+
             productItem.addEventListener('click', () => {
                 window.location.href = `${baseUrl}/product_description/${product.id}`;
             });
-        
+    
             // Generate HTML for types by mapping over the types array
             const typesHtml = product.types && product.types.length > 0
                 ? product.types.map(type => `<a href="/products/category/${type.name}" class="category-label">${type.name}</a>`).join(', ')
                 : `<span class="category-label">No Types</span>`;
             const formattedPrice = Number(product.price).toLocaleString('vi-VN');
-            console.log(formattedPrice);
             productItem.innerHTML = `
                 <img src="frontend/img/product/${product.img_path}" alt="${product.name}">
                 <h4>${product.name}</h4>

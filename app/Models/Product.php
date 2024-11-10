@@ -16,11 +16,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
     // In Product.php model
+    // Product.php
     public function types()
     {
         return $this->belongsToMany(Type::class, 'product_type', 'product_id', 'type_id');
     }
+
     public function color()
     {
         return $this->belongsTo(Color::class);
@@ -47,6 +50,5 @@ class Product extends Model
 
 
     
-
 
 }

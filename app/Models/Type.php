@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
     use HasFactory;
-    protected $table = 'type';
 
-    // In ProductType.php model
+    protected $table = 'type';
+    protected $fillable = ['id', 'name'];
+
+
+    // Type.php
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_type', 'type_id', 'product_id');
     }
+
 }

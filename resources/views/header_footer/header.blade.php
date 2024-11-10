@@ -15,10 +15,10 @@
     <title>Header</title>
 </head>
 <body>
-    <header>        
+    <header>
         <input type="checkbox" name="" id="chk1">
-        <div class="logo"><a href="{{ url('/home') }}"><img src="{{asset('frontend/img/logo.png')}}"></a></div>
-            
+        <div class="logo"><a href="{{ url('/') }}"><img src="{{asset('frontend/img/logo.png')}}"></a></div>
+
         <div class="search-box">
             <form action="#" method="get">
                 <input type="text" name="search" id="srch" placeholder="Search">
@@ -27,7 +27,7 @@
         </div>
         <div class="menubar">
             <ul>
-                <li><a href="{{ url('/home') }}">Trang chủ</a></li>
+                <li><a href="{{ url('/') }}">Trang chủ</a></li>
                 <li class="dropdown">
                     <a href="{{ url('/product_type') }}" class="dropdown-toggle">Cổ phục</a>
                     <ul class="sub-menu">
@@ -38,13 +38,13 @@
                 </li>
 
                 <li> <a href="{{ url('/product-list') }}" > Cửa hàng </a> </li>
-                <li><a href="{{ url('home#aboutus') }}">Về chúng tôi</a></li>         
+                <li><a href="{{ url('home#aboutus') }}">Về chúng tôi</a></li>
                 <li><a href="#">Chính sách</a></li>
 
                 <!-- Check if the user is logged -->
                 @if (Auth::check())
                 <li>
-                    <a href="#" id="chat-toggle">Tin nhắn</a>                  
+                    <a href="#" id="chat-toggle">Tin nhắn</a>
                 </li>
                 <li class="dropdown">
                     <a href="#"><i class="fa-solid fa-user"></i></a>
@@ -56,7 +56,7 @@
                 @else
                     <li><a href="{{ route('account.login') }}">Đăng nhập</a></li>
                 @endif
-                
+
                 <li>
                     <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
                     <a href="#"><i class="fa-solid fa-bell"></i></a>
@@ -67,7 +67,7 @@
                     <i class="fa fa-bars"></i>
                 </label>
             </div>
-        </div>       
+        </div>
     </header>
 
     @include ('chat.chat_window')

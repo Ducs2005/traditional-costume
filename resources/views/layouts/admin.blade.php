@@ -3,39 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Panel')</title>
-
-    <!-- Include CSS file -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('frontend/css/home.css') }}?v={{ time() }}">
+    <title>Add Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('frontend/css/admin/administration.css') }}">
 </head>
-
 <body>
-    @include('header_footer.header') <!-- Include header -->
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Admin Panel</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.users.index') }}">Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.products.index') }}">Products</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="container mt-4">
-        @yield('content') <!-- This will be replaced by the content of the specific page -->
-    </div>
-
-    @include('header_footer.footer') <!-- Include footer -->
-
-    <!-- Include any additional JavaScript files -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-</body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('admin.administrators.show') }}">
+                                <i class="bi bi-table"></i> Quản lý quản trị viên
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('admin.administrators.index') }}">
+                                <i class="bi bi-table"></i> Thêm quản trị viên
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.users.index') }}">
+                                <i class="bi bi-person"></i> Quản lý người dùng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.products.index') }}">
+                                <i class="bi bi-person"></i> Quản lý sản phẩm
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">
+                                <i class="bi bi-person"></i> Thoát trang quản trị
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                @yield('content')  <!-- Content section -->
+            </main>
+        </body>
 </html>
