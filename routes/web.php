@@ -20,6 +20,8 @@ Route::get('/product-list', function () {
     return view('product.product_list');
 });
 
+Route::get('/product-list', [ProductController::class, 'productList'])->name('products.list');
+
 Route::get('/product_type', function () {
     return view('product.product_type');
 });

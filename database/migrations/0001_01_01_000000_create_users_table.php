@@ -19,12 +19,14 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['customer', 'admin'])->default('customer');
             $table->rememberToken();
+            $table->string('token_forgot')->default('')->nullable();
             $table->timestamps();
         });
 
         Schema::create('password_resets', function (Blueprint $table) {
             $table->string('email');
             $table->string('token');
+            $table->string('token_forgot')->default('')->nullable();
             $table->timestamp('created_at');
         });
     }
