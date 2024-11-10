@@ -57,9 +57,7 @@ class Pagination {
             });
     
             // Generate HTML for types by mapping over the types array
-            const typesHtml = product.types && product.types.length > 0
-                ? product.types.map(type => `<a href="/products/category/${type.name}" class="category-label">${type.name}</a>`).join(', ')
-                : `<span class="category-label">No Types</span>`;
+            
             const formattedPrice = Number(product.price).toLocaleString('vi-VN');
             productItem.innerHTML = `
                 <img src="frontend/img/product/${product.img_path}" alt="${product.name}">
@@ -84,8 +82,9 @@ class Pagination {
                         </a>
                     </div>
                     <div class="attribute-group">
-                        <!-- Display all type names as links -->
-                        ${typesHtml}
+                        <a href="/products/category/${product.type ? product.type.name : 'No type'}" class="category-label">
+                            ${product.type ? product.type.name : 'No Button'}
+                        </a>
                     </div>
                 </div>
             `;

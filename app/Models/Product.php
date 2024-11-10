@@ -19,10 +19,12 @@ class Product extends Model
 
     // In Product.php model
     // Product.php
-    public function types()
+    // In Product.php
+    public function type()
     {
-        return $this->belongsToMany(Type::class, 'product_type', 'product_id', 'type_id');
+        return $this->belongsTo(Type::class); // A product belongs to one type
     }
+
 
     public function color()
     {

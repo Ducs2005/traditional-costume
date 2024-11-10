@@ -43,9 +43,7 @@
                         <li><a href="#">{{ $product->color ? $product->color->name : 'No Color' }}</a></li>
                         <li><a href="#">{{ $product->button ? $product->button->name : 'No Button' }}</a></li>
                         <li><a href="#">{{ $product->material ? $product->material->name : 'No Material' }}</a></li>
-                        @foreach ($product->types as $type)
-                            <li><a href="#">{{ $type->name }}</a></li>
-                        @endforeach
+                        <li><a href="#">{{ $product->type ? $product->type->name : 'No type' }}</a></li>
                     </ul>
                 </div>
                 <!-- Seller Information -->

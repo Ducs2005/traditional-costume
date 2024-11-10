@@ -11,7 +11,7 @@
         <label for="typeFilter" class="form-label">Chọn loại sản phẩm:</label>
         <select id="typeFilter" class="form-select" onchange="filterProducts()">
             <option value="">Tất cả</option>
-            @foreach($types as $type)  
+            @foreach($type as $type)  
                 <option value="{{ $type->id }}">{{ $type->name }}</option>
             @endforeach
         </select>
@@ -31,7 +31,7 @@
         </thead>
         <tbody id="productList">
             @foreach($products as $product)
-                <tr class="product" data-type="{{ $product->types->id }}">
+                <tr class="product" data-type="{{ $product->type->id }}">
                     <td>
                         <img src="{{ asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" style="width: 100px; height: auto;">
                     </td>
