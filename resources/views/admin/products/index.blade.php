@@ -11,7 +11,7 @@
         <label for="typeFilter" class="form-label">Chọn loại sản phẩm:</label>
         <select id="typeFilter" class="form-select" onchange="filterProducts()">
             <option value="">Tất cả</option>
-            @foreach($type as $type)  
+            @foreach($type as $type)
                 <option value="{{ $type->id }}">{{ $type->name }}</option>
             @endforeach
         </select>
