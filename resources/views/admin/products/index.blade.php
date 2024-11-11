@@ -18,6 +18,7 @@
     </div>
 
     <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-3">Thêm sản phẩm</a>
+    <a href="{{ route('admin.types.index') }}" class="btn btn-secondary mb-3">Phân loại sản phẩm</a>
 
     <table class="table table-striped">
         <thead>
@@ -33,7 +34,7 @@
             @foreach($products as $product)
                 <tr class="product" data-type="{{ $product->type->id }}">
                     <td>
-                        <img src="{{ asset('frontend/img/product/' . $product->img_path) }}" alt="{{ $product->name }}" style="width: 100px; height: auto;">
+                        <img src="{{ asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" style="width: 100px; height: auto;">
                     </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->details }}</td>
