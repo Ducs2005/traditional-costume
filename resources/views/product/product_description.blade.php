@@ -61,10 +61,13 @@
                 <!-- Seller Information -->
                 @if ($product->seller)
                     <div class="seller-info">
-                        <p>Người bán: 
-                            <a href="{{ route('contact.seller', $product->seller->id) }}" class="btn-contact">
-                                {{ $product->seller->name }}
-                            </a>
+                        <p> <span>Người bán: </span>
+                            <span> 
+                                <a href="{{ route('contact.seller', $product->seller->id) }}" class="btn-contact">
+                                    {{ $product->seller->name }}
+                                </a>
+                            </span>
+                            
                         </p>
                     </div>
                 @endif
@@ -77,10 +80,14 @@
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                     <!-- Quantity Field -->
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+                     <span>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+                     </span>
+                     <span>
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
 
-                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                     </span>
+                    
                 </form>
             </div>
         </div>
@@ -103,7 +110,7 @@
     @if(session('alert'))
         <script>
             Swal.fire({
-                icon: '{{ session('alert')['type'] }}',
+                icon: 'warning',
                 title: 'Alert',
                 text: '{{ session('alert')['message'] }}',
                 customClass: {

@@ -117,4 +117,5 @@ Route::post('/reset_new_pwd', [ForgotPasswordController::class, 'reset_new_pwd']
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/accessTime', [AccessTimeController::class, 'index'])->name('accessTime');
 
+// web.php
 Route::get('/contact-seller/{sellerId}', [MessageController::class, 'contactSeller'])->name('contact.seller');

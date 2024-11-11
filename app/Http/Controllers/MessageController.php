@@ -153,11 +153,8 @@ class MessageController extends Controller
             $this->broadcastMessage($message->message, $sellerId);
 
             // Redirect back and include a success message
-            return redirect()->to(url()->previous()) 
-                            ->with('alert', [
-                                'type' => 'success', 
-                                'message' => 'Message sent to seller successfully!'
-                            ]);
+            return redirect()->to(url()->previous()) // Redirect to the previous URL
+                         ->with('showChatWindow', true);
 
         } catch (\Exception $e) {
             // Log the error for debugging

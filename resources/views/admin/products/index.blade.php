@@ -33,7 +33,7 @@
             @foreach($products as $product)
                 <tr class="product" data-type="{{ $product->type->id }}">
                     <td>
-                        <img src="{{ asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" style="width: 100px; height: auto;">
+                        <img src="{{ asset('frontend/img/product/' . $product->img_path) }}" alt="{{ $product->name }}" style="width: 100px; height: auto;">
                     </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->details }}</td>

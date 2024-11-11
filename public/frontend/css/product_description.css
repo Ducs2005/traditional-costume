@@ -44,6 +44,8 @@ body {
     margin-bottom: 20px;
     font-family: 'Playfair Display', serif;
     color: #333;
+    margin-top: -25px;
+
 }
 
 .product-info #productPrice {
@@ -271,27 +273,35 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 10px;
     }
 
     /* Adjust the button size and margin on smaller screens */
     .add-to-cart-btn {
-        width: 100%;
+        width: 60%;
         padding: 12px 0;
-        font-size: 18px;
+        font-size: 12px;
+        margin-top: 5px;
     }
 
     .seller-info {
-        flex-direction: column;
-        align-items: flex-start;
+        display: flex;
+        align-items: center;
+        gap: 5px; /* Space between "Người bán:" and the seller's name */
     }
 
-    .btn-contact {
-        width: 100%; /* Full width on mobile */
-        margin-top: 10px;
-        margin-left: 0;
+    .quantity-add-to-cart {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Space between Quantity and Add to Cart button */
     }
 
-    .product-tags {
-        flex-direction: column;
+    /* Adjust the Add to Cart button on smaller screens */
+    .add-to-cart-btn {
+        width: auto; /* Auto width so it fits next to Quantity */
+        padding: 10px 20px; /* Adjust padding for a better fit */
+        font-size: 14px; /* Slightly smaller font */
     }
+
+    /* Center both rows vertically in a column layout */
 }
