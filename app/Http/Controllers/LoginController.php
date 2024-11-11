@@ -77,6 +77,7 @@ class LoginController extends Controller
     }
 
     public function profile() {
-        return view('account.profile');
+        $cartItemCount = CartController::getCartItemCount();
+        return view('account.profile', ['cartItemCount' => $cartItemCount]);
     }
 }

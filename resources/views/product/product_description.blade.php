@@ -8,20 +8,35 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/product_description.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Custom styles for SweetAlert buttons */
+        .swal-button--red {
+            background-color: #ff4b4b !important;
+            color: white !important;
+            border: none !important;
+        }
+        .swal-button--red:hover {
+            background-color: #c0392b !important;
+        }
+        .swal-button--green {
+            background-color: #28a745 !important;
+            color: white !important;
+            border: none !important;
+        }
+        .swal-button--green:hover {
+            background-color: #218838 !important;
+        }
+        .swal-button--yellow {
+            background-color: #f1c40f !important;
+            color: white !important;
+            border: none !important;
+        }
+        .swal-button--yellow:hover {
+            background-color: #f39c12 !important;
+        }
+    </style>
 </head>
-<style> 
-    /* Custom styles for SweetAlert button */
-    .swal-button--red {
-        background-color: red !important;   /* Set button background color to red */
-        color: white !important;             /* Set text color to white */
-        border: none !important;            /* Remove border */
-    }
 
-    .swal-button--red:hover {
-        background-color: darkred !important; /* Change color on hover */
-    }
-
-</style>
 @include ('header_footer.header')
 
 <body>
@@ -97,11 +112,10 @@
 
     @if(session('showChatWindow'))
         <script>
-            // Show the chat window when the session flag is set
             document.addEventListener('DOMContentLoaded', function() {
                 const chatWindow = document.querySelector('.chat-window');
                 if (chatWindow) {
-                    chatWindow.style.display = 'block'; // Make the chat window visible
+                    chatWindow.style.display = 'block';
                 }
             });
         </script>
@@ -114,12 +128,11 @@
                 title: 'Alert',
                 text: '{{ session('alert')['message'] }}',
                 customClass: {
-                    confirmButton: 'swal-button--red' // Adding a custom class to the confirm button
+                    confirmButton: 'swal-button--yellow'
                 }
-                });
+            });
         </script>
     @endif
-
 
     <script>
         function setImage(imagePath) {
@@ -133,6 +146,9 @@
                 title: 'Success!',
                 text: '{{ session("success") }}',
                 confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'swal-button--green'
+                }
             });
         @endif
 
@@ -142,8 +158,12 @@
                 title: 'Error!',
                 text: '{{ session("error") }}',
                 confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'swal-button--red'
+                }
             });
         @endif
+        
     </script>
 </body>
 

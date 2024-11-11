@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
-use App\Events\MessageSent; // Ensure to include the MessageSent event
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Support\Facades\Http; 
 class MessageController extends Controller
 {

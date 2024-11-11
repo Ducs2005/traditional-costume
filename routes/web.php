@@ -51,9 +51,8 @@ Route::group(['prefix' => 'account'], function() {
 
 Route::get('profile', [LoginController::class, 'profile'])->name('account.profile');
 
-Route::get('/view_cart', function () {
-    return view('view_cart');
-});
+Route::get('/view_cart', [CartController::class, 'viewCart'])->name('cart.view');
+
 Route::get('/api/products', [ProductController::class, 'getProducts']);
 Route::post('api/products/filter', [ProductController::class, 'filterProducts']);
 
@@ -117,5 +116,8 @@ Route::post('/reset_new_pwd', [ForgotPasswordController::class, 'reset_new_pwd']
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/accessTime', [AccessTimeController::class, 'index'])->name('accessTime');
 
-// web.php
 Route::get('/contact-seller/{sellerId}', [MessageController::class, 'contactSeller'])->name('contact.seller');
+
+
+Route::delete('/cart/remove/{cartItem}', [CartController::class, 'removeItem'])->name('cart.removeItem');
+Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');

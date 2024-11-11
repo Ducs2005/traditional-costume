@@ -38,8 +38,8 @@
     </div>
 
     <div class="cart-summary">
-        <p class="cart-text">You currently have <strong>3 items</strong> in your cart.</p>
-        <a href="{{ url('/view_cart') }}" class="cart-button">View Cart</a>
+        <p class="cart-text">Bạn đang có  <strong>{{ $cartItemCount }} sản phẩm</strong> trong giỏ hàng.</p>
+        <a href="{{ url('/view_cart') }}" class="cart-button">Xem giỏ hàng</a>
     </div>
 </div>
 
