@@ -125,4 +125,54 @@ class MessageController extends Controller
             'query_params' => $queryParams,
         ]);
     }
+
+    // MessageController.php
+    public function contactSeller($sellerId)
+    {
+        $userId = Auth::id();
+        
+        // Check if the seller is the same as the authenticated user
+        if ($sellerId == $userId) {
+            // Redirect back with a SweetAlert message
+            return redirect()->to(url()->previous()) 
+                            ->with('alert', [
+                                'type' => 'warning', 
+                                'message' => 'This is your own product. You cannot contact yourself.'
+                            ]);
+        }
+
+        try {
+            // Create a new message from the authenticated user to the seller
+            $message = new Message();
+            $message->sender_id = $userId;
+            $message->recipient_id = $sellerId;
+            $message->message = 'Hello, I would like to discuss more about your product.';
+            $message->save();
+
+            // Optionally, broadcast the message to the seller if using real-time notifications
+            $this->broadcastMessage($message->message, $sellerId);
+
+            // Redirect back and include a success message
+            return redirect()->to(url()->previous()) 
+                            ->with('alert', [
+                                'type' => 'success', 
+                                'message' => 'Message sent to seller successfully!'
+                            ]);
+
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('Error sending message to seller:', ['exception' => $e]);
+
+            // Redirect back with an error message
+            return redirect()->to(url()->previous())
+                            ->with('alert', [
+                                'type' => 'error', 
+                                'message' => 'Failed to send message to the seller. Please try again.'
+                            ]);
+        }
+    }
+
+
+
+
 }

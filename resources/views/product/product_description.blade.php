@@ -9,7 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style> 
+    /* Custom styles for SweetAlert button */
+    .swal-button--red {
+        background-color: red !important;   /* Set button background color to red */
+        color: white !important;             /* Set text color to white */
+        border: none !important;            /* Remove border */
+    }
 
+    .swal-button--red:hover {
+        background-color: darkred !important; /* Change color on hover */
+    }
+
+</style>
 @include ('header_footer.header')
 
 <body>
@@ -50,10 +62,14 @@
                 @if ($product->seller)
                     <div class="seller-info">
                         <p>Người bán: 
-                            <a href="{{ route('contact.seller', $product->seller->id) }}" class="btn-contact">{{ $product->seller->name }} </a>
+                            <a href="{{ route('contact.seller', $product->seller->id) }}" class="btn-contact">
+                                {{ $product->seller->name }}
+                            </a>
                         </p>
                     </div>
                 @endif
+
+
 
                 <!-- Add to Cart Form -->
                 <form action="{{ route('cart.add') }}" method="POST">
@@ -71,6 +87,32 @@
     </div>
 
     @include ('header_footer.footer')
+
+    @if(session('showChatWindow'))
+        <script>
+            // Show the chat window when the session flag is set
+            document.addEventListener('DOMContentLoaded', function() {
+                const chatWindow = document.querySelector('.chat-window');
+                if (chatWindow) {
+                    chatWindow.style.display = 'block'; // Make the chat window visible
+                }
+            });
+        </script>
+    @endif
+
+    @if(session('alert'))
+        <script>
+            Swal.fire({
+                icon: '{{ session('alert')['type'] }}',
+                title: 'Alert',
+                text: '{{ session('alert')['message'] }}',
+                customClass: {
+                    confirmButton: 'swal-button--red' // Adding a custom class to the confirm button
+                }
+                });
+        </script>
+    @endif
+
 
     <script>
         function setImage(imagePath) {
