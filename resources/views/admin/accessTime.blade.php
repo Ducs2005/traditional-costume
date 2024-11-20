@@ -1,3 +1,5 @@
+@extends('layouts.admin')
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
 <div class="container">
     <h1>Thống kê lượt truy cập</h1>
 
@@ -108,3 +109,4 @@
 
 </body>
 </html>
+@endsection

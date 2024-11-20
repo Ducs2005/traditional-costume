@@ -35,6 +35,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('accessTime') }}">
+                                <i class="bi bi-person"></i> Thống kê
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/home">
                                 <i class="bi bi-person"></i> Thoát trang quản trị
                             </a>
