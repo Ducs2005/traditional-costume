@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
-
+use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
@@ -35,12 +35,33 @@ class CartController extends Controller
     }
     public function clearCart(Request $request)
     {
-        // Clear cart items for the current user or session
-        Cart::where('user_id', auth()->id())->delete();
+        // Get the cart for the current user
+        $cart = Cart::where('user_id', auth()->id())->first();
 
-        // Return a JSON response
-        return response()->json(['success' => true]);
+        if (!$cart) {
+            return response()->json(['success' => false, 'message' => 'Cart not found.'], 404);
+        }
+
+        // Retrieve the cart items with product details
+        $cartItems = $cart->items()->with('product')->get();
+
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+
+            if ($product) {
+                // Update the product's quantity and sold fields
+                $product->quantity -= $item->quantity; // Reduce stock by the item quantity
+                $product->sold += $item->quantity;     // Increase sold by the item quantity
+                $product->save();                      // Save the changes
+            }
+        }
+
+        // Clear the cart items
+        $cart->items()->delete();
+
+        return response()->json(['success' => true, 'message' => 'Cart cleared and products updated successfully.']);
     }
+
 
 
     public function addToCart(Request $request)
@@ -88,7 +109,13 @@ class CartController extends Controller
 
         return $cart ? $cart->items->sum('quantity') : 0;
     }
+    public static function getShopItemCount()
+    {
+        $product = Product::where('seller_id', auth()->id())
+                    ->get();
 
+        Log::info($product ? $product : 'No items found');
 
-
+        return $product ? $product->sum('quantity') : 0;
+    }
 }

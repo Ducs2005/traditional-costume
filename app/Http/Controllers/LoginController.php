@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -77,7 +78,7 @@ class LoginController extends Controller
     }
 
     public function profile() {
-        $cartItemCount = CartController::getCartItemCount();
-        return view('account.profile', ['cartItemCount' => $cartItemCount]);
+        $shopItemCount = CartController::getShopItemCount();
+       return view('account.profile', ['shopItemCount' => $shopItemCount]);
     }
 }

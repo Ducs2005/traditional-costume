@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
     protected $table = 'product';
     // Define the properties if needed, like fillable fields
-    protected $fillable = ['name', 'description', 'price', 'image_path']; // Exclude id and category if not relevant
+    protected $fillable = ['name','material_id', 'description', 'price', 'img_path','color_id','button_id', 'type_id', 'quantity', 'seller_id']; // Exclude id and category if not relevant
 
     public function images()
     {
@@ -49,7 +49,10 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'seller_id');  // Assuming 'seller_id' is the foreign key for the user
     }
-
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 
     
 

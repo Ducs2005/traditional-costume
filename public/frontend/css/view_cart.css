@@ -12,6 +12,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     margin: auto;
+    
 }
 
 .cart-title {
@@ -21,9 +22,12 @@ body {
 }
 
 .cart-table {
-    width: 100%;
+    width: 95%;
     border-collapse: collapse;
     margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 10px;
+
 }
 
 .cart-table th, .cart-table td {
@@ -33,16 +37,37 @@ body {
 }
 
 .cart-table th {
-    background-color: #007bff;
+    background-color: #e84a10;
     color: white;
     font-weight: bold;
 }
 
 .cart-table td.product {
-    display: flex;
-    align-items: center;
+    position: relative;
+    max-height: 150px; /* Set max height for the product cell */
+    overflow: hidden; /* Hide overflow text */
 }
 
+.cart-table td.product span {
+    display: -webkit-box; /* Creates a flexible box that allows text wrapping */
+    -webkit-line-clamp: 3; /* Limit text to 3 lines (adjust as needed) */
+    -webkit-box-orient: vertical; /* Ensure vertical text wrapping */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Show ellipsis (...) for overflowed content */
+    word-wrap: break-word; /* Allow words to break and wrap to the next line */
+    padding-right: 10px; /* Optional: Add some padding for better appearance */
+}
+.cart-table tbody tr {
+    max-height: 150px;
+}
+.cart-table tbody tr .action {
+    display: flex; /* Use flexbox to align buttons horizontally */
+    gap: 10px;     /* Add space between the buttons */
+    justify-content: flex-start; /* Align buttons to the left (optional) */
+    align-items: center; /* Vertically center the buttons */
+    padding: 10px 0; /* Optional: Add padding for spacing */
+    height: 150px;
+}
 .cart-table td.product img {
     width: 50px;
     height: 50px;
@@ -52,9 +77,11 @@ body {
 }
 
 .quantity-input {
-    width: 50px;
+    width: 60px; /* Or your desired width */
     padding: 5px;
     font-size: 1em;
+    overflow: visible; /* Ensure content is not clipped */
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .remove-btn {
@@ -66,6 +93,8 @@ body {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
+    width: 100px;
+    
 }
 
 .remove-btn:hover {
@@ -92,7 +121,7 @@ body {
 }
 
 .checkout-btn {
-    background-color: #28a745;
+    background-color: #d23511;
     color: white;
     border: none;
     padding: 15px 30px;
@@ -105,10 +134,256 @@ body {
 }
 
 .checkout-btn:hover {
-    background-color: #218838;
+    background-color: #ac0f0f;
     transform: translateY(-2px);
 }
 
 .checkout-btn:active {
     transform: translateY(0);
+}
+td .info {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+/* Modal Container */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the viewport */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow-y: auto; /* Allows scrolling if content is too tall */
+    
+    
+
+
+
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px; /* Limit the width of the modal */
+    text-align: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+    position: relative;
+    max-height: 90%; /* Constrain modal content height */
+    overflow-y: auto; /* Enable vertical scrolling for the content */}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333; /* Neutral dark color */
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #ff0000; /* Change to red on hover */
+}
+
+/* Input Fields */
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content input[type="tel"] {
+    width: 90%; /* Chiều rộng đầy đủ */
+    padding: 12px 15px; /* Thêm khoảng cách bên trong */
+    margin-bottom: 15px; /* Khoảng cách dưới mỗi phần tử */
+    border: 1px solid #cccccc; /* Màu viền trung tính */
+    border-radius: 8px; /* Bo góc */
+    font-size: 16px; /* Cỡ chữ lớn hơn */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.modal-content input[type="number"] {
+    width: 45%; /* Chiều rộng đầy đủ */
+    padding: 12px 15px; /* Thêm khoảng cách bên trong */
+    margin-bottom: 15px; /* Khoảng cách dưới mỗi phần tử */
+    border: 1px solid #cccccc; /* Màu viền trung tính */
+    border-radius: 8px; /* Bo góc */
+    font-size: 16px; /* Cỡ chữ lớn hơn */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+/* Style for representative image */
+/* General Style for Modal Images */
+.modal-content img {
+    display: block; /* Remove any unwanted inline-block spacing */
+    max-width: 100%; /* Ensure images do not overflow their container */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Crop and cover the image container */
+}
+
+/* Style for Representative Image */
+#representativePreview {
+    margin-top: 15px;
+    width: 50%; /* Representative image takes 50% of the modal width */
+    padding-right: 15px; /* Space between representative image and other elements */
+    box-sizing: border-box; /* Ensure padding doesn't increase width */
+    margin-bottom: 15px; /* Space below the representative image */
+    margin-left: 5%;
+}
+
+#representativePreview img {
+    width: 100%; /* Ensure representative image uses full width of its container */
+    height: auto; /* Keep aspect ratio intact */
+    border-radius: 8px;
+    object-fit: cover; /* Crops the image to fit the container */
+}
+
+/* Style for Detail Images */
+#detailPreview {
+    width: 50%; /* Detail images take the remaining 50% of the modal width */
+    display: flex;
+    flex-wrap: wrap; /* Ensure images wrap to the next line if needed */
+    gap: 10px; /* Space between images */
+    box-sizing: border-box; /* Include padding in the width */
+    margin-left: 5%;
+}
+
+#detailPreview img {
+    width: 30%; /* Each detail image takes 30% of the available width */
+    height: auto; /* Fixed height for detail images */
+    object-fit: cover; /* Crop to fi the image box */
+}
+
+/* Ensure input fields maintain consistent styling */
+.modal-content input[type="file"] {
+    width: 90%; /* Make file input take full width */
+    padding: 12px 15px; /* Same padding as other inputs */
+    margin-bottom: 15px; /* Add margin between inputs */
+    border: 1px solid #cccccc; /* Border style */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Same font size as other inputs */
+    box-sizing: border-box;
+    margin-bottom: 15px; /* Khoảng cách dưới mỗi phần tử */
+
+}
+
+/* Additional Responsive Design */
+@media (max-width: 768px) {
+    #representativePreview, #detailPreview {
+        width: 100%; /* On smaller screens, make both the image previews stack vertically */
+    }
+
+    #detailPreview img {
+        width: 45%; /* Reduce size of detail images to fit in one row */
+        height: auto; /* Adjust height for smaller screens */
+    }
+}
+
+
+/* Chỉ dành cho textarea */
+.modal-content textarea {
+    resize: vertical; /* Cho phép người dùng điều chỉnh chiều cao */
+    min-height: 100px; /* Chiều cao tối thiểu */
+    max-height: 300px; /* Chiều cao tối đa */
+    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung quá dài */
+}
+
+/* Input Focus State */
+.modal-content input[type="text"]:focus,
+.modal-content input[type="tel"]:focus {
+    border-color: #4CAF50; /* Highlight with green */
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Subtle green shadow */
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #45a049; /* Darker green */
+    transform: translateY(-2px); /* Subtle hover effect */
+}
+select {
+    width: 30%; /* Divide width equally minus margin */
+    padding: 8px 15px; /* Thêm khoảng cách bên trong */
+    margin-bottom: 15px; /* Khoảng cách dưới mỗi phần tử */
+    border: 1px solid #cccccc; /* Màu viền trung tính */
+    border-radius: 8px; /* Bo góc */
+    font-size: 16px; /* Cỡ chữ lớn hơn */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Styling for the select container */
+select:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+}
+
+/* To ensure selects align properly in a row */
+#province,
+#district,
+#ward {
+    display: inline-block;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        padding: 20px; /* Reduce padding */
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="tel"] {
+        font-size: 14px; /* Smaller font size for inputs */
+        padding: 10px; /* Tighter padding */
+    }
+
+    .submit-btn {
+        font-size: 14px; /* Smaller font size for button */
+        padding: 10px 15px; /* Adjust padding */
+    }
+    .cart-table tbody tr .action {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px; /* Space between buttons */
+        vertical-align: middle;
+        justify-content: center;
+
+    }
+  
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        max-width: 90%; /* Limit width to 90% of the viewport */
+    }
+
+    .cart-table tbody tr .action {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px; /* Space between buttons */
+        vertical-align: middle;
+        justify-content: center;
+    }
+   
 }

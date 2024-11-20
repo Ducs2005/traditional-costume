@@ -35,7 +35,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="5" class="product" style="text-align: center;">
+                    <td class="info" colspan="5" class="product" style="text-align: center;">
                         Chưa có sản phẩm trong giỏ hàng
                     </td> 
                 </tr>
@@ -71,7 +71,7 @@
                             <td>{{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }} VND</td>
                             <td>
                                 <!-- Form to remove item -->
-                                <form action="{{ route('cart.removeItem', $cartItem->id) }}" method="POST" class="remove-item-form" onsubmit="return confirmDelete()">
+                                <form action="{{ route('cart.removeItem', $cartItem->id) }}" method="POST" class="remove-item-form" onsubmit=" confirmDelete(event)">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="remove-btn">Xóa</button>
@@ -83,7 +83,7 @@
             </table>
 
             <div class="cart-summary">
-                <p>Tổng: <strong id="total"></strong></p>
+                <p>Tổng: <strong id="total" > </strong> VND</p>
                 <button class="checkout-btn" onclick="clearCart()">Thanh toán</button>
             </div>
         @endif
@@ -112,10 +112,14 @@
     document.getElementById('total').textContent = formatPrice(total);
 
     // Confirm delete action with SweetAlert
-    function confirmDelete() {
-        return Swal.fire({
+    function confirmDelete(event) {
+    // Prevent form submission
+        event.preventDefault();
+
+        // Show SweetAlert confirmation dialog
+        Swal.fire({
             title: "Bạn có chắc chắn?",
-            text: "Sản phẩm sẽ bị xóa khỏi giỏ hàng!",
+            text: "Sản phẩm sẽ bị xóa khỏi cửa hàng!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -123,9 +127,13 @@
             confirmButtonText: "Xóa",
             cancelButtonText: "Hủy"
         }).then((result) => {
-            return result.isConfirmed; // Only proceed if the user confirms
+            if (result.isConfirmed) {
+                // If user confirms, submit the form
+                event.target.submit();
+            }
         });
     }
+
 
     // Clear cart function with SweetAlert
     function clearCart() {

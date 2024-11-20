@@ -60,7 +60,7 @@ class Pagination {
             
             const formattedPrice = Number(product.price).toLocaleString('vi-VN');
             productItem.innerHTML = `
-                <img src="frontend/img/product/${product.img_path}" alt="${product.name}">
+                <img src="${product.img_path}" alt="${product.name}">
                 <h4>${product.name}</h4>
                     <div class="price">
                         ${formattedPrice} <span class="vnd-icon">₫</span>

@@ -14,14 +14,16 @@ class ProductController extends Controller
     public function getProducts(): JsonResponse
     {
         // Fetch all products with their related attributes
-        $products = Product::with(['color', 'material', 'button', 'type'])->get();
+        $products = Product::with(['color', 'material', 'button', 'type'])
+        ->where('seller_id', '!=', auth()->id())
+        ->get();
         // Return products as a JSON response
         return response()->json($products);
     }
     public function show($id)
     {
         // Eager load the product with its related attributes including the seller (User)
-        $product = Product::with(['color', 'images', 'material', 'button', 'type', 'seller'])->findOrFail($id);
+        $product = Product::with(['color', 'productImages', 'material', 'button', 'type', 'seller'])->findOrFail($id);
 
         // Pass the product to the view
         return view('product.product_description', compact('product'));

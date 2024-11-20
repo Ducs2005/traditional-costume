@@ -45,13 +45,11 @@
         <div class="product-details">
             <div class="product-image-gallery">
                 <div class="carousel">
-                    <span class="arrow prev" onclick="prevImage()">&#8249;</span>
-                    <img id="productImage" src="{{ asset('frontend/img/product/' . $product->img_path) }}" alt="Product Image">
-                    <span class="arrow next" onclick="nextImage()">&#8250;</span>
+                    <img id="productImage" src="{{ asset($product->img_path) }}" alt="Product Image">
                 </div>
                 <div class="thumbnail-container">
-                    @foreach ($product->images as $image)
-                        <img class="thumbnail" src="{{ asset('frontend/img/product/' . $image->img_path) }}" alt="Thumbnail" onclick="setImage('{{ asset('frontend/img/product/' . $image->img_path) }}')">
+                    @foreach ($product->productImages as $image)
+                        <img class="thumbnail" src="{{ asset($image->img_path) }}" alt="Thumbnail" onclick="setImage('{{ asset( $image->img_path) }}')">
                     @endforeach
                 </div>
             </div>

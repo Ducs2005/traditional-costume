@@ -5,7 +5,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PusherController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
@@ -52,6 +52,7 @@ Route::group(['prefix' => 'account'], function() {
 Route::get('profile', [LoginController::class, 'profile'])->name('account.profile');
 
 Route::get('/view_cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::get('/own_shop', [SellerController::class, 'viewShop'])->name('ownShop.view');
 
 Route::get('/api/products', [ProductController::class, 'getProducts']);
 Route::post('api/products/filter', [ProductController::class, 'filterProducts']);
@@ -120,4 +121,13 @@ Route::get('/contact-seller/{sellerId}', [MessageController::class, 'contactSell
 
 
 Route::delete('/cart/remove/{cartItem}', [CartController::class, 'removeItem'])->name('cart.removeItem');
+Route::delete('/cart/update/{cartItem}', [CartController::class, 'updateItem'])->name('cart.updateItem');
+
 Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
+Route::post('/seller-request', [SellerController::class, 'request'])->name('seller.request');
+Route::delete('/shop/remove/{product}', [SellerController::class, 'remove'])->name('shop.remove');
+Route::post('/reset-sold', [SellerController::class, 'resetSold'])->name('resetSold');
+Route::post('/product/store', action: [SellerController::class, 'store'])->name('product.store');
+
+
