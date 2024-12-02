@@ -13,7 +13,8 @@ class MessageController extends Controller
     {
         $authUserId = Auth::id();
         Log::info("Fetching messages between user $authUserId and user $userId");
-
+    
+        // Fetch messages along with sender avatar
         $messages = Message::where(function ($query) use ($authUserId, $userId) {
                 $query->where('sender_id', $authUserId)->where('recipient_id', $userId);
             })
@@ -21,10 +22,18 @@ class MessageController extends Controller
                 $query->where('sender_id', $userId)->where('recipient_id', $authUserId);
             })
             ->orderBy('created_at', 'asc')
-            ->get();
-
+            ->get()
+            ->map(function ($message) {
+                // Attach the sender's avatar
+                $message->sender_avatar = $message->sender->avatar 
+                    ? asset($message->sender->avatar) 
+                    : asset('frontend/img/account/default.jpg');
+                return $message;
+            });
+    
         return response()->json(['messages' => $messages]);
     }
+    
 
     public function sendMessage(Request $request)
     {

@@ -10,6 +10,8 @@ use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\OrderController;
+
 use App\Http\Controllers\TypeController;
 
 Route::get('/', function () {
@@ -65,35 +67,29 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::prefix('admin')->middleware('checkadminrole')->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-    Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
-    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
-    Route::put('/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
-    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
-    Route::get('/types', [TypeController::class, 'index'])->name('admin.types.index');
-    Route::get('/types/create', [TypeController::class, 'create'])->name('admin.types.create');
-    Route::post('/types', [TypeController::class, 'store'])->name('admin.types.store');
-    Route::get('/types/{id}/edit', [TypeController::class, 'edit'])->name('admin.types.edit');
-    Route::put('/types/{id}', [TypeController::class, 'update'])->name('admin.types.update');
-    Route::delete('/types/{id}', [TypeController::class, 'destroy'])->name('admin.types.destroy');
+Route::get('/admin', [AdminController::class, 'checkAuth'])->name('admin.checkAuth');
+Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login/request', [AdminController::class, 'login'])->name('login.request');
+Route::get('/admin/forgotPassword', function() {
+    return view('admin_views.forgotPassword');
+})->name('admin.forgotPassword');
+Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::get('/admin/open-shop', [AdminController::class, 'openShop'])->name('admin.openShop');
+Route::get('/admin/user/{id}', [AdminController::class, 'getUserDetails'])->name('admin.getUserDetails');
+Route::get('/admin/accessTime', [AccessTimeController::class, 'index'])->name('admin.accessTime');
 
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+Route::get('/admin/dashboard', [AdminController::class, 'create'])->name('admin.dashboard');
+Route::get('/admin/table/user', [AdminController::class, 'showUsers'])->name('table.user');
+Route::get('/admin/table/product', [AdminController::class, 'showProducts'])->name('table.product');
+Route::put('/admin/table/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
+Route::get('/admin/table/user/destroy{{id}}', [AdminController::class, 'create'])->name('user.destroy');
+Route::get('/admin/table/user/edit', [AdminController::class, 'create'])->name('product.edit');
+Route::delete('/admin/table/product/destroy/{id}', [AdminController::class, 'deleteProduct'])->name('product.destroy');
+Route::put('admin/product/update', [AdminController::class, 'updateProduct'])->name('product.update');
+Route::get('/admin/table/order', [AdminController::class, 'showOrder'])->name('table.order');
+Route::get('/admin/table/order2', [AdminController::class, 'showOrder'])->name('order.update');
 
-    Route::get('/administrators', [AdminController::class, 'create'])->name('admin.administrators.index');
-    Route::post('/administrators', [AdminController::class, 'store'])->name('admin.administrators.store');
-    Route::get('/administrators/show', [AdminController::class, 'show'])->name('admin.administrators.show');
-    Route::get('/administrators/{id}/edit', [AdminController::class, 'edit'])->name('admin.administrators.edit');
-    Route::put('/administrators/{id}', [AdminController::class, 'update'])->name('admin.administrators.update');
-    Route::delete('/administrators/{id}', [AdminController::class, 'destroy'])->name('admin.administrators.destroy');
-});
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
 
@@ -131,3 +127,10 @@ Route::post('/reset-sold', [SellerController::class, 'resetSold'])->name('resetS
 Route::post('/product/store', action: [SellerController::class, 'store'])->name('product.store');
 
 
+Route::get('/view_order', [OrderController::class, 'index'])->name('viewOrder');
+Route::get('/order-details/{orderId}', action: [OrderController::class, 'getOrder'])->name('order.detail');
+Route::get('seller/view_order', [OrderController::class, 'seller_view'])->name('seller.viewOrder');
+Route::get('seller/order-details/{orderId}', action: [OrderController::class, 'getOrderSeller'])->name('seller.order.detail');
+Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
+Route::post('/orders/{order}/confirm-received', [OrderController::class, 'confirmReceived'])->name('orders.confirm');
+Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');

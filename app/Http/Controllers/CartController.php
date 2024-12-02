@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Support\Facades\Log;
-
+use DB;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -44,23 +45,55 @@ class CartController extends Controller
 
         // Retrieve the cart items with product details
         $cartItems = $cart->items()->with('product')->get();
-
-        foreach ($cartItems as $item) {
-            $product = $item->product;
-
-            if ($product) {
-                // Update the product's quantity and sold fields
-                $product->quantity -= $item->quantity; // Reduce stock by the item quantity
-                $product->sold += $item->quantity;     // Increase sold by the item quantity
-                $product->save();                      // Save the changes
-            }
+        if ($cartItems->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'Cart is empty.'], 400);
         }
 
-        // Clear the cart items
-        $cart->items()->delete();
+        DB::beginTransaction();
 
-        return response()->json(['success' => true, 'message' => 'Cart cleared and products updated successfully.']);
+        try {
+            // Create a new order
+            $order = new Order();
+            $order->user_id = auth()->id();
+            $order->status = 'chờ xác nhận'; // Set the order status to pending
+            $order->save();
+
+            foreach ($cartItems as $item) {
+                $product = $item->product;
+
+                if ($product) {
+                    // Ensure the product has sufficient stock
+                    if ($product->quantity < $item->quantity) {
+                        throw new Exception("Insufficient stock for product {$product->name}");
+                    }
+                    
+                    // Update the product's quantity and sold fields
+                    $product->quantity -= $item->quantity; // Reduce stock
+                    $product->sold += $item->quantity;     // Increase sold
+                    $product->save();
+                }
+
+                // Save each cart item to the order_items table
+                $order->items()->create([
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $product->price, // Save the price at the time of order
+                ]);
+            }
+
+            // Clear the cart items
+            $cart->items()->delete();
+
+            DB::commit();
+
+            return response()->json(['success' => true, 'message' => 'Cart cleared, order created, and products updated successfully.']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info($e->getMessage());
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
+
 
 
 

@@ -30,6 +30,10 @@ class Product extends Model
     {
         return $this->belongsTo(Color::class);
     }
+    public function orderItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
 
     public function material()
     {

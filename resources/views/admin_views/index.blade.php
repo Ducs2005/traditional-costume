@@ -19,8 +19,6 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset ('backend/css/sb-admin-2.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-
 
 </head>
 
@@ -96,8 +94,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Yêu cầu</h6>
                         <a class="collapse-item" href="{{route('admin.openShop')}}">Yêu cầu mở shop</a>
-                        <a class="collapse-item" href="{{route('table.order')}}">Đơn hàng cần xử lý</a>
-
+                        <a class="collapse-item" href="">Đơn hàng cần xử lý</a>
                     
                     </div>
                 </div>
@@ -120,9 +117,9 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="{{route('admin.accessTime')}}">
+                <a class="nav-link" href="">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Lượt truy cập</span></a>
+                    <span>Thống kê</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.logout')}}">
@@ -147,9 +144,11 @@
     
         <div id="content-wrapper" class="d-flex flex-column">
             <br>
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                    @yield('content')  <!-- Content section -->
-                </main>
+            <!-- Main Content -->
+            <div id="content">
+                
+
+            </div>
         </div>
         <!-- End of Content Wrapper -->
 
@@ -199,7 +198,7 @@
     <!--
     <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script> -- Page level custom scripts -->
-    @stack('scripts') <!-- Renders the pushed scripts -->
+   
 
 </body>
 </html>

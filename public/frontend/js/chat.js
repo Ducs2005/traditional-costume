@@ -67,29 +67,44 @@
 
     // Function to fetch and display messages for the selected user
     function loadChatMessages(accountId) {
+        const chatContent = document.getElementById('chatContent');
         chatContent.innerHTML = ''; // Clear previous messages
-        
+    
         // Use `fetchMessagesUrl` from the Blade template
         fetch(`${fetchMessagesUrl}/${accountId}`)
             .then(response => response.json())
             .then(data => {
                 data.messages.forEach(function(message) {
+                    // Create the message container
                     const messageElement = document.createElement('div');
                     messageElement.classList.add('message');
-    
+                    
                     // Add 'sent' or 'received' class based on the sender
-                    if (message.sender_id === parseInt(accountId)) {
-                        messageElement.classList.add('received');
-                    } else {
-                        messageElement.classList.add('sent');
+                    const isReceived = message.sender_id === parseInt(accountId);
+                    if (isReceived) {
+                        const avatar = document.createElement('img');
+                        avatar.src = message.sender_avatar;
+                        avatar.alt = 'Avatar';
+                        avatar.classList.add('message-avatar');
+                        messageElement.appendChild(avatar);
                     }
+                    messageElement.classList.add(isReceived ? 'received' : 'sent');
     
-                    messageElement.innerText = message.message;
+                    // Add the avatar for received messages
+                    
+    
+                    // Add the message text
+                    const textElement = document.createElement('div');
+                    textElement.classList.add('message-text');
+                    textElement.innerText = message.message;
+                    messageElement.appendChild(textElement);
+    
                     chatContent.appendChild(messageElement);
                 });
             })
             .catch(error => console.error('Error fetching messages:', error));
     }
+    
     
     // This code should only run once
 if (!sendMessage.hasAttribute('data-listener-attached')) {

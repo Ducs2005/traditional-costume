@@ -38,40 +38,43 @@ class Pagination {
             })
             .then(data => {
                 this.products = data; // Assign the fetched products to the array
-                this.displayProducts(this.products, type, currentProduct); // Display the products on initial load
+                this.displayProducts(type, currentProduct); // Display the products on initial load
+                this.updatePagination();
             })
             .catch(error => console.error('Error fetching products:', error));
     }
 
     // Method to display products
-    displayProducts(productsArray, type = null, currentProduct = null) {
+    displayProducts(type = null, currentProduct = null) {
         // Clear existing content in the product container
-        this.productContainer.innerHTML = '';
-        console.log(productsArray, type, currentProduct);
-    
-        let filteredProducts = productsArray;
-    
+        let filteredProducts = this.products;
         if (type === 'popular') {
             // Sort products by the sold field in descending order
-            filteredProducts = productsArray.slice().sort((a, b) => b.sold - a.sold);
+            filteredProducts = this.products.slice().sort((a, b) => b.sold - a.sold);
             document.getElementById('listType').textContent = 'Bán chạy nhất';
         } else if (type === 'related' && currentProduct) {
             // Filter products related to the current product
             document.getElementById('listType').textContent = 'Liên quan';
-            filteredProducts = productsArray.filter(product => {
+            filteredProducts = this.products.filter(product => {
                 return (
                     product.id !== currentProduct.id && // Exclude the current product
                     (
-                        product.type?.id === currentProduct.type?.id ||
-                        product.color?.id === currentProduct.color?.id ||
-                        product.material?.id === currentProduct.material?.id ||
-                        product.button?.id === currentProduct.button?.id ||
-                        product.seller_id === currentProduct.seller_id
+                        product.type?.id === currentProduct.type?.id
                     )
                 );
             });
         }
-    
+        this.productContainer.innerHTML = '';
+        const start = (this.currentPage - 1) * this.itemsPerPage;
+        const end = this.currentPage * this.itemsPerPage;
+        const paginatedProducts = filteredProducts.slice(start, end);
+
+        this.productContainer.innerHTML = ''; // Clear existing content
+
+        if (paginatedProducts.length === 0) {
+            this.productContainer.innerHTML = '<p>No products to display.</p>';
+            return;
+        }
         // Check if any products match the criteria
         if (filteredProducts.length === 0) {
             this.productContainer.innerHTML = '<p>No products to display.</p>';
@@ -79,7 +82,7 @@ class Pagination {
         }
     
         // Loop through the filtered products and create product elements
-        filteredProducts.forEach(product => {
+        paginatedProducts.forEach(product => {
             const productItem = document.createElement('div');
             productItem.classList.add('item', 'product-item');
     
@@ -127,20 +130,23 @@ class Pagination {
 
     // Method to update pagination controls
     updatePagination() {
-        // Clear existing pagination
-        this.paginationContainer.innerHTML = '';
+        this.paginationContainer.innerHTML = ''; // Clear existing controls
 
         const totalPages = Math.ceil(this.products.length / this.itemsPerPage);
 
-        // Create previous button
+        // Create "Previous" button
         const prevButton = document.createElement('button');
+        prevButton.classList.add('pagination-button');
+
         prevButton.innerText = 'Previous';
         prevButton.disabled = this.currentPage === 1;
-        prevButton.classList.add('pagination-button');
         prevButton.addEventListener('click', () => {
             if (this.currentPage > 1) {
                 this.currentPage--;
-                this.displayProducts(this.products.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage));
+                this.displayProducts();
+                this.updatePagination();
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+
             }
         });
         this.paginationContainer.appendChild(prevButton);
@@ -149,26 +155,33 @@ class Pagination {
         for (let i = 1; i <= totalPages; i++) {
             const pageButton = document.createElement('button');
             pageButton.innerText = i;
-            pageButton.classList.add('page-btn', 'pagination-button');
+            pageButton.classList.add('pagination-button');
             if (i === this.currentPage) {
-                pageButton.disabled = true; // Disable button for current page
+                pageButton.disabled = true; // Disable the button for the current page
             }
             pageButton.addEventListener('click', () => {
                 this.currentPage = i;
-                this.displayProducts(this.products.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage));
+                this.displayProducts();
+                this.updatePagination();
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+
             });
             this.paginationContainer.appendChild(pageButton);
         }
 
-        // Create next button
+        // Create "Next" button
         const nextButton = document.createElement('button');
+        nextButton.classList.add('pagination-button');
+
         nextButton.innerText = 'Next';
         nextButton.disabled = this.currentPage === totalPages;
-        nextButton.classList.add('pagination-button');
         nextButton.addEventListener('click', () => {
             if (this.currentPage < totalPages) {
                 this.currentPage++;
-                this.displayProducts(this.products.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage));
+                this.displayProducts();
+                this.updatePagination();
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+
             }
         });
         this.paginationContainer.appendChild(nextButton);
@@ -228,7 +241,7 @@ class Pagination {
 }
 
 pagination = new Pagination(9); // Display 9 products per page on load
-    function filterProducts()
-    {
-        pagination.filterProducts();
-    }
+function filterProducts()
+{
+    pagination.filterProducts();
+}

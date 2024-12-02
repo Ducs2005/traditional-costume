@@ -19,79 +19,63 @@
 
 <body>
     <br> <br> <br> <br> <br> <br>
-    <div class="cart-container">
-        <h1 class="cart-title">Giỏ hàng của tôi</h1>
+    <div class="container my-5">
+    <h1 class="text-center cart-title">Giỏ hàng của tôi</h1>
 
-        @if(empty($cartItems))
-        <table class="cart-table">
+    @if(empty($cartItems))
+        <div class="alert alert-warning text-center" role="alert">
+            Chưa có sản phẩm trong giỏ hàng
+        </div>
+    @else
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Tên</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Tổng</th>
-                    <th>Hành động</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Tổng</th>
+                    <th scope="col">Hành động</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="info" colspan="5" class="product" style="text-align: center;">
-                        Chưa có sản phẩm trong giỏ hàng
-                    </td> 
-                </tr>
+                @foreach($cartItems as $cartItem)
+                    <tr>
+                        <td class="product">
+                            <!-- Wrap product name and image with a link to the product description page -->
+                            <a href="{{ url('/product_description/' . $cartItem->product->id) }}" class="text-decoration-none text-dark">
+                                <img src="{{ asset($cartItem->product->img_path) }}" alt="Product Image" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                <span>{{ $cartItem->product->name }}</span>
+                            </a>
+                        </td>
+                        <td>{{ number_format($cartItem->product->price, 0, ',', '.') }} VND</td>
+                        <td>
+                            <input type="number" name="quantity" value="{{ $cartItem->quantity }}" min="1" class="form-control" required readonly>
+                        </td>
+                        <td>{{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }} VND</td>
+                        <td>
+                            <!-- Form to remove item -->
+                            <form action="{{ route('cart.removeItem', $cartItem->id) }}" method="POST" class="remove-item-form" onsubmit="confirmDelete(event)">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
-        <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br> 
 
-        @else
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Tên</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Tổng</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($cartItems as $cartItem)
-                        <tr>
-                            <td class="product">
-                                <!-- Wrap product name and image with a link to the product description page -->
-                                <a style="text-decoration: none; color: black;" href="{{ url('/product_description/' . $cartItem->product->id) }}">
-                                    <img src="{{ asset('frontend/img/product/' . $cartItem->product->img_path) }}" alt="Product Image">
-                                    <span>{{ $cartItem->product->name }}</span>
-                                </a>
-                            </td>
-                            <td>{{ number_format($cartItem->product->price, 0, ',', '.') }} VND</td>
-                            <td>
-                                <input type="number" name="quantity" value="{{ $cartItem->quantity }}" min="1" class="quantity-input" required readonly>
-                            </td>
-                            <td>{{ number_format($cartItem->product->price * $cartItem->quantity, 0, ',', '.') }} VND</td>
-                            <td>
-                                <!-- Form to remove item -->
-                                <form action="{{ route('cart.removeItem', $cartItem->id) }}" method="POST" class="remove-item-form" onsubmit=" confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="remove-btn">Xóa</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="cart-summary text-right">
+            <p><strong>Tổng: </strong> <span id="total">VND</span></p>
+            <button class="btn btn-primary" onclick="clearCart()">Thanh toán</button>
+        </div>
+    @endif
 
-            <div class="cart-summary">
-                <p>Tổng: <strong id="total" > </strong> VND</p>
-                <button class="checkout-btn" onclick="clearCart()">Thanh toán</button>
-            </div>
-        @endif
     </div>
 </body>
 
-<br> <br> <br>
-
+<br> <br> <br> <br> <br> <br><br> <br> <br>
+ 
 <!-- Include footer -->
 @include('header_footer.footer')
 

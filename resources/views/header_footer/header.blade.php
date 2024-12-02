@@ -39,7 +39,15 @@
 
                 <li> <a href="{{ url('/product-list') }}" > Cửa hàng </a> </li>
                 <li><a href="{{ url('home#aboutus') }}">Về chúng tôi</a></li>
-                <li><a href="#">Chính sách</a></li>
+                <li class="dropdown">
+                     <a href="#"><i class="fa-solid fa-bell"></i> Thông báo</a>
+                     <ul class="sub-menu">
+                        @if (Auth::check() && auth()->user()->selling_right === 'yes')
+                        <li> <a href="{{route('seller.viewOrder')}}">Đơn hàng </a>  </li>
+                        @endif
+                        <li> <a href="{{route('viewOrder')}}">Thông báo </a>  </li>
+                     </ul>
+                </li>
 
                 <!-- Check if the user is logged -->
                 @if (Auth::check())
@@ -50,6 +58,9 @@
                     <a href="#"><i class="fa-solid fa-user"></i></a>
                     <ul class="sub-menu">
                         <li><a href="{{ route ('account.profile') }}">Trang cá nhân</a></li>
+                        <li>
+                            <a href="{{ url('/view_order') }}"></i> Đơn mua</a>
+                         </li>
                         <li><a href="{{ route('account.logout') }}">Đăng xuất</a></li>
                     </ul>
                 </li>

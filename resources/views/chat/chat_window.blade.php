@@ -8,6 +8,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- CSRF token for future AJAX if needed -->
     
     <title>Chat Window</title>
+    <style> 
+    
+    .message-avatar {
+        width: 40px; /* Size of the avatar */
+        height: 40px;
+        border-radius: 50%; /* Round the avatar */
+        margin-right: 10px; /* Space between avatar and message */
+        object-fit: cover; /* Ensure the image covers the circle without stretching */
+    }
+    </style>
 </head>
 <body>
     <!-- Chat Window -->
@@ -28,11 +38,19 @@
                 <!-- Accounts List -->
                 <div id="accountsList" class="accounts-list">
                     <ul>
-                        @forelse($chattedUsers as $user)
-                            <li class="account" data-account-id="{{ $user->id }}">{{ $user->name }}</li>
-                        @empty
-                            <li>No chats yet.</li>
-                        @endforelse
+                    @forelse($chattedUsers as $user)
+                        <li class="account" data-account-id="{{ $user->id }}">
+                            <!-- Avatar image -->
+                            <img 
+                                src="{{ asset($user->avatar) }}" 
+                                alt="Avatar" 
+                                class="avatar-img" 
+                                style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                            {{ $user->name }}
+                        </li>
+                    @empty
+                        <li>No chats yet.</li>
+                    @endforelse
                     </ul>
                 </div>
             </div>

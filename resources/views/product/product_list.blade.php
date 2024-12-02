@@ -17,7 +17,7 @@
             width: 96%; /* Adjusted for better alignment */
             margin: 0 20px; /* Centering for larger screens */
             
-            background-color: #f9f9f9; /* Light background for contrast */
+            background-image: #f9f9f9; /* Light background for contrast */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
 
@@ -98,7 +98,7 @@
          .tag-container {
             text-align: center;
             height: 40px;
-            background-color: #e63e3e;
+            background-image: url('{{ asset('frontend/img/background/backgr.jpg') }}');
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 15px;

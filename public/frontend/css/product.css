@@ -11,7 +11,7 @@
 .product .tag-container {
     text-align: center;
     height: 40px;
-    background-color: #e63e3e;
+    background: url('../img/background/backgr.jpg') ;     
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin-bottom: 15px;
