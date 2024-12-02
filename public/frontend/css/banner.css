@@ -1,7 +1,7 @@
 /* Banner Styles */
 .banner {
-    width: calc(100vw - 60px); /* Subtracting padding/margin for alignment */
-    margin: 0 20px; /* Left and right alignment for large screens */
+    width: 96%; /* Adjusted for better alignment */
+    margin: 0 20px; /* Centering for larger screens */
     position: relative;
     overflow: hidden;
     text-align: center;

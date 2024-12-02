@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Product;
-use App\Models\ProductImage;
+use App\Models\Color;
+use App\Models\Button;
+use App\Models\Material;
+
 use App\Models\Type;
 use Illuminate\Support\Facades\Log;
 
@@ -78,7 +81,10 @@ class ProductController extends Controller
     {
             $products = Product::with('type')->get(); 
             $type = Type::all(); 
-            return view('product.product_list', compact('products', 'type'));  
+            $colors = Color::all();
+            $materials = Material::all();
+            $buttons = Button::all();
+            return view('product.product_list', compact('products', 'type', 'colors', 'materials', 'buttons'));  
     }
 
     public function create()

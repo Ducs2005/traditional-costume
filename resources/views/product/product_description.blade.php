@@ -40,7 +40,7 @@
 @include ('header_footer.header')
 
 <body>
-    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br>
     <div class="container">
         <div class="product-details">
             <div class="product-image-gallery">
@@ -105,6 +105,10 @@
             </div>
         </div>
     </div>
+   
+
+    @include ('product.product', ['type' => 'related', 'currentProduct' => $product])
+
 
     @include ('header_footer.footer')
 
@@ -131,7 +135,7 @@
             });
         </script>
     @endif
-
+      
     <script>
         function setImage(imagePath) {
             document.getElementById('productImage').src = imagePath;

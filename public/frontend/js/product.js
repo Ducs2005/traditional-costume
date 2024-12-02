@@ -1,11 +1,13 @@
+
 class Pagination {
+    
     constructor(itemsPerPage) {
         this.products = []; // Array to hold products fetched from the server
         this.itemsPerPage = itemsPerPage; // Number of items per page
         this.currentPage = 1; // Start on the first page
         this.productContainer = document.querySelector('.list-item');
         this.paginationContainer = document.querySelector('.pagination');
-
+        
         // Ensure that the elements exist before adding event listeners
         this.initEventListeners();
 
@@ -36,35 +38,64 @@ class Pagination {
             })
             .then(data => {
                 this.products = data; // Assign the fetched products to the array
-                this.displayProducts(this.products); // Display the products on initial load
+                this.displayProducts(this.products, type, currentProduct); // Display the products on initial load
             })
             .catch(error => console.error('Error fetching products:', error));
     }
 
     // Method to display products
-    displayProducts(productsArray) {
+    displayProducts(productsArray, type = null, currentProduct = null) {
         // Clear existing content in the product container
         this.productContainer.innerHTML = '';
-        console.log(productsArray);
-
-        // Loop through the products array and create product elements
-        productsArray.forEach(product => {
+        console.log(productsArray, type, currentProduct);
+    
+        let filteredProducts = productsArray;
+    
+        if (type === 'popular') {
+            // Sort products by the sold field in descending order
+            filteredProducts = productsArray.slice().sort((a, b) => b.sold - a.sold);
+            document.getElementById('listType').textContent = 'Bán chạy nhất';
+        } else if (type === 'related' && currentProduct) {
+            // Filter products related to the current product
+            document.getElementById('listType').textContent = 'Liên quan';
+            filteredProducts = productsArray.filter(product => {
+                return (
+                    product.id !== currentProduct.id && // Exclude the current product
+                    (
+                        product.type?.id === currentProduct.type?.id ||
+                        product.color?.id === currentProduct.color?.id ||
+                        product.material?.id === currentProduct.material?.id ||
+                        product.button?.id === currentProduct.button?.id ||
+                        product.seller_id === currentProduct.seller_id
+                    )
+                );
+            });
+        }
+    
+        // Check if any products match the criteria
+        if (filteredProducts.length === 0) {
+            this.productContainer.innerHTML = '<p>No products to display.</p>';
+            return;
+        }
+    
+        // Loop through the filtered products and create product elements
+        filteredProducts.forEach(product => {
             const productItem = document.createElement('div');
             productItem.classList.add('item', 'product-item');
-
+    
             productItem.addEventListener('click', () => {
                 window.location.href = `${baseUrl}/product_description/${product.id}`;
             });
-    
-            // Generate HTML for types by mapping over the types array
-            
+            console.log(product);
             const formattedPrice = Number(product.price).toLocaleString('vi-VN');
+            // Generate product item HTML
+            const imageUrl = assetBaseUrl + '/' + product.img_path;
             productItem.innerHTML = `
-                <img src="${product.img_path}" alt="${product.name}">
+                <img src="${imageUrl}" alt="${product.name}">
                 <h4>${product.name}</h4>
-                    <div class="price">
-                        ${formattedPrice} <span class="vnd-icon">₫</span>
-                    </div>
+                <div class="price">
+                    ${formattedPrice} <span class="vnd-icon">₫</span>
+                </div>
                 <div class="product-attributes">
                     <div class="attribute-group">
                         <a href="/products/category/${product.color ? product.color.name : 'No Color'}" class="category-label">
@@ -82,20 +113,17 @@ class Pagination {
                         </a>
                     </div>
                     <div class="attribute-group">
-                        <a href="/products/category/${product.type ? product.type.name : 'No type'}" class="category-label">
-                            ${product.type ? product.type.name : 'No Button'}
+                        <a href="/products/category/${product.type ? product.type.name : 'No Type'}" class="category-label">
+                            ${product.type ? product.type.name : 'No Type'}
                         </a>
                     </div>
                 </div>
             `;
-        
+    
             this.productContainer.appendChild(productItem);
         });
-        
-
-        // Update pagination controls
-        this.updatePagination();
     }
+    
 
     // Method to update pagination controls
     updatePagination() {

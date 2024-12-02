@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             
             $view->with('chattedUsers', $chattedUsers);
 
-            View::composer('product.product', function ($view) {
+            View::composer('product.product_list', function ($view) {
                 // Fetch colors, materials, and buttons
                 $colors = Color::all();
                 $materials = Material::all();
