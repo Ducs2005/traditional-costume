@@ -1,6 +1,6 @@
 /* Chat window container */
 .chat-window {
-    width: 400px;
+    width: 350px;
     height: 450px;
     position: fixed;
     bottom: 20px;
@@ -109,12 +109,11 @@
     max-height: 240px; /* Adjust as necessary for your design */
     display: flex; /* Use Flexbox for alignment */
     flex-direction: column; /* Stack messages vertically */
-}s
+}
 
 .message-input {
     display: flex;
     gap: 5px;
-
 }
 
 .message-input input[type="text"] {

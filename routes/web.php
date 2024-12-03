@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\TypeController;
 
@@ -118,8 +119,8 @@ Route::get('/contact-seller/{sellerId}', [MessageController::class, 'contactSell
 
 Route::delete('/cart/remove/{cartItem}', [CartController::class, 'removeItem'])->name('cart.removeItem');
 Route::delete('/cart/update/{cartItem}', [CartController::class, 'updateItem'])->name('cart.updateItem');
-
 Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+Route::post('/cart/payment', [CartController::class, 'processPayment'])->name('payment.process');
 
 Route::post('/seller-request', [SellerController::class, 'request'])->name('seller.request');
 Route::delete('/shop/remove/{product}', [SellerController::class, 'remove'])->name('shop.remove');
@@ -134,3 +135,6 @@ Route::get('seller/order-details/{orderId}', action: [OrderController::class, 'g
 Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
 Route::post('/orders/{order}/confirm-received', [OrderController::class, 'confirmReceived'])->name('orders.confirm');
 Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+
+Route::post('/vnpay/createPayment', [PaymentController::class, 'createVnpayPayment'])->name('vnpay.createPayment');
+Route::get('/payment/success', [CartController::class, 'clearCart'])->name('payment.success');

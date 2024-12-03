@@ -67,11 +67,56 @@
 
         <div class="cart-summary text-right">
             <p><strong>Tổng: </strong> <span id="total">VND</span></p>
-            <button class="btn btn-primary" onclick="clearCart()">Thanh toán</button>
+        <!--    <button class="btn btn-primary" onclick="clearCart()">Thanh toán</button> -->
+        </div>
+
+        <!-- Payment Selection -->
+        <div class="payment-method mt-4">
+            <h5>Chọn phương thức thanh toán:</h5>
+            <form id="paymentForm" action="{{ route('payment.process') }}" method="POST">
+            @csrf
+                <input hidden type="number" id="cartTotal" name="cartTotal" value="">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment_method" id="vnpay" value="vnpay" required>
+                    <label class="form-check-label" for="vnpay">
+                        Thanh toán qua VNPay
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment_method" id="momo" value="momo">
+                    <label class="form-check-label" for="momo">
+                        Thanh toán qua Momo
+                    </label>
+                </div>
+                <button type="button" id="submitPaymentBtn" class="btn btn-primary mt-3">Thanh toán</button>
+            </form>
         </div>
     @endif
 
     </div>
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '{{ session('error') }}',
+                showConfirmButton: true,
+            });
+        </script>
+    @endif
+
 </body>
 
 <br> <br> <br> <br> <br> <br><br> <br> <br>
@@ -81,6 +126,7 @@
 
 <script>
     // Update total price dynamically using JavaScript
+    
     const cartItems = @json($cartItems);
     let total = 0;
 
@@ -94,6 +140,8 @@
     }
 
     document.getElementById('total').textContent = formatPrice(total);
+    document.getElementById('cartTotal').value = total;
+
 
     // Confirm delete action with SweetAlert
     function confirmDelete(event) {
@@ -169,6 +217,33 @@
             }
         });
     }
+
+    document.getElementById('submitPaymentBtn').addEventListener('click', function () {
+        const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
+        if (!selectedMethod) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Chọn phương thức thanh toán',
+                text: 'Vui lòng chọn phương thức thanh toán trước khi tiếp tục.',
+            });
+            return;
+        }
+
+        const paymentMethod = selectedMethod.value;
+        Swal.fire({
+            title: 'Xác nhận thanh toán',
+            text: `Bạn có chắc chắn muốn thanh toán qua ${paymentMethod === 'vnpay' ? 'VNPay' : 'Momo'}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy bỏ',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the form
+                document.getElementById('paymentForm').submit();
+            }
+        });
+    });
 
 </script>
 
