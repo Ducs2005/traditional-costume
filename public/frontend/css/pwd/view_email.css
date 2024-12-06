@@ -1,0 +1,87 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Màu nền toàn trang */
+  }
+
+  /* Email content wrapper */
+  .email-wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff; /* Màu nền chính của email */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bóng đổ để nổi bật */
+    border: 2px solid #e74c3c; /* Viền màu đỏ */
+  }
+
+  /* Header styles */
+  h1 {
+    font-size: 24px;
+    color: #e74c3c; /* Màu đỏ cho tiêu đề */
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #e74c3c; /* Viền dưới màu đỏ */
+    padding-bottom: 10px;
+  }
+
+  /* Paragraph styles */
+  p {
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    margin-bottom: 15px;
+  }
+
+  /* Link styles */
+  a {
+    color: #3498db; /* Màu xanh dương cho liên kết */
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  a:hover {
+    text-decoration: underline; /* Gạch dưới khi hover */
+  }
+
+  /* Footer styles */
+  .footer {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f7f7f7; /* Màu nền xám nhạt cho footer */
+    border-radius: 8px;
+  }
+
+  .footer p {
+    margin: 0;
+  }
+
+  /* Alert for error or success */
+  .alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
