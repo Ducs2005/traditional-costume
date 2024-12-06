@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/new_pwd', [ForgotPasswordController::class, 'new_pwd']);
 Route::post('/reset_new_pwd', [ForgotPasswordController::class, 'reset_new_pwd']);
+Route::get('/verify-email', [LoginController::class, 'verifyEmail'])->name('verify.email');
 
 
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
