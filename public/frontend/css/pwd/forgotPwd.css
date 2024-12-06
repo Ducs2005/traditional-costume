@@ -1,0 +1,114 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: url(../../img/background/backgr.jpg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Wrapper for the h1 and form */
+.wrapper {
+    background: rgba(255, 244, 244, 0.656); /* Slight white background */
+    padding: 50px; /* Increased padding */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 650px; /* Increased max-width */
+    min-height: 400px; /* Increased min-height */
+    border: 5px solid rgb(255, 202, 117); /* Thicker red-orange border */
+    text-align: center;
+}
+
+/* Heading */
+h1 {
+    font-size: 32px; /* Increased font size */
+    color: rgb(150, 20, 20); /* Red-orange color */
+    margin-bottom: 30px; /* Increased margin-bottom */
+    text-transform: uppercase;
+    position: relative;
+}
+
+h1 .underline {
+    display: block;
+    width: 120px; /* Increased width for underline */
+    height: 4px; /* Increased height for underline */
+    background: rgb(165, 63, 63); /* Red-orange underline */
+    margin: 10px auto 0;
+    border-radius: 5px;
+}
+
+/* Input field */
+.form-control {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+.group {
+    margin-top: 40px;
+}
+
+/* Button */
+.btn1 {
+    width: 100%;
+    padding: 15px 20px; /* Increased padding */
+    background: rgb(136, 24, 24); /* Red-orange button */
+    color: #fff;
+    font-size: 18px; /* Increased font size */
+    font-weight: bolder;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+}
+
+.btn1:hover {
+    background: rgb(255, 161, 103); /* Darker red-orange on hover */
+}
+
+/* Alerts */
+.alert {
+    padding: 15px 20px; /* Increased padding */
+    font-size: 16px; /* Increased font size */
+    margin-bottom: 20px; /* Increased margin-bottom */
+    border-radius: 5px;
+    text-align: left;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Email instruction text */
+.email-instruction {
+    margin-top: 30px; /* Increased margin-top */
+    font-size: 18px; /* Increased font size */
+    color: #640f0f; /* Red-orange color */
+    text-align: center;
+    font-weight: bold;
+}
+
+.email-instruction p {
+    margin: 0;
+}

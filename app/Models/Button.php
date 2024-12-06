@@ -12,5 +12,4 @@ class Button extends Model
     {
         return $this->hasMany(Product::class);
     }
-
 }

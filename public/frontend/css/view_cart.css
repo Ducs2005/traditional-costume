@@ -12,7 +12,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     margin: auto;
-    
+
 }
 
 .cart-title {
@@ -94,7 +94,7 @@ body {
     font-weight: bold;
     transition: background-color 0.3s;
     width: 100px;
-    
+
 }
 
 .remove-btn:hover {
@@ -159,8 +159,8 @@ td .info {
     align-items: center;
     z-index: 1000;
     overflow-y: auto; /* Allows scrolling if content is too tall */
-    
-    
+
+
 
 
 
@@ -348,6 +348,8 @@ select:disabled {
     margin-left: 0;
 }
 
+
+
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
     .modal-content {
@@ -371,7 +373,7 @@ select:disabled {
         justify-content: center;
 
     }
-  
+
 }
 
 @media screen and (max-width: 480px) {
@@ -385,5 +387,5 @@ select:disabled {
         vertical-align: middle;
         justify-content: center;
     }
-   
+
 }

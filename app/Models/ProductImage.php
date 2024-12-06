@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductImage extends Model
 {
     use HasFactory;
-    protected $table = 'product_image';
+    protected $table = 'product_images';
     protected $fillable = ['product_id', 'img_path'];
     // Define the inverse of the relationship
     public function product()

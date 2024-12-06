@@ -1,24 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layout_home')
 
-    <title>Shopping Cart</title>
+@section('content_homePage')
 
-    <!-- Update CSS link with asset helper -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/view_cart.css') }}"> <!-- Link to the CSS file -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-</head>
-
-<!-- Include header and chat window -->
-@include('header_footer.header')
-@include('chat.chat_window')
-
-<body>
-    <br> <br> <br> <br> <br> <br>
     <div class="container my-5">
     <h1 class="text-center cart-title">Giỏ hàng của tôi</h1>
 
@@ -117,16 +100,9 @@
         </script>
     @endif
 
-</body>
-
-<br> <br> <br> <br> <br> <br><br> <br> <br>
- 
-<!-- Include footer -->
-@include('header_footer.footer')
-
 <script>
     // Update total price dynamically using JavaScript
-    
+
     const cartItems = @json($cartItems);
     let total = 0;
 
@@ -247,4 +223,4 @@
 
 </script>
 
-</html>
+@endsection

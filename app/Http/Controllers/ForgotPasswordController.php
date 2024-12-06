@@ -18,7 +18,8 @@ class ForgotPasswordController extends Controller
     public function reset_pwd(Request $request) {
         $data = $request->all();
         $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y');
-        $title_mail = "Reset password!".'-'.$now;
+        $title_mail = "TrdnCostume";
+        $bold_text = "Reset Your Password" . " " . $now;
         $user = User::where('email','=',$data['email_reset'])->get();
         foreach($user as $key => $value) {
             $user_id = $value->id;
@@ -30,15 +31,16 @@ class ForgotPasswordController extends Controller
             } else {
                 $token = Str::random(25);
                 $user = User::find($user_id);
+                $user_name = $user->name;
                 $user->token_forgot = $token;
                 $user->save();
 
                 //send mail
                 $to_email = $data['email_reset'];
                 $link_reset_pass = url('/new_pwd?email=' .$to_email. '&token='.$token);
-                $data = array("name"=>$title_mail, "body"=>$link_reset_pass, 'email'=>$data['email_reset']);
+                $data = array("name"=>$user_name, 'bold_text' => $bold_text, "body"=>$link_reset_pass, 'email'=>$data['email_reset']);
 
-                Mail::send('account.new_password', ['data'=>$data], function($message) use ($title_mail,$data) {
+                Mail::send('account.view_sendResetPwd', ['data'=>$data], function($message) use ($title_mail,$data) {
                     $message->to($data['email'])->subject($title_mail);
                     $message->from($data['email'], $title_mail);
                 });

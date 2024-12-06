@@ -57,8 +57,8 @@
                             Trạng thái
                             <span id="arrow-down" style="cursor: pointer;">&#9660;</span>
                             <!-- Filter options -->
-                            <ul id="filter-options" 
-                                class="dropdown-menu position-absolute" 
+                            <ul id="filter-options"
+                                class="dropdown-menu position-absolute"
                                 style="display: none; left: 50%; transform: translateX(-50%);">
                                 <form method="get" action="{{ route('viewOrder') }}">
                                     <li><button type="submit" name="status" value="all" class="dropdown-item">Tất cả</button></li>
@@ -92,8 +92,8 @@
                             Trạng thái
                             <span id="arrow-down" style="cursor: pointer;">&#9660;</span>
                             <!-- Filter options -->
-                            <ul id="filter-options" 
-                                class="dropdown-menu position-absolute" 
+                            <ul id="filter-options"
+                                class="dropdown-menu position-absolute"
                                 style="display: none; left: 50%; transform: translateX(-50%);">
                                 <form method="get" action="{{ route('viewOrder') }}">
                                     <li><button type="submit" name="status" value="all" class="dropdown-item">Tất cả</button></li>
@@ -288,7 +288,7 @@
     // Add click event to toggle the visibility of the options list
     arrowDown.addEventListener("click", function() {
         const isVisible = filterOptions.style.display === "block";
-        
+
         // Toggle display of the options list
         filterOptions.style.display = isVisible ? "none" : "block";
 
@@ -299,7 +299,7 @@
     // Function to filter orders based on the selected status
     function filterOrders(status) {
         console.log("Filtering orders by status:", status);
-        
+
         // Perform filtering actions here
         // You can send an AJAX request or filter orders locally based on the 'status'
 

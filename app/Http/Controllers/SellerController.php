@@ -26,7 +26,7 @@ class SellerController extends Controller
     }
     public function request(Request $request)
     {
-        
+
         // Validate incoming request
         $request->validate([
             'shop_name' => 'required|string|max:255',
@@ -37,7 +37,7 @@ class SellerController extends Controller
         ]);
 
         $user = auth()->user();
-        Log::info($user->id . ' request sellign right');        
+        Log::info($user->id . ' request sellign right');
 
         // Create or find the address from the form data
         $address = Address::create([
@@ -68,7 +68,7 @@ class SellerController extends Controller
 
     public function resetSold(Request $request)
     {
-        
+
 
         // Reset `sold` to 0 for all products of the seller
         Product::where('seller_id', auth()->id())->update(['sold' => 0]);
@@ -115,7 +115,7 @@ class SellerController extends Controller
             // Save the representative image
             if ($request->hasFile('representative_img')) {
                 $representativeImg = $request->file('representative_img');
-                
+
                 // Log the file details
                 Log::info('File Details:', [
                     'original_name' => $representativeImg->getClientOriginalName(),
@@ -125,14 +125,14 @@ class SellerController extends Controller
 
                 // Define the path for the representative image
                 $representativePath = 'frontend/img/product/' . $product->id . '.jpg';
-                
+
                 // Store the image in the public directory (outside the storage directory)
                 $representativeImg->move(public_path('frontend/img/product'), $product->id . '.jpg');
-                
+
                 // Save the product and image path
                 $product->img_path = $representativePath;
                 $product->save();
-                
+
             } else {
                 Log::warning('No representative image uploaded.');
             }
@@ -153,22 +153,22 @@ class SellerController extends Controller
                 foreach ($detailImages as $index => $detailImage) {
                     // Since the $index is automatically handled by the foreach loop, no need to reset it
                     $fileName = ($index + 1) . '.jpg'; // img1.jpg, img2.jpg, etc.
-                    
+
                     // Log the file name
                     Log::info('Saving image: ' . $fileName);
-                    
+
                     // Store the image in the appropriate folder
                     $detailImage->move(public_path($productFolder), $fileName);
-                    
+
                     // Save the image path in the database
                     ProductImage::create([
                         'product_id' => $product->id,
                         'img_path' => $productFolder . '/' . $fileName
                     ]);
-                    
+
                     Log::info('Saved detail image to product img');
                 }
-                
+
             }
 
             // Return JSON response with success message and product data
