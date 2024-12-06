@@ -66,7 +66,6 @@ class LoginController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->role = 'customer';
-            $user->confirm_otp = rand(100000, 999999); // OTP để xác minh email
             $user->created_at = Carbon::now();
             $user->save();
 
