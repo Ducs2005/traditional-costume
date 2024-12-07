@@ -25,7 +25,7 @@
 
 <body>
     <!-- Modal for Adding Product -->
-    
+
 
     <div id="requestModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -33,7 +33,7 @@
             <h2>Nhập thông tin</h2>
             <form id="requestForm" method="POST" action="{{ route('seller.request') }}">
                 @csrf
-                <input type="text" id="shop_name" name="shop_name"  required placeholder="Tên cửa hàng"></input>          
+                <input type="text" id="shop_name" name="shop_name"  required placeholder="Tên cửa hàng"></input>
                 <input type="text" id="phone_number" name="phone_number" required placeholder="Số điện thoại">
                 <!-- <input type="text" id="address" name="address"  required placeholder="Địa chỉ"></input> -->
                 <select id="province" name="province" onchange="fetchDistricts(this.value)">
@@ -49,7 +49,7 @@
                 </select>
 
 
-                
+
                 <button type="submit" class="submit-btn">Gửi yêu cầu</button>
             </form>
         </div>
@@ -76,7 +76,7 @@
                     <td class="info" colspan="5" class="product" style="text-align: center;">
                         Bạn chưa có quyền bán sản phẩm   <span style="margin-left: 10px;"> <button class="checkout-btn" style="font-size: medium;" onclick="openModal()">Yêu cầu bán sản phẩm</button>
                         </span>
-                    </td> 
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -95,11 +95,11 @@
                 <tr>
                     <td class="info" colspan="5" class="product" style="text-align: center;">
                         Yêu cầu mở cửa hàng của bạn đang được phê duyệt.
-                    </td> 
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br> 
+        <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br>
 
         @else
             <div id="addProductModal" class="modal" style="display: none;">
@@ -197,7 +197,7 @@
                                     <button type="submit" class="remove-btn">Xóa</button>
                                 </form>
 
-                                
+
 
                             </td>
 
@@ -302,7 +302,7 @@
             });
     }
 
-        
+
 
 
     function openModal() {
@@ -388,7 +388,7 @@
                     <tr>
                         <td class="product">
                             <a style="text-decoration: none; color: black;" href="/product_description/${product.id}">
-                                <img src=" {{ asset( $product->img_path)  }}" alt="Product Image">
+                                <img src="${product.img_path}" alt="Product Image">
                                 <span>${product.name}</span>
                             </a>
                         </td>
@@ -500,7 +500,7 @@
     }
 
     // Lấy ảnh đã cắt và convert sang file trước khi submit
-  
+
 
     // Gắn sự kiện submit form để gửi hình ảnh đã cắt
 
@@ -575,7 +575,7 @@
             canvas.toBlob(function(blob) {
                 const formData = new FormData(document.getElementById('addProductForm'));
                 formData.set('representative_img', blob, 'representative_img.jpg');
-                
+
                 // Send the form data to the server
                 fetch("{{ route('product.store') }}", {
                     method: 'POST',

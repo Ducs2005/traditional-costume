@@ -12,18 +12,25 @@
 <body>
 
     <!-- wrapper -->
-    <div class="wrapper"> 
+    <div class="wrapper">
 
         <span class="icon-close">
-            <a href="{{ url('/home') }}"><i class="fa-solid fa-xmark" style="color: #fff"></i></a>
-        </span> 
+            <a href="{{ url('/') }}"><i class="fa-solid fa-xmark" style="color: #fff"></i></a>
+        </span>
+        @if (Session::has('message'))
+        <div class="alert alert-success">{{ Session::get('message')}}</div>
+        @endif
+
+        @if(Session::has('error'))
+            <div class="alert alert-danger">{{ Session::get('error')}}</div>
+        @endif
 
         <!-- registration -->
         <div class="form-box register">
             <form action="{{ route('account.processRegister') }}" method="post">
-                @csrf               
+                @csrf
                 <img src="{{asset('frontend/img/logo.png')}}" alt="logo">
-                <h1>WELCOME TO OUR PAGE</h1>         
+                <h1>WELCOME TO OUR PAGE</h1>
                 <!-- input -->
                 <div class="input-box">
                     <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Username" name="name"  value="{{ old('name') }}">
@@ -32,7 +39,7 @@
                         <p class="invalid-feedback">{{ $message }}</p>
                     @enderror
                 </div>
-    
+
                 <div class="input-box">
                     <input type="text"  class="form-control @error('email') is-invalid @enderror" placeholder="Email" name="email" value="{{ old('email') }}">
                     <i class='bx bx-envelope'></i>
@@ -40,7 +47,7 @@
                         <p class="invalid-feedback">{{ $message }}</p>
                     @enderror
                 </div>
-    
+
                 <div class="input-box">
                     <input type="password"  class="form-control @error('password') is-invalid @enderror" placeholder="Password" name="password">
                     <i class='bx bx-lock-alt' ></i>
@@ -53,10 +60,10 @@
                 <div class="agree">
                     <label><input type="checkbox">I agree to the <a href="#">Service</a> and <a href="#">Conditions</a></label>
                 </div>
-    
+
                 <!-- submit -->
                 <button type="submit" name="submit" class="btn2">Register</button>
-                
+
                 <!-- auto login -->
                 <div class="authentication-social">
                     <div class="separator">
@@ -74,9 +81,9 @@
                     <a href="#" class="fb" rel="nofollow">
                         <i class='bx bxl-facebook-circle' ></i>
                         <span>Register with Facebook</span>
-                    </a>    
+                    </a>
                 </div>
-    
+
                 <!-- register link -->
                 <div class="loginLink">
                     <p>Already have an account? <a href="{{ route('account.login') }}">Login</a></p>
@@ -84,6 +91,6 @@
             </form>
         </div>
     </div>
-        
+
 </body>
 </html>

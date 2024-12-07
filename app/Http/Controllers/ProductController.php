@@ -67,29 +67,29 @@ class ProductController extends Controller
         return response()->json(['products' => $products]);
     }
 
-   
+
 
     public function index()
     {
-        $products = Product::with('type')->get(); 
+        $products = Product::with('type')->get();
         $type = Type::all();
 
-        return view('admin.products.index', compact('products', 'type'));  
+        return view('admin.products.index', compact('products', 'type'));
     }
- 
+
     public function productList()
     {
-            $products = Product::with('type')->get(); 
-            $type = Type::all(); 
+            $products = Product::with('type')->get();
+            $type = Type::all();
             $colors = Color::all();
             $materials = Material::all();
             $buttons = Button::all();
-            return view('product.product_list', compact('products', 'type', 'colors', 'materials', 'buttons'));  
+            return view('product.product_list', compact('products', 'type', 'colors', 'materials', 'buttons'));
     }
 
     public function create()
     {
-        $type = Type::all(); 
+        $type = Type::all();
         return view('admin.products.create', compact('type'));
     }
 
@@ -107,8 +107,8 @@ class ProductController extends Controller
             'name' => 'required',
             'description' => 'nullable',
             'price' => 'required|numeric',
-            'type_id' => 'required|exists:type,id',  
-            'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', 
+            'type_id' => 'required|exists:type,id',
+            'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
         $product = new Product();
@@ -118,21 +118,21 @@ class ProductController extends Controller
 
         if ($request->hasFile('img')) {
             $imagePath = $request->file('img')->store('products', 'public'); // Lưu vào thư mục public/products
-            $product->img_path = $imagePath;  
+            $product->img_path = $imagePath;
         }
 
         // Lưu loại sản phẩm
         $product->type_id = $request->type_id; // Gán loại sản phẩm vào product
 
         $product->save();
-        
+
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được thêm thành công.');
     }
 
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $types = Type::all(); 
+        $types = Type::all();
 
         return view('admin.products.edit', compact('product', 'types'));
     }
@@ -166,6 +166,6 @@ class ProductController extends Controller
 
 
 
-    
+
 }
 

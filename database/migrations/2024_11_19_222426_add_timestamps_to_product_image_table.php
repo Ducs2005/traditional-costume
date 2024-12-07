@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('product_image', function (Blueprint $table) {
+        Schema::table('product_images', function (Blueprint $table) {
             $table->timestamps(); // Adds created_at and updated_at columns
         });
     }
 
     public function down()
     {
-        Schema::table('product_image', function (Blueprint $table) {
+        Schema::table('product_images', function (Blueprint $table) {
             $table->dropTimestamps();
         });
     }

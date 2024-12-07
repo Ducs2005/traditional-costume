@@ -12,50 +12,60 @@ return new class extends Migration
     public function up()
     {
         Schema::create('colors', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing primary key
-            $table->string('name')->unique(); // Color name, unique to avoid duplicates
-            $table->timestamps(); // Adds created_at and updated_at
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
         });
+
         Schema::create('materials', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing primary key
-            $table->string('name')->unique(); // Material name, unique to avoid duplicates
-            $table->timestamps(); // Adds created_at and updated_at
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
         });
-        Schema::create('button', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing primary key
-            $table->string('name')->unique(); // Size name, unique to avoid duplicates
-            $table->timestamps(); // Adds created_at and updated_at
+
+        Schema::create('sizes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
         });
-            
+
+        Schema::create('buttons', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('product', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing primary key
+            $table->id();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('img_path')->nullable();
             $table->string('button')->nullable();
             $table->decimal('price', 10, 2);
+
+            // Foreign keys
             $table->foreignId('color_id')->nullable()->constrained('colors')->onDelete('set null');
             $table->foreignId('material_id')->nullable()->constrained('materials')->onDelete('set null');
             $table->foreignId('size_id')->nullable()->constrained('sizes')->onDelete('set null');
-            
-            // Seller ID (nullable) related to the users table
             $table->foreignId('seller_id')->nullable()->constrained('users')->onDelete('set null');
-        
-            $table->timestamps(); // Adds created_at and updated_at
+
+            $table->timestamps();
         });
-        
-        Schema::create('product_image', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing primary key
+
+        Schema::create('product_images', function (Blueprint $table) {
+            $table->id();
             $table->string('img_path');
             $table->foreignId('product_id')->constrained('product')->onDelete('cascade');
         });
-        
     }
 
     public function down()
     {
+        Schema::dropIfExists('product_images');
         Schema::dropIfExists('product');
+        Schema::dropIfExists('buttons');
+        Schema::dropIfExists('sizes');
+        Schema::dropIfExists('materials');
+        Schema::dropIfExists('colors');
     }
-
-    
 };

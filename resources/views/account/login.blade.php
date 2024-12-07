@@ -15,11 +15,15 @@
     <div class="wrapper">
 
         <span class="icon-close">
-            <a href="{{ url('/home') }}"><i class="fa-solid fa-xmark" style="color: #fff"></i></a>
+            <a href="{{ url('/') }}"><i class="fa-solid fa-xmark" style="color: #fff"></i></a>
         </span>
 
         @if (Session::has('success'))
             <div class="alert alert-success">{{ Session::get('success')}}</div>
+        @endif
+
+        @if (Session::has('message'))
+            <div class="alert alert-success">{{ Session::get('message')}}</div>
         @endif
 
         @if(Session::has('error'))
