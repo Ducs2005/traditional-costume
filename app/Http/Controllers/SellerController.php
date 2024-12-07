@@ -184,7 +184,7 @@ class SellerController extends Controller
 
         } catch (\Exception $e) {
             // Return a JSON response with error message
-            Log::info('??????????');
+            Log::info($e->getMessage());
             return response()->json([
                 'message' => 'Failed to add product',
                 'error' => $e->getMessage()
