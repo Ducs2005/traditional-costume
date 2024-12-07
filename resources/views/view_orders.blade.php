@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layout_home')
 
-    <title>Order History</title>
+@section('content_homePage')
 
-    <!-- Update CSS link with asset helper -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/view_cart.css') }}"> <!-- Link to the CSS file -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRdijKvUnaw3sC1Tbq9IYNv3WOb1bXWlJQkT4dZpP" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
+<style>
     .modal-content-left {
         text-align: left; /* Align all text to the left */
         margin: 0; /* Reset any margin if necessary */
@@ -33,13 +23,11 @@
     }
 
     </style>
-</head>
 
-<!-- Include header and chat window -->
-@include('header_footer.header')
-@include('chat.chat_window')
 
-<body>
+
+
+
     <br> <br> <br> <br> <br> <br>
     <div class="container my-5">
     <h1 class="text-center mb-4">Đơn Hàng Của Tôi</h1>
@@ -133,7 +121,6 @@
     @endif
 </div>
 
-</body>
 
 <br> <br> <br> <br> <br> <br><br> <br> <br>
 
@@ -186,6 +173,7 @@
                 <section>
                     <h3>Danh sách sản phẩm</h3>
         `;
+        console.log(order.items);
 
         order.items.forEach(item => {
             orderDetailsHtml += `
@@ -197,7 +185,6 @@
                         <p>Đơn giá: ${item.product.price.toLocaleString()} VND</p>
                         <p>Tổng: ${(item.product.price * item.quantity).toLocaleString()} VND</p>
                         <p>Người bán: ${item.product.seller.name} </p>
-
                     </div>
                 </div>
                 <br>
@@ -384,4 +371,4 @@
 
 </script>
 
-</html>
+@endsection

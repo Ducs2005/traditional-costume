@@ -3,7 +3,7 @@
 use App\Http\Controllers\AccessTimeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\ForgotPasswordController;
@@ -53,6 +53,7 @@ Route::group(['prefix' => 'account'], function() {
 });
 
 Route::get('profile', [LoginController::class, 'profile'])->name('account.profile');
+Route::post('/update-avatar', [AccountController::class, 'updateAvatar'])->name('update-avatar');
 
 Route::get('/view_cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::get('/own_shop', [SellerController::class, 'viewShop'])->name('ownShop.view');

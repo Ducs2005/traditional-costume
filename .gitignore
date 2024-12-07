@@ -19,3 +19,7 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
+/public/frontend/img/product
+/public/frontend/img/product_description
+/public/frontend/img/account
+

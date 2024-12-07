@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-
+use Auth;
  class AccountController extends Controller
 {
     //Log out
@@ -44,7 +44,30 @@ use App\Models\User;
         }
     }
 
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validate the image
+        ]);
 
+        $user = Auth::user();
+        $image = $request->file('avatar');
+        $fileName = $user->id . '.jpg'; // Rename to userID.jpg
+        $folderPath = 'frontend/img/account/';
+        $filePath = $folderPath . $fileName; // Full path to store in the database
+
+        // Move the file to the specified directory
+        $image->move(public_path($folderPath), $fileName);
+
+        // Update the avatar field in the database with the file path
+        $user->avatar = $filePath;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'avatar' => $filePath, // Return the updated path for frontend use
+        ]);
+    }
 
     public function register(Request $request)
     {
@@ -76,5 +99,7 @@ use App\Models\User;
         return redirect('/login');
         }
     }
+
+    
 
 ?>
