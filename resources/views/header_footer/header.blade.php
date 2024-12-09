@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Hurricane&family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link rel="stylesheet" href="{{ asset('frontend/css/header.css') }}?v={{ time() }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -40,12 +42,13 @@
                 <li> <a href="{{ url('/product-list') }}" > Cửa hàng </a> </li>
                 <li><a href="{{ url('home#aboutus') }}">Về chúng tôi</a></li>
                 <li class="dropdown">
-                     <a href="#"><i class="fa-solid fa-bell"></i> Thông báo</a>
+                     <a href="#"><i class="fa-solid fa-bell"></i> Thông báo <span id="unread-count" class="badge bg-danger" style="display:none;"></span> </a>
                      <ul class="sub-menu">
                         @if (Auth::check() && auth()->user()->selling_right === 'yes')
                         <li> <a href="{{route('seller.viewOrder')}}">Đơn hàng </a>  </li>
                         @endif
-                        <li> <a href="{{route('viewOrder')}}">Thông báo </a>  </li>
+                        <li><a href="{{route('notification')}}">Thông báo </a></li>
+
                      </ul>
                 </li>
 
@@ -85,6 +88,31 @@
 
     <script>
         // Check if the chat window exists
+        
+        $(document).ready(function() {
+            // CSRF Token for AJAX
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Fetch unread notifications count
+            $.ajax({
+                url: '{{ route('notifications.unreadCount') }}',
+                method: 'POST',
+                data: {
+                    _token: csrfToken,
+                },
+                success: function(response) {
+                    if (response.unread_count > 0) {
+                        $('#unread-count').text(response.unread_count).show(); // Show unread count
+                    } else {
+                        $('#unread-count').hide(); // Hide if no unread notifications
+                    }
+                },
+                error: function() {
+                    console.log("Error fetching unread notifications count.");
+                }
+            });
+        });
+
         var chatWindow = document.getElementById('chat-window');
         console.log(chatWindow); // Debugging: Check if chat window is found
 

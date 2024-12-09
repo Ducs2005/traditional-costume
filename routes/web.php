@@ -12,8 +12,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
-
-use App\Http\Controllers\TypeController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RatingController;
 
 Route::get('/', function () {
     return view('home');
@@ -140,3 +140,8 @@ Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name(
 
 Route::post('/vnpay/createPayment', [PaymentController::class, 'createVnpayPayment'])->name('vnpay.createPayment');
 Route::get('/payment/success', [CartController::class, 'clearCart'])->name('payment.success');
+
+Route::get('/notification', [NotificationController::class, 'show'])->name('notification');
+Route::post('/notifications/unread-count', [NotificationController::class, 'getUnreadCount'])->name('notifications.unreadCount');
+
+Route::post('/rate-product', [RatingController::class, 'store'])->name('rate.product');

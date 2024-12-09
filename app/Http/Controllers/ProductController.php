@@ -26,7 +26,7 @@ class ProductController extends Controller
     public function show($id)
     {
         // Eager load the product with its related attributes including the seller (User)
-        $product = Product::with(['color', 'productImages', 'material', 'button', 'type', 'seller'])->findOrFail($id);
+        $product = Product::with(['color', 'productImages', 'material', 'button', 'type', 'seller', 'ratings.user'])->findOrFail($id);
 
         // Pass the product to the view
         return view('product.product_description', compact('product'));
@@ -162,7 +162,6 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật thành công.');
     }
-
 
 
 

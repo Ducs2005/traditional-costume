@@ -52,4 +52,22 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $attributes = [
         'role' => 'customer',
     ];
+
+    public function purchases()
+    {
+        return $this->belongsToMany(Product::class, 'purchases')
+                    ->withPivot('quantity', 'purchased_at')
+                    ->withTimestamps();
+    }
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class, 'notification_user')
+                    ->withPivot('is_read') // Đảm bảo có trạng thái 'is_read'
+                    ->withTimestamps();
+    }
+    public function ratings()
+    {
+        return $this->hasMany(ProductRating::class);
+    }
+
 }

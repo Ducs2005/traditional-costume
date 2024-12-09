@@ -105,15 +105,20 @@
                         </div>
 
                         <!-- Add to Cart Button -->
-                        <button type="submit" class="btn btn-success btn-lg w-100">Add to Cart</button>
-                    </form>
+                        @if (!Auth::check())
+                        <button disabled type="submit" class="add-to-cart-btn" style="background-color:grey">Add to Cart</button>
+                        @elseif ($product->seller->id == auth()->user()->id)
+                        <button disabled type="submit" class="add-to-cart-btn" style="background-color:grey">Add to Cart</button>
+                        @else
+                        <button type="submit" class="add-to-cart-btn" >Add to Cart</button>
+                        @endif                    </form>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
-
+        @include('components.comment', ['product'=>$product])
 
     @include ('product.product', ['type' => 'related', 'currentProduct' => $product])
 

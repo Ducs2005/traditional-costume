@@ -1,6 +1,7 @@
 @extends('layout_home')
 
 @section('content_homePage')
+
 <style>
     .modal-content-left {
         text-align: left; /* Align all text to the left */

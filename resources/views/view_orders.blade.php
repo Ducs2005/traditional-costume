@@ -28,9 +28,9 @@
 
 
 
-    <br> <br> <br> <br> <br> <br>
+    <br> <br> <br> <br>
     <div class="container my-5">
-    <h1 class="text-center mb-4">Đơn Hàng Của Tôi</h1>
+    <h1 class="text-center mb-4">Đơn Hàng Của Tôi </h1>
 
     @if($orders->isEmpty())
     <div class="table-responsive">
@@ -58,7 +58,7 @@
                             </ul>
                         </div>
                     </th>
-                    <th>Tổng tiền</th>
+                    <th>Tổng tiền</th> 
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -105,96 +105,193 @@
                         <td>{{ ucfirst($order->status) }}</td>
                         <td>{{ number_format($orderTotals[$order->id], 0, ',', '.') }} VND</td>
                         <td>
-                            <div class="d-flex flex-column gap-2">
-                                <button class="btn btn-primary btn-sm" onclick="viewOrderDetails({{ $order->id }})">Xem chi tiết</button>
+                        
+                                <button class="btn btn-info btn-sm mb-2" onclick="viewOrderDetails({{ $order->id }})">Xem chi tiết</button>
                                 @if($order->status == 'Đang giao')
-                                    <button class="btn btn-success btn-sm" onclick="confirmReceived({{ $order->id }})">Đã nhận</button>
+                                    <button class="btn btn-success btn-sm mb-2" onclick="confirmReceived({{ $order->id }})">Đã nhận</button>
                                 @elseif($order->status == 'Chờ xác nhận')
-                                    <button class="btn btn-danger btn-sm" onclick="cancelOrder({{ $order->id }})">Hủy</button>
-                                @endif
-                            </div>
+                                    <button class="btn btn-danger btn-sm mb-2" onclick="cancelOrder({{ $order->id }})">Hủy</button>
+                               
+                                 @endif
+        
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @endif
+    <div id="order-details-container" style="display:none;">
+    <div>
+        <h3>Thông tin đơn hàng</h3>
+        <p><strong>Ngày tạo:</strong> <span id="order-created"></span></p>
+        <p><strong>Trạng thái:</strong> <span id="order-status"></span></p>
+        <p><strong>Tổng tiền:</strong> <span id="order-total-price"></span></p>
+    </div>
+    <hr>
+    <div>
+        <h3>Danh sách sản phẩm</h3>
+        <div id="order-items-container"></div>
+    </div>
+</div>
+    <div id="orderDetailModal" class="modal fade" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailModalLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <section id="orderInfo">
+                        <h3>Thông tin đơn hàng</h3>
+                        <p><strong>Ngày tạo:</strong> <span id="orderCreatedDate"></span></p>
+                        <p><strong>Trạng thái:</strong> <span id="orderStatus"></span></p>
+                        <p><strong>Tổng tiền:</strong> <span id="orderTotal"></span></p>
+                    </section>
+                    <hr>
+                    <section id="orderItems">
+                        <h3>Danh sách sản phẩm</h3>
+                        <div id="productList"></div>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Rate Product Modal -->
+    <div id="rateProductModal" class="modal fade" tabindex="-1" aria-labelledby="rateProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rateProductModalLabel">Đánh giá sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="rateProductForm" method="POST" action="{{ route('rate.product') }}">
+                        @csrf
+                        <input type="hidden" name="product_id" id="modal-product-id">
+                        <input type="hidden" name="order_id" id="modal-order-id">
+                        <input type="hidden" name="rating" id="modal-rating" value="0">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Đánh giá</label>
+                            <div id="modal-star-rating" style="font-size: 24px; color: gold;">
+                                <i class="fa-regular fa-star" data-value="1" onclick="setRating(1)"></i>
+                                <i class="fa-regular fa-star" data-value="2" onclick="setRating(2)"></i>
+                                <i class="fa-regular fa-star" data-value="3" onclick="setRating(3)"></i>
+                                <i class="fa-regular fa-star" data-value="4" onclick="setRating(4)"></i>
+                                <i class="fa-regular fa-star" data-value="5" onclick="setRating(5)"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Nhận xét</label>
+                            <textarea class="form-control" name="comment" id="modal-comment" rows="4" placeholder="Viết nhận xét về sản phẩm" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '{{ session('error') }}',
+                showConfirmButton: true,
+            });
+        </script>
+    @endif
+    
 </div>
 
 
 <br> <br> <br> <br> <br> <br><br> <br> <br>
 
 <!-- Include footer -->
-@include('header_footer.footer')
 
 <script>
     // Function to show order details using SweetAlert
     function viewOrderDetails(orderId) {
-        Swal.fire({
-            title: 'Đang tải thông tin đơn hàng...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        });
+    Swal.fire({
+        title: 'Đang tải thông tin đơn hàng...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
-        fetch(`{{url('/order-details/${orderId}')}}`) // Assuming you have an endpoint to fetch order details
+    fetch(`{{url('/order-details/${orderId}')}}`) // Update this endpoint as necessary
         .then(response => response.json())
         .then(data => {
-            Swal.fire({
-                title: `Chi tiết đơn hàng #${data.order.id}`,
-                html: generateOrderDetailsHtml(data.order),
-                icon: 'info',
-                confirmButtonText: 'Đóng',
-                width:'60%'
+            // Update order info
+            document.getElementById('orderCreatedDate').innerText = new Date(data.order.created_at).toLocaleDateString();
+            document.getElementById('orderStatus').innerText = data.order.status;
+            document.getElementById('orderTotal').innerText = `${data.order.total_price.toLocaleString()} VND`;
+
+            // Populate product list
+            const productList = document.getElementById('productList');
+            productList.innerHTML = ''; // Clear existing content
+
+            data.order.items.forEach(item => {
+                let productHTML = `
+                    <div class="modal-content-left">
+                        <img src="${item.product.img_path}" alt="Product Image" style="width: 120px; border-radius: 5px; margin-right: 15px;">
+                        <div style="flex: 1;">
+                            <h5 style="margin: 0 0 5px;">${item.product.name}</h5>
+                            <p style="margin: 0; font-size: 16px;"><strong>Số lượng:</strong> ${item.quantity}</p>
+                            <p style="margin: 0; font-size: 16px;"><strong>Đơn giá:</strong> ${item.product.price.toLocaleString()} VND</p>
+                            <p style="margin: 0; font-size: 16px;"><strong>Tổng:</strong> ${(item.product.price * item.quantity).toLocaleString()} VND</p>
+                            <p style="margin: 0; font-size: 16px;"><strong>Người bán:</strong> ${item.product.seller.name}</p>
+                `;
+
+                if (data.order.status === 'Đã nhận') {
+                    productHTML += `
+                        <button class="btn btn-warning btn-sm mt-2" onclick="openRateProductModal(${data.order.id}, ${item.product.id})">Đánh giá</button>
+                    `;
+                }
+
+                productHTML += `
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                `;
+                
+
+                productList.innerHTML += productHTML;
             });
+
+            // Show the modal
+            const orderDetailModal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+            orderDetailModal.show();
+
+            // Close loading dialog
+            Swal.close();
         })
         .catch(error => {
-            console.error("Error fetching order details:", error);
+            console.error('Error fetching order details:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Có lỗi xảy ra',
                 text: 'Vui lòng thử lại sau.'
             });
         });
-    }
-
-    // Function to generate order details HTML dynamically
-    function generateOrderDetailsHtml(order) {
-        let orderDetailsHtml = `
-            <div class="modal-content-left">
-                <section>
-                    <h3>Thông tin đơn hàng</h3>
-                    <p><strong>Ngày tạo:</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
-                    <p><strong>Trạng thái:</strong> ${order.status}</p>
-                    <p><strong>Tổng tiền:</strong> ${order.total_price.toLocaleString()} VND</p>
-                </section>
-                <hr>
-                <section>
-                    <h3>Danh sách sản phẩm</h3>
-        `;
-        console.log(order.items);
-
-        order.items.forEach(item => {
-            orderDetailsHtml += `
-                <div style="margin-bottom: 15px;">
-                    <img src="${item.product.img_path}" alt="Product Image" style="width: 100px; display: inline-block; margin-right: 10px; border-radius: 5px">
-                    <div style="display: inline-block; vertical-align: top;">
-                        <h5>${item.product.name}</h5>
-                        <p>Số lượng: ${item.quantity}</p>
-                        <p>Đơn giá: ${item.product.price.toLocaleString()} VND</p>
-                        <p>Tổng: ${(item.product.price * item.quantity).toLocaleString()} VND</p>
-                        <p>Người bán: ${item.product.seller.name} </p>
-                    </div>
-                </div>
-                <br>
-            `;
-        });
-
-        orderDetailsHtml += `</section></div>`;
-        return orderDetailsHtml;
-    }
-
+}
 
     function confirmOrder(orderId) {
         Swal.fire({
@@ -366,6 +463,29 @@
             }
         });
     }
+
+    
+function openRateProductModal(orderId, productId) {
+    document.getElementById('modal-order-id').value = orderId;
+    document.getElementById('modal-product-id').value = productId;
+
+    const modal = new bootstrap.Modal(document.getElementById('rateProductModal'));
+    modal.show();
+}
+function setRating(rating) {
+    const stars = document.querySelectorAll('#modal-star-rating .fa-star');
+    console.log(stars);
+    // Reset all stars
+    stars.forEach(star => star.classList.remove('fa-solid'));
+    // Highlight the selected stars
+    for (let i = 0; i < rating; i++) {
+        stars[i].classList.add('fa-solid');
+    }
+    // Update the hidden rating field
+    document.getElementById('modal-rating').value = rating;
+}
+
+
 
 
 

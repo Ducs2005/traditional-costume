@@ -62,8 +62,8 @@ class CartController extends Controller
             $payment->note = $paymentData['vnp_OrderInfo'] ?? null;
             $payment->code_vnpay = $paymentData['vnp_TmnCode'] ?? null;
             $payment->code_bank = $paymentData['vnp_BankCode'] ?? null;
-            $payment->time = $paymentData['vnp_PayDate'] 
-                ? \Carbon\Carbon::createFromFormat('YmdHis', $paymentData['vnp_PayDate']) 
+            $payment->time = $paymentData['vnp_PayDate']
+                ? \Carbon\Carbon::createFromFormat('YmdHis', $paymentData['vnp_PayDate'])
                 : now();
             $payment->save();
 
@@ -74,34 +74,48 @@ class CartController extends Controller
                 throw new Exception('Cart not found or is empty.');
             }
 
-            // Create a new order
-            $order = new Order();
-            $order->user_id = auth()->id();
-            $order->status = 'chờ xác nhận'; // Set the order status to pending
-            $order->save();
+            // Group cart items by seller
+            $cartItemsBySeller = $cart->items->groupBy(function ($item) {
+                return $item->product->seller_id; // Assuming each product has a `seller_id`
+            });
 
-            // Process cart items
-            foreach ($cart->items as $item) {
-                $product = $item->product;
+            // Create an order for each seller
+            foreach ($cartItemsBySeller as $sellerId => $sellerItems) {
+                $order = new Order();
+                $order->user_id = auth()->id();
+                $order->status = 'Chờ xác nhận'; // Set the order status to pending
+                $order->save();
 
-                if ($product) {
-                    // Ensure the product has sufficient stock
-                    if ($product->quantity < $item->quantity) {
-                        throw new Exception("Insufficient stock for product {$product->name}");
+                foreach ($sellerItems as $item) {
+                    $product = $item->product;
+
+                    if ($product) {
+                        // Ensure the product has sufficient stock
+                        if ($product->quantity < $item->quantity) {
+                            throw new Exception("Insufficient stock for product {$product->name}");
+                        }
+
+                        // Update the product's quantity and sold fields
+                        $product->quantity -= $item->quantity; // Reduce stock
+                        $product->sold += $item->quantity;     // Increase sold
+                        $product->save();
                     }
 
-                    // Update the product's quantity and sold fields
-                    $product->quantity -= $item->quantity; // Reduce stock
-                    $product->sold += $item->quantity;     // Increase sold
-                    $product->save();
-                }
+                    // Save each cart item to the order_items table
+                    $order->items()->create([
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'price' => $product->price, // Save the price at the time of order
+                    ]);
 
-                // Save each cart item to the order_items table
-                $order->items()->create([
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $product->price, // Save the price at the time of order
-                ]);
+                    // Save purchase data
+                    DB::table('purchases')->insert([
+                        'user_id' => auth()->id(),
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'purchased_at' => now(),
+                    ]);
+                }
             }
 
             // Clear the cart items
@@ -114,9 +128,10 @@ class CartController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return redirect()->route('cart.view')->with('error', $e->getMessage());
         }
     }
+
 
 
 

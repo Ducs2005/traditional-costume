@@ -7,7 +7,7 @@ use App\Models\Order;
 use App\Models\Orderitem;
 use Exception;
 use Illuminate\Support\Facades\Log;
-
+use DB;
 class OrderController extends Controller
 {
     public function index(Request $request)
@@ -119,6 +119,7 @@ class OrderController extends Controller
                     return [
                         'quantity' => $item->quantity,
                         'product' => [
+                            'id' =>$item->product->id,
                             'name' => $item->product->name,
                             'img_path' => $item->product->img_path,
                             'price' => $item->product->price,
@@ -185,16 +186,32 @@ class OrderController extends Controller
     public function confirmReceived(Request $request, Order $order)
     {
         try {
+            // Update order status
             $order->update(['status' => 'Đã nhận']);
+
+            // Insert products from the order into the purchases table
+            foreach ($order->items as $item) {
+                DB::table('purchases')->insert([
+                    'user_id' => auth()->id(), // Current authenticated user
+                    'product_id' => $item->product_id, // Product from the order item
+                    'quantity' => $item->quantity, // Quantity from the order item
+                    'purchased_at' => now(), // Current timestamp
+                    'created_at' => now(), // Timestamp for when the record was created
+                    'updated_at' => now(),
+                ]);
+            }
+        } catch (Exception $e) {
+            Log::error('Error confirming receipt: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Đã xảy ra lỗi khi xác nhận đơn hàng'
+            ], 500);
         }
-        catch (Exception $e)
-        {
-            Log::info('errro' . $e->getMessage());
-        }
+
         return response()->json([
             'message' => 'Đơn hàng đã hoàn thành'
         ]);
     }
+
 
     public function cancel(Request $request, Order $order)
     {
