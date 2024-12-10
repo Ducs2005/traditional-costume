@@ -184,8 +184,8 @@ header .menu {
         right: 0;
     }
     .sub-menu {
-        top: 90%; 
-        left: 0; 
+        top: 90%;
+        left: 0;
     }
 }
 
@@ -198,11 +198,11 @@ header .menu {
         width: 100%;
     }
     .sub-menu {
-        top: 80%; 
+        top: 80%;
     }
 }
 
-@media (min-width: 1200px) {  
+@media (min-width: 1200px) {
     header ul li a {
         font-size: 16px;
     }
