@@ -1,178 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home view</title>
+@extends('layout_home')
 
-    <!-- Include CSS file -->
-    <style>
-    /* General styling for the filter container */
-        .filter-container {
-            display: flex;
-            flex-wrap: wrap; /* Allow wrapping for better responsiveness */
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-            width: 96%; /* Adjusted for better alignment */
-            margin: 0 20px; /* Centering for larger screens */
-            
-            background-image: #f9f9f9; /* Light background for contrast */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        }
+@section('content_homePage')
 
-        /* Styling for inputs and dropdowns */
-        .filter-container input[type="text"],
-        .filter-container select {
-            padding: 10px 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            width: 40%; /* Default to full width for small screens */
-            transition: all 0.3s ease-in-out;
-            box-sizing: border-box; 
-            margin-bottom: 10px;
-        }
+    <div class="bannerList">
+        <img src="{{ asset('frontend/img/banner/banner5.png') }}" alt="Sample Banner Image">
+        <div class="banner-content">
+            <h1>Ao Dai - A Symbol of Vietnamese Culture</h1>
+            <p>
+                The Ao Dai is a traditional Vietnamese garment known for its elegance and graceful silhouette, typically worn on formal occasions and national celebrations.
+            </p>
+            <a href="#" class="btn banner-btn">See more</a>
+        </div>
+        <div class="dot-nav">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
 
-        /* Focus and hover effects for better interactivity */
-        .filter-container input[type="text"]:focus,
-        .filter-container select:focus {
-            border-color: #f4500e; /* Highlight on focus */
-            outline: none; /* Remove default outline */
-            background-color: #fffdf0; /* Light highlight background */
-        }
+    <div class="product_body">
+        <div class="filter-container">
+            <div class="tag-container">
+                <div class="centered-text"> Bộ lọc</div>
+                <br>
+            </div>
 
-        .filter-container input[type="text"]:hover,
-        .filter-container select:hover {
-            border-color: #ddd; /* Slight change on hover */
-        }
+            <input type="text" id="productSearch" placeholder="Search products..." onkeyup="filterProducts()">
 
-        /* Styling for input and select placeholders */
-        .filter-container select {
-            background-color: #ffffff;
-            color: #555;
-            cursor: pointer;
-            width: 13%; 
-        }
+            <select id="colorSelect" onchange="filterProducts()">
+                <option value="">Màu chính</option>
+                @foreach($colors as $color)
+                    <option value="{{ $color->id }}">{{ $color->name }}</option>
+                @endforeach
+            </select>
 
-        .filter-container option {
-            color: #333; /* Ensure options are legible */
-        }
+            <select id="materialSelect" onchange="filterProducts()">
+                <option value="">Chất liệu</option>
+                @foreach($materials as $material)
+                    <option value="{{ $material->id }}">{{ $material->name }}</option>
+                @endforeach
+            </select>
 
-        /* Responsiveness: Adjust layout for smaller screens */
-        @media (max-width: 768px) {
-            .filter-container {
-                gap: 12px; /* Reduce gap on smaller screens */
-            }
+            <select id="buttonSelect" onchange="filterProducts()">
+                <option value="">Loại nút</option>
+                @foreach($buttons as $button)
+                    <option value="{{ $button->id }}">{{ $button->name }}</option>
+                @endforeach
+            </select>
+            <select id="buttonSort" onchange="filterProducts()">
+                <option value="">Sắp xếp</option>
+                    <option value="byName">A-Z</option>
+                    <option value="byPriceDecrease">Theo giá giảm dần</option>
+                    <option value="byPriceIncrease">Theo giá tăng dần</option>
 
-            .filter-container input[type="text"],
-            .filter-container select {
-                font-size: 14px; /* Reduce font size for smaller devices */
-                padding: 8px 10px;
-            }
-            .filter-container input[type="text"] {
-                width: 85%; /* Allow full width on small screens */
-            }
-            .filter-container select {
-                width: 20%; /* Allow full width on small screens */
-            }
-        }
+            </select>
+        </div>
+        @include ('product.product', ['type' => 'popular', 'currentProduct' => null])
+    </div>
 
-        @media (max-width: 480px) {
-            .filter-container {
-                gap: 8px; /* Further reduce gap on very small screens */
-            }
-
-            .filter-container input[type="text"],
-            .filter-container select {
-                font-size: 14px; /* Reduce font size for smaller devices */
-                padding: 8px 10px;
-            }
-            .filter-container input[type="text"] {
-                width: 85%; /* Allow full width on small screens */
-            }
-            .filter-container select {
-                width: 20%; /* Allow full width on small screens */
-            }
-        }
-         .tag-container {
-            text-align: center;
-            height: 40px;
-            background-image: url('{{ asset('frontend/img/background/backgr.jpg') }}');
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            margin-bottom: 15px;
-            width: 100%;
-        }
-
-         .tag-container .centered-text {
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Playfair Display', serif;
-            color: #fff;
-            font-weight: bold;
-        }
-    </style>
-
-</head>
-
-<body>
-    @include ('header_footer.header')
-   @include ('chat.chat_window')
-    
-    <br><br><br><br> <br><br><br>
-
-    @include ('banner')
-
-    <br><br><br>
-    <div class="filter-container">
+    <div class="product product-discount">
         <div class="tag-container">
-            <div class="centered-text"> Bộ lọc</div>
+            <div class="centered-text" id="listType">Chỉ từ ...đ</div>
             <br>
         </div>
-        
-        <input type="text" id="productSearch" placeholder="Search products..." onkeyup="filterProducts()">
-        
-        <select id="colorSelect" onchange="filterProducts()">
-            <option value="">Màu chính</option>
-            @foreach($colors as $color)
-                <option value="{{ $color->id }}">{{ $color->name }}</option>
-            @endforeach
-        </select>
-        
-        <select id="materialSelect" onchange="filterProducts()">
-            <option value="">Chất liệu</option>
-            @foreach($materials as $material)
-                <option value="{{ $material->id }}">{{ $material->name }}</option>
-            @endforeach
-        </select>
-        
-        <select id="buttonSelect" onchange="filterProducts()">
-            <option value="">Loại nút</option>
-            @foreach($buttons as $button)
-                <option value="{{ $button->id }}">{{ $button->name }}</option>
-            @endforeach
-        </select>
-        <select id="buttonSort" onchange="filterProducts()">
-            <option value="">Sắp xếp</option>
-                <option value="byName">A-Z</option>
-                <option value="byPriceDecrease">Theo giá giảm dần</option>
-                <option value="byPriceIncrease">Theo giá tăng dần</option>
+        <div class="list-item">
+            @if($discountedProducts->isEmpty())
+            <p>No discounted products found.</p>
+            @else
+            @foreach($discountedProducts as $product)
+                <div class="item product-item">
+                    <img src="{{ asset($product->img_path) }}" alt="{{ $product->name }}">
+                    <h4>{{ $product->name }}</h4>
+                    <div class="price">
+                        {{ number_format($product->price, 0, ',', '.') }} ₫
+                    </div>
+                    <div class="product-attributes">
+                        @if($product->color)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->color->name }}</a>
+                            </div>
+                        @endif
+                        @if($product->material)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->material->name }}</a>
+                            </div>
+                        @else
+                            <a class="category-label">No material</a>
+                        @endif
+                        @if($product->button)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->button->name }}</a>
+                            </div>
+                        @endif
 
-        </select>
+                        @if($product->type)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->type->name }}</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+            @endif
+        </div>
     </div>
-    @include ('product.product', ['type' => 'popular', 'currentProduct' => null])
 
-    <br><br><br>
+    <div class="product product-discount">
+        <div class="tag-container">
+            <div class="centered-text" id="listType">Sản phẩm được yêu thích nhất</div>
+            <br>
+        </div>
+        <div class="list-item">
+            @if($popularProducts->isEmpty())
+            <p>No discounted products found.</p>
+            @else
+            @foreach($popularProducts as $product)
+                <div class="item product-item">
+                    <img src="{{ asset($product->img_path) }}" alt="{{ $product->name }}">
+                    <h4>{{ $product->name }}</h4>
+                    <div class="price">
+                        {{ number_format($product->price, 0, ',', '.') }} ₫
+                    </div>
+                    <div class="product-attributes">
+                        @if($product->color)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->color->name }}</a>
+                            </div>
+                        @endif
+                        @if($product->material)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->material->name }}</a>
+                            </div>
+                        @else
+                            <a class="category-label">No material</a>
+                        @endif
+                        @if($product->button)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->button->name }}</a>
+                            </div>
+                        @endif
 
-    @include ('header_footer.footer')
+                        @if($product->type)
+                            <div class="attribute-group">
+                                <a class="category-label">{{ $product->type->name }}</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+            @endif
+        </div>
+    </div>
 
-   
-<!-- Include the products.js script -->
 
-<script>  
+<script src="{{asset('frontend/js/banner.js')}}"></script>
+<script>
     initEventListeners() {
         const filterButton = document.getElementById('filterButton');
         if (filterButton) {
@@ -233,7 +216,5 @@
         });
     }
 </script>
-</body>
 
-
-</html>
+@endsection

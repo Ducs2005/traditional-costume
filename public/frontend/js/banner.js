@@ -1,9 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let bannerIndex = 0; // Start at the first banner
     const banners = [
-        "../public/frontend/img/banner/banner1.jpg",
-        "../public/frontend/img/banner/banner2.jpg",
-        "../public/frontend/img/banner/banner3.jpg"
+        "../public/frontend/img/banner/banner5.png",
+        "../public/frontend/img/banner/banner7.png",
+        "../public/frontend/img/banner/banner8.png",
+        "../public/frontend/img/banner/banner6.png"
     ];
 
     const bannerTexts = [
@@ -18,12 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             title: 'Ao Dai - Timeless Beauty',
             description: 'The timeless beauty of Ao Dai has remained a symbol of Vietnamese culture, evolving with modern fashion while retaining its classic charm.',
+        },
+        {
+            title: 'Ao Dai - Timeless Beauty',
+            description: 'The timeless beauty of Ao Dai has remained a symbol of Vietnamese culture, evolving with modern fashion while retaining its classic charm.',
         }
     ];
 
     function changeBanner() {
         bannerIndex = (bannerIndex + 1) % banners.length; // Cycle through the banners
-        const bannerImage = document.querySelector('.banner img');
+        const bannerImage = document.querySelector('div.bannerList img');
         bannerImage.src = banners[bannerIndex]; // Update the image source
         updateBannerText(); // Update text
         updateDots(); // Update dots
@@ -46,21 +51,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function goToBanner(index) {
         bannerIndex = index;
-        document.querySelector('.banner img').src = banners[bannerIndex];
+        document.querySelector('.bannerList img').src = banners[bannerIndex];
         updateBannerText(); // Update text for the clicked dot
         updateDots(); // Update dot indicator
     }
 
-    // Set up dot click events
     document.querySelectorAll('.dot').forEach((dot, index) => {
         dot.addEventListener('click', () => goToBanner(index));
     });
 
-    // Automatically change banner every 5 seconds
-    setInterval(changeBanner, 5000);
+    setInterval(changeBanner, 3000); // Automatically change banner every 5 seconds
 
     updateDots(); // Initialize dot indicator
     updateBannerText(); // Initialize banner text
 });
-
-

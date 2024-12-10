@@ -304,7 +304,7 @@ section {
 /* section shop */
 #shop {
     padding-top: 20px;
-    background-image: url(../img/banner/banner4.jpg);
+    background-image: url(../img/banner/banner5.png);
     width: 100%;
     height: 60vh;
     background-size: cover;
@@ -316,10 +316,10 @@ section {
     align-items: flex-start;
 }
 #shop h4 {
-    color: #f0f0f0;
+    color: #ffffff;
 }
 #shop h1 {
-    color: #f0f0f0;
+    color: #000000;
 }
 #shop button {
     color: #030303;
@@ -375,17 +375,21 @@ section {
 /* section about us */
 .team {
     width: 100%;
-    height: 90vh;
-    /* background-image: url(../img/banner/background.jpg); */
-    background-size: cover;
-    background-position: center;
+    height: 100vh;
+    margin-top: 40px;
+    background-image: url(https://i.pinimg.com/736x/aa/c6/7b/aac67ba76a074829325e0ad4766d221b.jpg),
+    url(https://i.pinimg.com/736x/fb/1d/e2/fb1de216a0fba2d21686db0fe3d3b185.jpg);
+    background-size: 20%, 15%;
+    background-repeat: no-repeat;
+    background-position: top left, bottom right;
+    background-blend-mode: overlay;
 }
 .team h1 {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 55px;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 .team .team_box {
     width: 95%;
@@ -399,8 +403,8 @@ section {
 }
 .team .team_box .profile {
     width: 320px;
+    border-radius: 20px;
     height: 320px;
-    border-radius: 50%;
     margin: 0 15px;
     display: flex;
     align-items: center;
@@ -409,14 +413,11 @@ section {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     transition: 0.4s;
 }
-.team .team_box .profile:hover {
-    border-radius: 20px;
-    height: 320px;
-}
 .team .team_box .profile img {
     width: 250px;
     height: 250px;
-    border-radius: 50%;
+    border-radius: 20px;
+    margin-top: -230px;
     object-fit: cover;
     object-position: center;
     cursor: pointer;
@@ -424,36 +425,25 @@ section {
     z-index: 2;
     transition: 0.4s;
 }
-.team .team_box .profile:hover img {
-    border-radius: 20px;
-    margin-top: -230px;
-}
 .team .team_box .profile .info {
     position: absolute;
     text-align: center;
-    top: 25%;
+    top: 60%;
     transition: 0.4s;
 }
-.team .team_box .profile:hover .info {
-    top: 60%;
-}
 .team .team_box .profile .info .name {
-    font-size: 10px;
-    font-weight: bolder;
-    color:#ff8000;
-    margin-bottom: 15px;
-}
-.team .team_box .profile:hover .info .name {
     font-size: 30px;
     font-weight: bolder;
-    color:#ff8000;
+    color:#340000;
     margin-bottom: 15px;
 }
+
 .team .team_box .profile .info .info_p {
     font-size: 20px;
 }
 @media (max-width: 1400px) {
     .banner {
+        /* margin: 110px 20px 0; */
         height: 100vh;
     }
     .banner .slider {
@@ -507,6 +497,7 @@ section {
 
 @media (max-width: 1200px) {
     .banner {
+        /* margin: 110px 20px 0; */
         height: 110vh;
     }
     .banner .slider {

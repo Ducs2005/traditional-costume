@@ -126,7 +126,7 @@
 
     {{-- section shop --}}
     <section class="shop my-2 py-5" id="shop">
-        <div class="container my-5 py-4">
+        <div class="my-5 py-4">
             <h4>Shop name</h4>
             <h1>Autumn Collection
                 <br>UP TO 20% OFF
@@ -252,27 +252,27 @@
     </section>
     <!-- section about us -->
     <section class="team" id="team">
-        <h1>Our <span>Team</span></h1>
+        <h1>Our <span> Team</span></h1>
         <div class="team_box">
             <div class="profile">
                 <img src="{{ asset('frontend/img/member/PND.png') }}" alt="">
                 <div class="info">
                     <h2 class="name">Pham Ngoc Duc</h2>
-                    <p class="info_p">23JIT_Leader</p>
+                    <p class="info_p">23JIT_Nhóm trưởng</p>
                 </div>
             </div>
             <div class="profile">
                 <img src="{{ asset('frontend/img/member/DTP.jpg') }}" alt="">
                 <div class="info">
                     <h2 class="name">Dam Thanh Phuong</h2>
-                    <p class="info_p">23JIT_Member</p>
+                    <p class="info_p">23JIT_Thành viên</p>
                 </div>
             </div>
             <div class="profile">
                 <img src="{{ asset('frontend/img/member/PHN.png') }}" alt="">
                 <div class="info">
                     <h2 class="name">Pham Hoang Nguyen</h2>
-                    <p class="info_p">23JIT_Member</p>
+                    <p class="info_p">23JIT_Thành viên</p>
                 </div>
             </div>
         </div>

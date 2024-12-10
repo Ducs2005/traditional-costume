@@ -1,0 +1,247 @@
+.bannerList {
+    width: 96%; /* Adjusted for better alignment */
+    height: 400px;
+    margin: 110px 20px 40px 0;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    display: inline-block;
+}
+.bannerList img {
+    width: 100%;
+    height: auto; /* Makes the image take the full height of the container */
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.9;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.banner-content {
+    position: absolute;
+    bottom: 30px;
+    margin-bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.4s ease;
+    text-align: center;
+    z-index: 1;
+    max-height: 300px; /* Set a maximum height for the content */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+
+.banner-content h1 {
+    font-size: 2rem; /* Adjust to fit at the bottom */
+    margin-bottom: 10px;
+}
+
+.banner-content p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.btn.banner-btn {
+    padding: 10px 40px;
+    background-color: #952400;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn.banner-btn:hover {
+    background-color: #e64a19;
+}
+
+/* Show the content on hover */
+.bannerList:hover .banner-content {
+    opacity: 1; /* Makes content visible on hover */
+}
+@media only screen and (max-width: 768px) {
+    .bannerList {
+        width: calc(100vw - 10px); /* Adjust width for smaller screens */
+        margin: 0 5px; /* Reduce left and right alignment to 5px on small screens */
+    }
+
+
+    .bannerList img {
+        width: 100%;
+        height: 250px; /* Set a fixed height to prevent excessive height on small screens */
+        object-fit: cover; /* Maintains aspect ratio */
+        object-position: center; /* Center image horizontally and vertically */
+    }
+
+    /* Adjust Banner Content for Small Screens */
+    .banner-content h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem); /* Responsive font size */
+    }
+
+    .banner-content p {
+        font-size: clamp(1rem, 3vw, 1.3rem); /* Responsive font size */
+    }
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+.banner-content::-webkit-scrollbar {
+    width: 6px; /* Smaller width for a sleeker design */
+}
+
+.banner-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent thumb */
+    border-radius: 10px; /* Rounded scrollbar for a smoother look */
+}
+
+.banner-content::-webkit-scrollbar-track {
+    background-color: transparent; /* No background color for the track */
+}
+
+/* For Firefox (using the ::scrollbar pseudo-element) */
+.banner-content {
+    scrollbar-width: thin; /* Use the thinner default scrollbar */
+    scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* Custom colors */
+}
+
+/* Dot Navigation Styles */
+.dot-nav {
+    position: absolute;
+    bottom: 10px;
+    margin-bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px; /* Spacing between dots */
+    z-index: 2; /* Ensure it’s above other content */
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Default color */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: #ff5722; /* Active dot color */
+}
+
+.dot:hover {
+    background-color: #e64a19; /* Hover color */
+}
+
+/* body */
+.product_body {
+    display: flex;
+    padding-bottom: 30px;
+}
+.filter-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    width: 20%;
+    margin: 0 0 0 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Styling for inputs and dropdowns */
+.filter-container input[type="text"],
+.filter-container select {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 80%; /* Default to full width for small screens */
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Focus and hover effects for better interactivity */
+.filter-container input[type="text"]:focus,
+.filter-container select:focus {
+    border-color: #f4500e; /* Highlight on focus */
+    outline: none; /* Remove default outline */
+    background-color: #fffdf0; /* Light highlight background */
+}
+
+.filter-container input[type="text"]:hover,
+.filter-container select:hover {
+    border-color: #ddd; /* Slight change on hover */
+}
+
+/* Styling for input and select placeholders */
+.filter-container select {
+    background-color: #ffffff;
+    color: #555;
+    cursor: pointer;
+    width: 50%;
+}
+
+.filter-container option {
+    color: #333; /* Ensure options are legible */
+}
+
+/* Responsiveness: Adjust layout for smaller screens */
+@media (max-width: 768px) {
+    .filter-container {
+        gap: 12px; /* Reduce gap on smaller screens */
+    }
+
+    .filter-container input[type="text"],
+    .filter-container select {
+        font-size: 14px; /* Reduce font size for smaller devices */
+        padding: 8px 10px;
+    }
+    .filter-container input[type="text"] {
+        width: 85%; /* Allow full width on small screens */
+    }
+    .filter-container select {
+        width: 20%; /* Allow full width on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-container {
+        gap: 8px; /* Further reduce gap on very small screens */
+    }
+
+    .filter-container input[type="text"],
+    .filter-container select {
+        font-size: 14px; /* Reduce font size for smaller devices */
+        padding: 8px 10px;
+    }
+    .filter-container input[type="text"] {
+        width: 85%; /* Allow full width on small screens */
+    }
+    .filter-container select {
+        width: 20%; /* Allow full width on small screens */
+    }
+}
+ .tag-container {
+    text-align: center;
+    height: 40px;
+    background-image: url(../img/background/backgr.jpg);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+ .tag-container .centered-text {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-weight: bold;
+}

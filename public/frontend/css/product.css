@@ -1,6 +1,6 @@
 .product {
-    width: 96%; /* Adjusted for better alignment */
-    margin: 0 20px; /* Centering for larger screens */
+    width: 100%;
+    margin: 0 10px;
     background-color: #f5f5f5;
     border-radius: 12px;
     font-family: 'Poppins', sans-serif;
@@ -11,7 +11,7 @@
 .product .tag-container {
     text-align: center;
     height: 40px;
-    background: url('../img/background/backgr.jpg') ;     
+    background: url('../img/background/backgr.jpg') ;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin-bottom: 15px;
@@ -27,10 +27,9 @@
     font-weight: bold;
 }
 
-/* List item container as a flexbox */
 .product .list-item {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     border-radius: 25px;
     margin-left: 20px;
@@ -38,10 +37,9 @@
 
 /* Product item styling */
 .product .list-item .item {
-    flex: 1 1 calc(32% - 10px);
-    max-width: calc(32% - 10px);
     border-radius: 10px;
     padding: 15px;
+    height: 100%;
     background-color: #ffffff;
     box-shadow: 0 3px 6px rgba(203, 163, 163, 0.08);
     box-sizing: border-box;
@@ -56,7 +54,7 @@
 .product .list-item .item img {
     border-radius: 8px;
     width: 100%;
-    height: auto;
+    height: 70;
 }
 
 /* Product attributes styling */
@@ -69,7 +67,7 @@
 
 /* Category label styling */
 .product .list-item .item .category-label {
-    background-color: #ea5e2b;
+    border: 1px solid #ea5e2b;
     color: #511a0f;
     padding: 5px 10px;
     border-radius: 5px;
@@ -77,7 +75,10 @@
     text-decoration: none;
     transition: background-color 0.3s ease;
 }
-
+.product .list-item .item  h4 {
+    font-weight: bolder;
+    margin-top: 10px;
+}
 .product .list-item .item .category-label:hover {
     background-color: #af230d;
     color: #fff;
@@ -133,6 +134,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .pagination-button {
@@ -155,4 +157,8 @@
 .pagination-button:hover:not(:disabled) {
     background-color: #d1400b;
     transform: scale(1.05);
+}
+
+.product.product-discount {
+    padding: 20px 20px;
 }

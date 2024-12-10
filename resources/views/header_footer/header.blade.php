@@ -40,7 +40,7 @@
                 </li>
 
                 <li> <a href="{{ url('/product-list') }}" > Cửa hàng </a> </li>
-                <li><a href="{{ url('home#aboutus') }}">Về chúng tôi</a></li>
+                <li><a href="#team">Về chúng tôi</a></li>
                 <li class="dropdown">
                      <a href="#"><i class="fa-solid fa-bell"></i> Thông báo <span id="unread-count" class="badge bg-danger" style="display:none;"></span> </a>
                      <ul class="sub-menu">
@@ -88,7 +88,7 @@
 
     <script>
         // Check if the chat window exists
-        
+
         $(document).ready(function() {
             // CSRF Token for AJAX
             var csrfToken = $('meta[name="csrf-token"]').attr('content');

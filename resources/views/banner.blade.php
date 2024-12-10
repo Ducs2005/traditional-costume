@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{asset('frontend/css/banner.css')}}">
-<link rel="stylesheet" href="{{asset('frontend/css/main.css')}}">
+{{-- <link rel="stylesheet" href="{{asset('frontend/css/main.css')}}"> --}}
 <div class="banner">
-    <img src="../public/frontend/img/banner/banner1.jpg" alt="Sample Banner Image">
+    <img src="{{ asset('frontend/img/banner/banner5.png') }}" alt="Sample Banner Image">
     <div class="banner-content">
         <h1>Your Banner Title</h1>
         <p>

@@ -84,7 +84,10 @@ class ProductController extends Controller
             $colors = Color::all();
             $materials = Material::all();
             $buttons = Button::all();
-            return view('product.product_list', compact('products', 'type', 'colors', 'materials', 'buttons'));
+
+            $discountedProducts = Product::whereBetween('price', [100000, 300000])->get();
+            $popularProducts = Product::where('sold', '>=', 100)->get();
+            return view('product.product_list', compact('products', 'type', 'colors', 'materials', 'buttons', 'discountedProducts', 'popularProducts'));
     }
 
     public function create()
@@ -162,9 +165,5 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật thành công.');
     }
-
-
-
-
 }
 

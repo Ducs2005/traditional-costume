@@ -1,13 +1,13 @@
 
 class Pagination {
-    
+
     constructor(itemsPerPage) {
         this.products = []; // Array to hold products fetched from the server
         this.itemsPerPage = itemsPerPage; // Number of items per page
         this.currentPage = 1; // Start on the first page
         this.productContainer = document.querySelector('.list-item');
         this.paginationContainer = document.querySelector('.pagination');
-        
+
         // Ensure that the elements exist before adding event listeners
         this.initEventListeners();
 
@@ -80,12 +80,12 @@ class Pagination {
             this.productContainer.innerHTML = '<p>No products to display.</p>';
             return;
         }
-    
+
         // Loop through the filtered products and create product elements
         paginatedProducts.forEach(product => {
             const productItem = document.createElement('div');
             productItem.classList.add('item', 'product-item');
-    
+
             productItem.addEventListener('click', () => {
                 window.location.href = `${baseUrl}/product_description/${product.id}`;
             });
@@ -122,11 +122,11 @@ class Pagination {
                     </div>
                 </div>
             `;
-    
+
             this.productContainer.appendChild(productItem);
         });
     }
-    
+
 
     // Method to update pagination controls
     updatePagination() {
@@ -245,3 +245,4 @@ function filterProducts()
 {
     pagination.filterProducts();
 }
+
