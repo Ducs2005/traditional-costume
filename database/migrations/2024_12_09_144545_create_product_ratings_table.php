@@ -17,7 +17,7 @@ class CreateProductRatingsTable extends Migration
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
 
         });
-    }s
+    }
 
     public function down()
     {

@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateBannerText() {
         const titleElement = document.querySelector('.banner-content h1');
         const descriptionElement = document.querySelector('.banner-content p');
-        
+
         titleElement.textContent = bannerTexts[bannerIndex].title;
         descriptionElement.textContent = bannerTexts[bannerIndex].description;
     }
@@ -62,3 +62,5 @@ document.addEventListener('DOMContentLoaded', function() {
     updateDots(); // Initialize dot indicator
     updateBannerText(); // Initialize banner text
 });
+
+
