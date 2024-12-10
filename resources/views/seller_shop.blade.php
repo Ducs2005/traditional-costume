@@ -120,7 +120,7 @@
                         <input type="number" id="quantity" name="quantity" required placeholder="Số lượng" />
 
                         <!-- Product Color (Option Box) -->
-                        <select id="color" name="color" required>
+                        <select style="width:22%" id="color" name="color" required>
                             <option value="">Chọn màu</option>
                             @foreach ($colors as $color)
                                 <option value="{{ $color->id }}">{{ $color->name }}</option>
@@ -128,7 +128,7 @@
                         </select>
 
                         <!-- Product Button (Option Box) -->
-                        <select id="button" name="button" required>
+                        <select style="width:22%" id="button" name="button" required>
                             <option value="">Chọn nút</option>
                             @foreach ($buttons as $button)
                                 <option value="{{ $button->id }}">{{ $button->name }}</option>
@@ -136,10 +136,16 @@
                         </select>
 
                         <!-- Product Type (Option Box) -->
-                        <select id="type" name="type" required>
+                        <select style="width:23%" id="type" name="type" required>
                             <option value="">Chọn loại</option>
                             @foreach ($types as $type)
                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
+                            @endforeach
+                        </select>
+                        <select style="width:23%" id="material" name="material" required>
+                            <option value="">Chọn chất liệu</option>
+                            @foreach ($materials as $material)
+                                <option value="{{ $material->id }}">{{ $material->name }}</option>
                             @endforeach
                         </select>
 
@@ -602,6 +608,7 @@
                             document.getElementById('addProductForm').reset();  // Reset the form
                             document.getElementById('representativePreview').innerHTML = '';  // Clear crop preview
                             document.getElementById('detailPreview').innerHTML = '';  // Clear detail image previews
+                            location.reload();
                         });
                     } else {
                         // Show error SweetAlert

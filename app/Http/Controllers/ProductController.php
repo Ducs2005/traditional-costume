@@ -17,20 +17,50 @@ class ProductController extends Controller
     public function getProducts(): JsonResponse
     {
         // Fetch all products with their related attributes
-        $products = Product::with(['color', 'material', 'button', 'type'])
-        ->where('seller_id', '!=', auth()->id())
-        ->get();
+        $products = Product::with(['color', 'material', 'button', 'type', 'ratings'])
+            ->where('seller_id', '!=', auth()->id())
+            ->get()
+            ->map(function ($product) {
+                // Calculate the average rating
+                $averageRating = $product->ratings->isNotEmpty()
+                    ? $product->ratings->avg('rating')
+                    : 5;
+
+                // Get the number of ratings
+                $numberOfRatings = $product->ratings->count();
+
+                // Add the average rating and number of ratings to the product attributes
+                $product->average_rating = $averageRating;
+                $product->number_of_ratings = $numberOfRatings;
+
+                return $product;
+            });
+
         // Return products as a JSON response
         return response()->json($products);
     }
+
     public function show($id)
     {
         // Eager load the product with its related attributes including the seller (User)
         $product = Product::with(['color', 'productImages', 'material', 'button', 'type', 'seller', 'ratings.user'])->findOrFail($id);
-
+    
+        // Calculate the average rating
+        $averageRating = $product->ratings->isNotEmpty()
+            ? $product->ratings->avg('rating')
+            : 5;
+    
+        // Get the number of ratings
+        $numberOfRatings = $product->ratings->count();
+    
+        // Add the average rating and number of ratings as attributes
+        $product->average_rating = $averageRating;
+        $product->number_of_ratings = $numberOfRatings;
+    
         // Pass the product to the view
         return view('product.product_description', compact('product'));
     }
+    
 
 
 
@@ -51,18 +81,50 @@ class ProductController extends Controller
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', $request->price_min);
+        }
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', $request->price_max);
+        }
+        if ($request->filled('rating_filter')) {
+            $query->whereHas('ratings', function ($q) use ($request) {
+                $q->havingRaw('AVG(rating) >= ?', [$request->rating_filter]);
+            });
+        }
 
         // Apply sorting
         if ($request->sort_order === 'byName') {
             $query->orderBy('name');
-        } elseif ($request->sort_order === 'byPriceDecrease') {
-            $query->orderBy('price', 'desc');
+        } elseif ($request->sort_order === 'byRatingIncrease') {
+            $query->withAvg('ratings', 'rating')->orderBy('ratings_avg_rating', 'asc');
+        } elseif ($request->sort_order === 'byRatingDecrease') {
+            $query->withAvg('ratings', 'rating')->orderBy('ratings_avg_rating', 'desc');
         } elseif ($request->sort_order === 'byPriceIncrease') {
             $query->orderBy('price', 'asc');
+        } elseif ($request->sort_order === 'byPriceDecrease') {
+            $query->orderBy('price', 'desc');
         }
+    
+
 
         // Get the products
-        $products = $query->with(['color', 'material', 'button'])->get();
+        $products = $query->get()->map(function ($product) {
+            // Calculate the average rating
+            $averageRating = $product->ratings->isNotEmpty()
+                ? $product->ratings->avg('rating')
+                : 5;
+    
+            // Get the number of ratings
+            $numberOfRatings = $product->ratings->count();
+    
+            // Add the average rating and number of ratings to the product attributes
+            $product->average_rating = $averageRating;
+            $product->number_of_ratings = $numberOfRatings;
+    
+            return $product;
+        });
+    
 
         return response()->json(['products' => $products]);
     }

@@ -96,9 +96,16 @@ class Pagination {
             productItem.innerHTML = `
                 <img src="${imageUrl}" alt="${product.name}">
                 <h4>${product.name}</h4>
-                <div class="price">
-                    ${formattedPrice} <span class="vnd-icon">₫</span>
+                <div class="price-rating">
+                    <div class="price">
+                        ${formattedPrice} <span class="vnd-icon">₫</span>
+                    </div>
+                    <div class="rate">
+                        ${product.average_rating} /5 <i class="fa-solid fa-star" style="color: gold;"></i> (${product.number_of_ratings} đã đánh giá)
+                    </div>
                 </div>
+
+
                 <div class="product-attributes">
                     <div class="attribute-group">
                         <a href="/products/category/${product.color ? product.color.name : 'No Color'}" class="category-label">
@@ -195,6 +202,8 @@ class Pagination {
         const buttonId = document.getElementById('buttonSelect').value;
         const sortOrder = document.getElementById('buttonSort').value;
         const searchQuery = document.getElementById('productSearch').value;
+        const minPrice = parseInt(document.getElementById('minPrice').value, 10);
+        const maxPrice = parseInt(document.getElementById('maxPrice').value, 10);
 
         // Create an object to hold the filter parameters
         const filters = {
@@ -202,7 +211,9 @@ class Pagination {
             material_id: materialId,
             button_id: buttonId,
             sort_order: sortOrder,
-            search: searchQuery
+            search: searchQuery,
+            price_min: minPrice,
+            price_max: maxPrice,
         };
 
         const filterUrl = `${baseUrl}/api/products/filter`; // Use template literals for clarity
@@ -245,3 +256,40 @@ function filterProducts()
 {
     pagination.filterProducts();
 }
+
+function updatePriceRange() {
+    const minPrice = document.getElementById('minPrice');
+    const maxPrice = document.getElementById('maxPrice');
+    const priceLabel = document.getElementById('priceRangeLabel');
+    const sliderTrack = document.querySelector('.slider-track');
+
+    let minValue = parseInt(minPrice.value, 10);
+    let maxValue = parseInt(maxPrice.value, 10);
+
+    // Ensure the minimum knob doesn't exceed the maximum knob
+    if (minValue >= maxValue) {
+        minValue = maxValue - 1000;
+        minPrice.value = minValue;
+    }
+
+    // Ensure the maximum knob doesn't go below the minimum knob
+    if (maxValue <= minValue) {
+        maxValue = minValue + 1000;
+        maxPrice.value = maxValue;
+    }
+
+    // Update the label
+    priceLabel.innerText = `Từ ${minValue.toLocaleString()}₫ đến ${maxValue.toLocaleString()}₫`;
+
+    // Update the track fill
+    const minPercent = (minValue / 100000) * 100;
+    const maxPercent = (maxValue / 100000) * 100;
+    sliderTrack.style.setProperty('--min', `${minPercent}%`);
+    sliderTrack.style.setProperty('--max', `${maxPercent}%`);
+    filterProducts();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updatePriceRange();
+
+});

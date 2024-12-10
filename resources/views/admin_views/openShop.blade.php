@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <title>SB Admin 2 - Dashboard</title>
 
@@ -107,8 +109,10 @@
                     <p><strong>Request Date:</strong> <span id="userRequestDate"></span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Approve</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="rejectButton">Từ chối</button>
+                <button type="button" class="btn btn-success" id="acceptButton">Chấp nhận</button>
+
                 </div>
             </div>
         </div>
@@ -142,24 +146,140 @@
     </script>
 
     <script>
-        function viewUserDetails(userId) {
+
+        let userId = 0;
+        async function viewUserDetails(userPara) {
+           userId = userPara;
             const baseUrl = '{{ url('/') }}'; // Dynamically fetch your app's base URL
 
             $.ajax({
-                url: `${baseUrl}/admin/user/${userId}`,
+                url: `${baseUrl}/admin/user/${userPara}`,
                 method: 'GET',
                 success: function (data) {
-                    $('#userName').text(data.name);
-                    $('#userEmail').text(data.email);
-                    $('#userPhone').text(data.phone);
-                    $('#userAddress').text(data.address || 'N/A');
-                    $('#userRequestDate').text(data.created_at);
+                    if (!data.error)
+                    {
+                        $('#userName').text(data.user.name);
+                        $('#userEmail').text(data.user.email);
+                        $('#userPhone').text(data.user.phone_number);
+                        $('#userRequestDate').text(data.user.updated_at);
+                        const { province, district, ward } = data.address;
+
+                        Promise.all([
+                            getProvince(province),
+                            getDistrict(province, district),
+                            getWard(district, ward)
+                        ])
+                        .then(([provinceName, districtName, wardName]) => {
+                            const fullAddress = ` ${wardName || ''}, ${districtName || ''}, ${provinceName || ''}`.replace(/, ,/g, ',').trim();
+                            $('#userAddress').text(fullAddress || 'N/A');
+                        })
+                        .catch(error => {
+                            console.error("Error fetching address details:", error);
+                            $('#userAddress').text('N/A');
+                        });
+                    }
+                    else{
+                        alert(data.error);
+                    }
                 },
                 error: function () {
                     alert('Error loading user details.');
                 }
             });
         }
+
+            // Fetch Province Name by ID
+        // Fetch Province Name by ID
+    async function getProvince(provinceID) {
+        try {
+            const response = await fetch('https://vapi.vnappmob.com/api/province/');
+            if (!response.ok) {
+                throw new Error('Failed to fetch provinces.');
+            }
+            const data = await response.json();
+            const province = data.results.find(p => p.province_id === provinceID);
+            return province ? province.province_name : 'Unknown Province';
+        } catch (error) {
+            console.error('Error fetching province:', error);
+            return 'Error fetching province';
+        }
+    }
+
+    // Fetch District Name by Province ID and District ID
+    async function getDistrict(provinceID, districtID) {
+        try {
+            const response = await fetch(`https://vapi.vnappmob.com/api/province/district/${provinceID}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch districts.');
+            }
+            const data = await response.json();
+            console.log(districtID);
+            const district = data.results.find(d => d.district_id === districtID);
+            console.log(data.results);
+            return district ? district.district_name : 'Unknown District';
+        } catch (error) {
+            console.error('Error fetching district:', error);
+            return 'Error fetching district';
+        }
+    }
+
+    // Fetch Ward Name by District ID and Ward ID
+    async function getWard(districtID, wardID) {
+        try {
+            const response = await fetch(`https://vapi.vnappmob.com/api/province/ward/${districtID}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch wards.');
+            }
+            const data = await response.json();
+            const ward = data.results.find(w => w.ward_id === wardID);
+            return ward ? ward.ward_name : 'Unknown Ward';
+        } catch (error) {
+            console.error('Error fetching ward:', error);
+            return 'Error fetching ward';
+        }
+    }
+    const baseUrl = '{{ env("APP_URL") }}'; 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    $('#acceptButton').click(function () {
+        $.ajax({
+            url: `${baseUrl}/admin/user/${userId}/accept-selling-right`,  // Use the base URL
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,  // Include CSRF token
+            },
+            success: function (data) {
+                alert(data.message);  // Show success message
+                // Optionally, close the modal here
+                $('#exampleModal').modal('hide');
+                location.reload();
+            },
+            error: function () {
+                alert('Error accepting selling right.');
+            }
+        });
+    });
+
+    // Handle Reject action (Từ chối)
+    $('#rejectButton').click(function () {
+        $.ajax({
+            url: `${baseUrl}/admin/user/${userId}/reject-selling-right`,  // Define route in web.php
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,  // Include CSRF token
+            },
+            success: function (data) {
+                alert(data.message);  // Show success message
+                // Optionally, close the modal here
+                $('#exampleModal').modal('hide');
+                location.reload();
+
+            },
+            error: function () {
+                alert('Error rejecting selling right.');
+            }
+        });
+    });
 
 
     </script>

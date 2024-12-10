@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
+use App\Models\Notification;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Support\Facades\Http;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -82,12 +85,7 @@ class AdminController extends Controller
         return view('admin_views.openShop', compact('waitingUsers'));
     }
 
-    public function getUserDetails($id)
-    {
-        $user = User::findOrFail($id);
-        return response()->json($user);
-    }
-
+    
     public function create()
     {
         return view('admin_views.index');  
@@ -219,8 +217,92 @@ class AdminController extends Controller
         return view('admin_views.order', compact('orders', 'orderTotals'));
     }
     
+    public function getUserDetails($id)
+    {
+        // Find the user
+        try {
+            $user = User::findOrFail($id);
+        // Assuming you have address ID details in the user's address
+        $address = Address::find($user->address_id);
+        Log::info($address);
 
-        
+        // Combine user and external address data
+        if ($address)
+        {
+            $userData = [
+                'user' => $user,
+                'address' => [
+                    'province' => $address->province,
+                    'district' => $address->district,
+                    'ward' => $address->ward,
+                ]
+            ];
+        }
+        else{
+            $userData = [
+                'user' => $user,
+            ];
+        }
+
+        // Return user data along with geographic names
+        return response()->json($userData);
+        }
+        catch (Exception $e) {
+            $reponse = [
+                'error'=> $e->getMessage(),
+            ];
+            return response()->json($reponse);
+        }
+    }
+
+    public function acceptSellingRight($userId)
+    {
+        try {
+
+            $user = User::findOrFail($userId);
+            $user->selling_right = 'yes'; // Set selling right to accepted
+            $user->save();
+
+            // Send a notification to the user
+            $this->sendNotification($user, 'Yêu cầu bán sản phẩm đã được phê duyệt.');
+
+            return response()->json(['message' => 'Selling right granted and notification sent.']);
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Method to reject the selling right
+    public function rejectSellingRight($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+            $user->selling_right = 'no'; // Set selling right to rejected
+            $user->save();
+
+            // Send a notification to the user
+            $this->sendNotification($user,  'Yêu cầu bán sản phẩm bị từ chối');
+
+            return response()->json(['message' => 'Selling right revoked and notification sent.']);
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Helper method to send notifications
+    protected function sendNotification($user, $message)
+    {
+        Notification::create([
+            'sender' => 'Quản trị viên',
+            'receiver_id' => $user->id,
+            'content' => $message,
+            'receiver_type' => 'one'
+        ]);
+
+        // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
+    }
     
 
 

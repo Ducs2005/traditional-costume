@@ -91,7 +91,8 @@ Route::delete('/admin/table/product/destroy/{id}', [AdminController::class, 'del
 Route::put('admin/product/update', [AdminController::class, 'updateProduct'])->name('product.update');
 Route::get('/admin/table/order', [AdminController::class, 'showOrder'])->name('table.order');
 Route::get('/admin/table/order2', [AdminController::class, 'showOrder'])->name('order.update');
-
+Route::post('/admin/user/{userId}/accept-selling-right', [AdminController::class, 'acceptSellingRight']);
+Route::post('/admin/user/{userId}/reject-selling-right', [AdminController::class, 'rejectSellingRight']);
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
 

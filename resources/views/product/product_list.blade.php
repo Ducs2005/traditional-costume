@@ -52,7 +52,7 @@
             background-color: #ffffff;
             color: #555;
             cursor: pointer;
-            width: 13%; 
+            width: 25%; 
         }
 
         .filter-container option {
@@ -74,9 +74,63 @@
                 width: 85%; /* Allow full width on small screens */
             }
             .filter-container select {
-                width: 20%; /* Allow full width on small screens */
+                width: 25%; /* Allow full width on small screens */
             }
         }
+        .range-slider {
+            position: relative;
+            width: 100%;
+            height: 30px;
+        }
+
+        .range-slider input[type="range"] {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            pointer-events: none;
+            -webkit-appearance: none;
+            background: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            pointer-events: all;
+            position: relative;
+            z-index: 3;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff0000;
+            cursor: pointer;
+        }
+
+        .range-slider input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff0000;
+            cursor: pointer;
+        }
+
+        .slider-track {
+            position: absolute;
+            height: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            background: #ddd;
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .slider-track::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            background: #ff0000;
+            z-index: 2;
+            border-radius: 5px;
+        }
+
 
         @media (max-width: 480px) {
             .filter-container {
@@ -129,40 +183,62 @@
     <br><br><br>
     <div class="filter-container">
         <div class="tag-container">
-            <div class="centered-text"> Bộ lọc</div>
+            <div class="centered-text">Bộ lọc</div>
             <br>
         </div>
-        
+
         <input type="text" id="productSearch" placeholder="Search products..." onkeyup="filterProducts()">
-        
+
         <select id="colorSelect" onchange="filterProducts()">
             <option value="">Màu chính</option>
             @foreach($colors as $color)
                 <option value="{{ $color->id }}">{{ $color->name }}</option>
             @endforeach
         </select>
-        
+
         <select id="materialSelect" onchange="filterProducts()">
             <option value="">Chất liệu</option>
             @foreach($materials as $material)
                 <option value="{{ $material->id }}">{{ $material->name }}</option>
             @endforeach
         </select>
-        
+
         <select id="buttonSelect" onchange="filterProducts()">
             <option value="">Loại nút</option>
             @foreach($buttons as $button)
                 <option value="{{ $button->id }}">{{ $button->name }}</option>
             @endforeach
         </select>
+
         <select id="buttonSort" onchange="filterProducts()">
             <option value="">Sắp xếp</option>
-                <option value="byName">A-Z</option>
-                <option value="byPriceDecrease">Theo giá giảm dần</option>
-                <option value="byPriceIncrease">Theo giá tăng dần</option>
-
+            <option value="byName">A-Z</option>
+            <option value="byPriceDecrease">Theo giá giảm dần</option>
+            <option value="byPriceIncrease">Theo giá tăng dần</option>
+            <option value="byRatingDecrease">Theo đánh giá giảm dần</option>
+            <option value="byRatingIncrease">Theo đánh giá tăng dần</option>
         </select>
+
+        <select id="ratingFilter" onchange="filterProducts()">
+            <option value="">Lọc theo đánh giá</option>
+            <option value="1">1 sao trở lên</option>
+            <option value="2">2 sao trở lên</option>
+            <option value="3">3 sao trở lên</option>
+            <option value="4">4 sao trở lên</option>
+            <option value="5">5 sao</option>
+        </select>
+
+        <div class="price-range-container">
+            <label for="priceRange">Lọc theo giá:</label>
+            <div class="range-slider">
+                <input type="range" id="minPrice" min="1000" max="10000000" step="1000" value="0" oninput="updatePriceRange()">
+                <input type="range" id="maxPrice" min="1000" max="10000000" step="1000" value="100000" oninput="updatePriceRange()">
+                <div class="slider-track"></div>
+            </div>
+            <div id="priceRangeLabel" class="price-label">Từ 0₫ đến 100,000₫</div>
+        </div>
     </div>
+
     @include ('product.product', ['type' => 'popular', 'currentProduct' => null])
 
     <br><br><br>
