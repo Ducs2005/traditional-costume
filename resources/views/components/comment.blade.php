@@ -1,10 +1,10 @@
 <div class="container mt-4">
-    <h2 class="mb-4">Bình luận</h2>
+    <h2 class="mb-4">Bình luận </h2>
 
     <!-- Comments Section -->
     <div class="card">
         <div class="card-header">
-            <h5>Nhận xét và đánh giá</h5>
+            <h5>Nhận xét và đánh giá ({{$product->average_rating }} <i class="fa-solid fa-star" style="color: gold;"></i> , {{$product->number_of_ratings}} đã đánh giá)</h5>
         </div>
         <div class="card-body">
             @if($product->ratings->isEmpty())

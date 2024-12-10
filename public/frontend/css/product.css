@@ -83,9 +83,13 @@
     background-color: #af230d;
     color: #fff;
 }
-
+.product .list-item .item .price-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /* Price styling */
-.product .list-item .item .price {
+.product .list-item .item .price-rating .price {
     font-size: 18px;
     font-weight: bold;
     color: #e63e3e; /* Emphasis color for price */
@@ -93,10 +97,20 @@
 }
 
 /* Display price with "VND" */
-.product .list-item .item .price::after {
+.product .list-item .item .price-rating .price::after {
     content: ' VND';
     font-size: 16px;
     color: #555; /* Slightly subdued color for currency symbol */
+}
+.product .list-item .item .price-rating .rate {
+    font-size: 16px;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.product .list-item .item .price-rating .rate i {
+    margin-left: 5px;
 }
 
 /* Responsive adjustments */

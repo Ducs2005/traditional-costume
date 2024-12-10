@@ -28,13 +28,6 @@
 
             <input type="text" id="productSearch" placeholder="Search products..." onkeyup="filterProducts()">
 
-            <select id="colorSelect" onchange="filterProducts()">
-                <option value="">Màu chính</option>
-                @foreach($colors as $color)
-                    <option value="{{ $color->id }}">{{ $color->name }}</option>
-                @endforeach
-            </select>
-
             <select id="materialSelect" onchange="filterProducts()">
                 <option value="">Chất liệu</option>
                 @foreach($materials as $material)
@@ -53,14 +46,32 @@
                     <option value="byName">A-Z</option>
                     <option value="byPriceDecrease">Theo giá giảm dần</option>
                     <option value="byPriceIncrease">Theo giá tăng dần</option>
-
             </select>
+            <select id="ratingFilter" onchange="filterProducts()">
+                <option value="">Lọc theo đánh giá</option>
+                <option value="1">1 sao trở lên</option>
+                <option value="2">2 sao trở lên</option>
+                <option value="3">3 sao trở lên</option>
+                <option value="4">4 sao trở lên</option>
+                <option value="5">5 sao</option>
+            </select>
+
+            <div class="price-range-container">
+                <label for="priceRange">Lọc theo giá:</label>
+                <div class="range-slider">
+                    <input type="range" id="minPrice" min="1000" max="10000000" step="1000" value="0" oninput="updatePriceRange()">
+                    <input type="range" id="maxPrice" min="1000" max="10000000" step="1000" value="100000" oninput="updatePriceRange()">
+                    <div class="slider-track"></div>
+                </div>
+                <div id="priceRangeLabel" class="price-label">Từ 0₫ đến 100,000₫</div>
+            </div>
         </div>
         @include ('product.product', ['type' => 'popular', 'currentProduct' => null])
     </div>
 
     <div class="product product-discount">
         <div class="tag-container">
+
             <div class="centered-text" id="listType">Chỉ từ ...đ</div>
             <br>
         </div>
@@ -152,7 +163,6 @@
             @endif
         </div>
     </div>
-
 
 <script src="{{asset('frontend/js/banner.js')}}"></script>
 <script>

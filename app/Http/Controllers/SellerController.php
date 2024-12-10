@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Address;
 use App\Models\Button;
 use App\Models\Color;
+use App\Models\Material;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,8 @@ class SellerController extends Controller
         $colors = Color::get();
         $types = Type::get();
         $buttons = Button::get();
-        return view('seller_shop', compact('selling_right', 'products', 'colors', 'types', 'buttons'));
+        $materials = Material::get();
+        return view('seller_shop', compact('selling_right', 'products', 'colors', 'types', 'buttons', 'materials'));
     }
     public function request(Request $request)
     {
@@ -93,6 +95,7 @@ class SellerController extends Controller
             'color' => 'required|exists:colors,id',
             'button' => 'required|exists:button,id',
             'type' => 'required|exists:type,id',
+            'material' =>'required|exists:materials,id',
             'representative_img' => 'required|image|mimes:jpg,jpeg,png',
             'detail_imgs' => 'nullable|array',
             'detail_imgs.*' => 'image|mimes:jpg,jpeg,png'
@@ -109,7 +112,7 @@ class SellerController extends Controller
                 'button_id' => $validated['button'],
                 'type_id' => $validated['type'],
                 'seller_id' => auth()->id(),
-                //'material_id'=>$validated['material']
+                'material_id'=>$validated['material']
             ]);
 
             // Save the representative image
