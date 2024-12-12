@@ -98,7 +98,7 @@
 
     <div class="product product-discount">
         <div class="tag-container">
-            <div class="centered-text" id="listType">Chỉ từ ...đ</div>
+            <div class="centered-text" id="listType">Giá trung bình</div>
             <br>
         </div>
         <div class="list-item">
@@ -150,7 +150,7 @@
 
     <div class="product product-discount">
         <div class="tag-container">
-            <div class="centered-text" id="listType">Sản phẩm được yêu thích nhất</div>
+            <div class="centered-text" id="listType">Sản phẩm bán chạy nhất</div>
             <br>
         </div>
         <div class="list-item">

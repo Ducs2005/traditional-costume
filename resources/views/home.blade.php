@@ -189,7 +189,7 @@
 
     {{-- section gallery --}}
     <section class="gallery" id="gallery">
-        <h1>Our <span>Gallery</span>
+        <h1><span>Thu vien anh</span>
         </h1>
         <div class="gallery_image_box">
             @foreach($gallery as $gallery)

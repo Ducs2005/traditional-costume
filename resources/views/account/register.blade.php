@@ -77,11 +77,6 @@
                         <span>Register with Google</span>
                     </a>
                     <br>
-                    <!-- Facebook -->
-                    <a href="#" class="fb" rel="nofollow">
-                        <i class='bx bxl-facebook-circle' ></i>
-                        <span>Register with Facebook</span>
-                    </a>
                 </div>
 
                 <!-- register link -->

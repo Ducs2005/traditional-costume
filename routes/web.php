@@ -49,6 +49,10 @@ Route::group(['prefix' => 'account'], function() {
 Route::get('profile', [LoginController::class, 'profile'])->name('account.profile');
 Route::post('/update-avatar', [AccountController::class, 'updateAvatar'])->name('update-avatar');
 
+Route::get('change-password', [AccountController::class, 'showChangePasswordForm'])->name('change.password');
+Route::post('change-password', [AccountController::class, 'changePassword'])->name('change.password.submit');
+
+
 Route::get('/view_cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::get('/own_shop', [SellerController::class, 'viewShop'])->name('ownShop.view');
 
