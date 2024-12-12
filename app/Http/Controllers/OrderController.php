@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Orderitem;
@@ -215,8 +216,24 @@ class OrderController extends Controller
 
     public function cancel(Request $request, Order $order)
     {
+        $sellerIds = $order->items->map(function ($item) {
+            return $item->product->seller_id; // Assuming the `product` relationship exists and has `seller_id`
+        });
+        $sellerId = $sellerIds->unique()->first(); // Get the first unique seller_id (assuming all products in the order have the same seller)
+        Log::info(auth()->user()->id);
+        if (auth()->user()->role == 'admin')
+        {
+            AdminController::sendNotification_user($order->user_id, 'Đơn hàng bị hủy bởi quản trị viên. Nguyên nhân: ' . $request->cancel_reason, ' Đơn hàng của bạn đã bị hủy');
+            if ($sellerId) {
+                AdminController::sendNotification_user(
+                    $sellerId,  // Send the notification to the seller
+                    'Đơn hàng của bạn đã bị hủy. Nguyên nhân: ' . $request->cancel_reason,
+                    'Thông báo về việc hủy đơn hàng'
+                );
+            }
+        }
         $order->update(['status' => 'Đã hủy']);
-
+         
         return response()->json([
             'message' => 'Đơn hàng đã được hủy thành công.'
         ]);

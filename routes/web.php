@@ -10,6 +10,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
@@ -79,9 +80,11 @@ Route::get('/admin/open-shop', [AdminController::class, 'openShop'])->name('admi
 Route::get('/admin/user/{id}', [AdminController::class, 'getUserDetails'])->name('admin.getUserDetails');
 Route::get('/admin/accessTime', [AccessTimeController::class, 'index'])->name('admin.accessTime');
 
-Route::get('/admin/dashboard', [AdminController::class, 'create'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [AccessTimeController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/table/user', [AdminController::class, 'showUsers'])->name('table.user');
 Route::get('/admin/table/product', [AdminController::class, 'showProducts'])->name('table.product');
+Route::get('/admin/table/payment', [AdminController::class, 'showPayment'])->name('table.payment');
+
 Route::put('/admin/table/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
 Route::get('/admin/table/user/destroy{{id}}', [AdminController::class, 'create'])->name('user.destroy');
 Route::get('/admin/table/user/edit', [AdminController::class, 'create'])->name('product.edit');
@@ -91,6 +94,16 @@ Route::get('/admin/table/order', [AdminController::class, 'showOrder'])->name('t
 Route::get('/admin/table/order2', [AdminController::class, 'showOrder'])->name('order.update');
 Route::post('/admin/user/{userId}/accept-selling-right', [AdminController::class, 'acceptSellingRight']);
 Route::post('/admin/user/{userId}/reject-selling-right', [AdminController::class, 'rejectSellingRight']);
+Route::get('/admin/sendNotifications', [AdminController::class, 'sendNotifications'])->name('admin.sendNotifications');
+Route::post('/admin/notification/send', [AdminController::class, 'sendNotification'])->name('notifications.send');
+Route::get('/admin/gallery', [AdminController::class, 'showGallery'])->name('admin.gallery');
+
+
+Route::post('/colors', [GalleryController::class, 'storeColor'])->name('color.store');
+Route::post('/buttons', [GalleryController::class, 'storeButton'])->name('button.store');
+Route::post('/type', [GalleryController::class, 'storeType'])->name('type.store');
+Route::post('/material', [GalleryController::class, 'storeMaterial'])->name('material.store');
+
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
 

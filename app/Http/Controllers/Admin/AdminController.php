@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Button;
+use App\Models\Color;
+use App\Models\Material;
 use App\Models\Notification;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Type;
 use Illuminate\Support\Facades\Http;
 
 use Exception;
@@ -26,7 +31,7 @@ class AdminController extends Controller
             // Check if the user has the role of admin
             $user = Auth::user();
             if ($user->role === 'admin') { // Adjust the role check according to your implementation
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.accessTime');
             } else {
                 // If not an admin, redirect to home or an unauthorized page
                 return redirect()->route('admin.login')->with('error', 'Please log in to access this page.');
@@ -100,6 +105,11 @@ class AdminController extends Controller
     public function create()
     {
         return view('admin_views.index');  
+    }
+    public function showPayment()
+    {
+        $payments = Payment::all();
+        return view('admin_views.payment', compact('payments'));
     }
     public function showUsers(Request $request)
     {
@@ -182,6 +192,42 @@ class AdminController extends Controller
        }
     }
 
+    public function sendNotifications()
+    {
+        $users = User::all();
+        return view('admin_views.sendNotification',compact('users'));
+    }
+    public function sendNotification(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'receiver_type' => 'required|in:all,one',
+            'user_id' => 'nullable|exists:users,id', // Only if receiver_type is "one"
+            'content' => 'required|string',
+        ]);
+
+        // If the notification is for a specific user
+        if ($validated['receiver_type'] == 'one' && $validated['user_id']) {
+            $receiverId = $validated['user_id'];
+            // Logic to send notification to the specific user
+        } else {
+            // Logic to send notification to all users
+            $receiverId = null; // For "all" users, sender_id can be null or you can choose to send notifications to multiple users.
+        }
+
+        // Save the notification in the database
+        Notification::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'receiver_id' => $receiverId,
+            'receiver_type' => $validated['receiver_type'],
+            'sender_id' => auth()->id(), // Admin or current authenticated user
+            'sender' => 'Quản trị viên'
+        ]);
+
+        return redirect()->back()->with('success', 'Notification sent successfully');
+    }
+
 
     public function showProducts(Request $request)
     {
@@ -228,7 +274,7 @@ class AdminController extends Controller
         return view('admin_views.order', compact('orders', 'orderTotals'));
     }
     
-    public function getUserDetails($id)
+    public static function getUserDetails($id)
     {
         // Find the user
         try {
@@ -266,7 +312,7 @@ class AdminController extends Controller
         }
     }
 
-    public function acceptSellingRight($userId)
+    public function acceptSellingRight(Request $request, $userId)
     {
         try {
 
@@ -275,7 +321,7 @@ class AdminController extends Controller
             $user->save();
 
             // Send a notification to the user
-            $this->sendNotification($user, 'Yêu cầu bán sản phẩm đã được phê duyệt.');
+            $this->sendNotification_user($user, 'Yêu cầu bán sản phẩm đã được phê duyệt.','Yêu cầu bán sản phẩm của bạn đã được phê duyệt, xin chúc mừng,');
 
             return response()->json(['message' => 'Selling right granted and notification sent.']);
         } catch (Exception $e) {
@@ -285,7 +331,7 @@ class AdminController extends Controller
     }
 
     // Method to reject the selling right
-    public function rejectSellingRight($userId)
+    public function rejectSellingRight(Request $request, $userId)
     {
         try {
             $user = User::findOrFail($userId);
@@ -293,7 +339,7 @@ class AdminController extends Controller
             $user->save();
 
             // Send a notification to the user
-            $this->sendNotification($user,  'Yêu cầu bán sản phẩm bị từ chối');
+            $this->sendNotification_user($user, 'Yêu cầu bán sản phẩm của bạn đã bị từ chối. Ghi chú của quản trị viên: ' . $request->reason,  'Yêu cầu bán sản phẩm bị từ chối');
 
             return response()->json(['message' => 'Selling right revoked and notification sent.']);
         } catch (Exception $e) {
@@ -303,18 +349,54 @@ class AdminController extends Controller
     }
 
     // Helper method to send notifications
-    protected function sendNotification($user, $message)
+    public static function sendNotification_user($user, $message, $title)
     {
         Notification::create([
+            'title' => $title,
             'sender' => 'Quản trị viên',
-            'receiver_id' => $user->id,
+            'receiver_id' => $user,
             'content' => $message,
-            'receiver_type' => 'one'
+            'receiver_type' => 'one',
+            'sender_id' => auth()->user()->id,
+        ]);
+        Log::info(auth()->user()->id);
+        // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
+    }
+    public static function sendNotification_all($message, $title)
+    {
+        Notification::create([
+            'title' => $title,
+            'sender' => 'Quản trị viên',
+            'content' => $message,
+            'receiver_type' => 'all',
+            'sender_id' => auth()->user()->id,
+
         ]);
 
         // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
     }
-    
+    public static function sendNotification_user_system($message, $title)
+    {
+        Notification::create([
+            'title' => $title,
+            'sender' => 'Hệ thống',
+            'content' => $message,
+            'receiver_type' => 'all',
+
+        ]);
+
+        // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
+    }
+
+    public function showGallery()
+    {
+        $colors = Color::all();         // Assuming Color is a model for the color data
+        $buttons = Button::all();       // Assuming Button is a model for the button data
+        $materials = Material::all();   // Assuming Material is a model for the material data
+        $types = Type::all();           // Assuming Type is a model for the type data
+        // Pass the data to the view (assuming you're returning a view)
+        return view('admin_views.gallery', compact('colors', 'buttons', 'materials', 'types'));
+    }
 
 
 }

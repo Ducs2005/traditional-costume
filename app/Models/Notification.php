@@ -19,6 +19,8 @@ class Notification extends Model
         'content',
         'receiver_id',
         'receiver_type',
+        'title',
+        'sender_id'
     ];
 
     /**
@@ -60,5 +62,9 @@ class Notification extends Model
     public function markAsReadByUser(User $user)
     {
         $this->users()->updateExistingPivot($user->id, ['is_read' => true]);
+    }
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id'); // Define the sender relation
     }
 }

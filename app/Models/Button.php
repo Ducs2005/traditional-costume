@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Button extends Model
 {
     //
+    protected $fillable = ['name'];
+
     protected $table = 'button';
     public function products()
     {

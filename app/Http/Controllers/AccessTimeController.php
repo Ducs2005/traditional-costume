@@ -55,7 +55,7 @@ class AccessTimeController extends Controller
             'data' => array_values($weekStats) // Login counts for the y-axis
         ];
     
-        return view('admin_views.accessTime', [
+        return view('admin_views.index', [
             'today' => $today, // Truyền ngày hôm nay vào view
             'startDate' => $startDate->toDateString(),
             'weekAction' => $weekAction,

@@ -43,10 +43,12 @@
                                                 data-status="{{ ucfirst($order->status) }}"
                                                 data-total-price="{{ number_format($orderTotals[$order->id], 0, ',', '.') }} VND">Chi tiết</button>
 
-                                                <form id="cancelOrderForm" action="{{ route('orders.cancel', $order->id) }}" method="POST" style="display:inline-block;">
+                                               @if ($order->status === 'Chờ xác nhận' || $order->status === 'Đang giao')
+                                               <form id="cancelOrderForm" action="{{ route('orders.cancel', $order->id) }}" method="POST" style="display:inline-block;">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-danger" onclick="handleCancelOrder(event)">Hủy</button>
                                                 </form>
+                                                @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -122,8 +124,33 @@
                     </form>
                 </div>
             </div>
+            <!-- Cancel Reason Modal -->
+        
+
         </div>
+
+        
     </div>
+
+    <div class="modal fade" id="cancelReasonModal" tabindex="-1" role="dialog" aria-labelledby="cancelReasonModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelReasonModalLabel">Enter Cancellation Reason</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="cancel-reason" class="form-control" rows="4" placeholder="Enter reason for cancellation..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmCancelOrder">Confirm Cancellation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 @endsection
 
 @push('scripts')
@@ -159,34 +186,49 @@
         });
 
         function handleCancelOrder(event) {
-            event.preventDefault();  // Prevent the default form submission
+    event.preventDefault();  // Prevent the default form submission
 
-            if (confirm('Are you sure you want to cancel this order?')) {
-                var form = event.target.closest('form');  // Get the form element
+    // Show the cancel reason modal
+    $('#cancelReasonModal').modal('show');
 
-                var formData = new FormData(form);  // Get the form data
+    // Handle the confirm cancel button click
+    $('#confirmCancelOrder').click(function() {
+        var cancelReason = $('#cancel-reason').val().trim();  // Get the entered reason
 
-                fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': formData.get('_token'),  // Add CSRF token
-                    },
-                    body: formData
-                })
-                .then(response => response.json())  // Parse JSON response
-                .then(data => {
-                    // Handle the success message
-                    alert(data.message);  // Show the success message
-                    // Optionally, you can reload the page or update the UI here
-                    location.reload();  // Reload the page to reflect changes
-                })
-                .catch(error => {
-                    // Handle any errors
-                    console.error('Error:', error);
-                    alert('There was an error processing your request.');
-                });
-            }
+        // Check if the reason is provided
+        if (cancelReason === '') {
+            alert('Please enter a reason for canceling the order.');
+            return;
         }
+
+        var form = event.target.closest('form');  // Get the form element
+        var formData = new FormData(form);  // Get the form data
+
+        // Add the cancel reason to the form data
+        formData.append('cancel_reason', cancelReason);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': formData.get('_token'),  // Add CSRF token
+            },
+            body: formData
+        })
+        .then(response => response.json())  // Parse JSON response
+        .then(data => {
+            // Handle the success message
+            alert(data.message);  // Show the success message
+            $('#cancelReasonModal').modal('hide');  // Hide the cancel reason modal
+            location.reload();  // Reload the page to reflect changes
+        })
+        .catch(error => {
+            // Handle any errors
+            console.error('Error:', error);
+            alert('There was an error processing your request.');
+        });
+    });
+}
+
 
     </script>
 @endpush

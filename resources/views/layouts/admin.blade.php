@@ -33,7 +33,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin.dashboard')}}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('admin.accessTime')}}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -45,7 +45,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{route('admin.dashboard')}}">
+                <a class="nav-link" href="{{route('admin.accessTime')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -70,6 +70,8 @@
                         <h6 class="collapse-header">Dữ liệu</h6>
                         <a class="collapse-item" href="{{route('table.user')}}">Người dùng</a>
                         <a class="collapse-item" href="{{route('table.product')}}">Sản phẩm</a>
+                        <a class="collapse-item" href="{{route('table.payment')}}">Thanh toán</a>
+
                     </div>
                 </div>
             </li>
@@ -111,9 +113,8 @@
                 <div id="collapseThree" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thông báo</h6>
-                        <a class="collapse-item" href="">Báo cáo cần xử lý</a>
-                        <a class="collapse-item" href="">Gửi thông báo</a>
-                    
+                        <a class="collapse-item" href="">Đơn hàng cần xử lý</a>
+                        <a class="collapse-item" href="{{route('admin.sendNotifications')}}">Gửi thông báo</a>   
                     </div>
                 </div>
             </li>
@@ -123,6 +124,11 @@
                 <a class="nav-link" href="{{route('admin.accessTime')}}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Lượt truy cập</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('admin.gallery')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Danh mục sản phẩm</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.logout')}}">

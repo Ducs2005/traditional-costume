@@ -63,7 +63,7 @@
                                     <tr>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->phone_number }}</td>
                                         <td>
                                             <button class="btn btn-info btn-sm" 
                                                     data-toggle="modal" 
@@ -116,6 +116,27 @@
                 </div>
             </div>
         </div>
+                <!-- Rejection Reason Modal -->
+        <div class="modal fade" id="rejectReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rejectReasonModalLabel">Enter Rejection Reason</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="rejectReason" class="form-control" rows="4" placeholder="Nhập nguyên nhân yêu cầu bị từ chối"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-danger" id="confirmRejectButton">Từ chối</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
     @endsection
 
@@ -255,31 +276,48 @@
                 location.reload();
             },
             error: function () {
-                alert('Error accepting selling right.');
+                alert('Lỗi khi chấp nhận.');
             }
         });
     });
 
     // Handle Reject action (Từ chối)
     $('#rejectButton').click(function () {
+        // Show the rejection reason modal
+        $('#rejectReasonModal').modal('show');
+    });
+
+    $('#confirmRejectButton').click(function () {
+        var rejectReason = $('#rejectReason').val().trim();  // Get the reason input
+
+        // Check if the reason is provided
+        if (rejectReason === '') {
+            alert('Hãy điền lý do từ chối yêu cầu này.');
+            return;
+        }
+
+        // Proceed with the AJAX request to reject the selling right
         $.ajax({
             url: `${baseUrl}/admin/user/${userId}/reject-selling-right`,  // Define route in web.php
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': csrfToken,  // Include CSRF token
             },
+            data: {
+                reason: rejectReason  // Send the reason in the request body
+            },
             success: function (data) {
                 alert(data.message);  // Show success message
-                // Optionally, close the modal here
-                $('#exampleModal').modal('hide');
-                location.reload();
-
+                $('#rejectReasonModal').modal('hide');  // Hide the reason modal
+                $('#exampleModal').modal('hide');  // Optionally, hide the user details modal
+                location.reload();  // Reload the page to reflect the changes
             },
             error: function () {
-                alert('Error rejecting selling right.');
+                alert('Lỗi không xác định. Vui lòng liên hệ nhà phát triển.');
             }
         });
     });
+
 
 
     </script>
