@@ -87,8 +87,8 @@
                     <!-- Seller Information -->
                     @if ($product->seller)
                         <div class="seller-info mb-4">
-                            <p><span class="fw-bold">Người bán: </span>
-                                <a href="{{ route('contact.seller', $product->seller->id) }}" class="btn btn-link">{{ $product->seller->name }}</a>
+                            <p><span class="fw-bold">Cửa hàng: </span>
+                                <a href="{{ route('contact.seller', $product->seller->id) }}" class="btn btn-link">{{ $product->seller->shop_name }}</a>
                             </p>
                         </div>
                     @endif

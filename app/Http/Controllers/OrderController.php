@@ -173,16 +173,29 @@ class OrderController extends Controller
     public function confirm(Request $request, Order $order)
     {
         try {
+            // Update the order status to "Đang giao"
             $order->update(['status' => 'Đang giao']);
+    
+            // Send a notification to the buyer
+            AdminController::sendNotification_system(
+                $order->user_id, 
+                'Đơn hàng '. $order->id .  ' của bạn đã được xác nhận và đang được giao.', 
+                'Xác nhận đơn hàng'
+            );
+    
+        } catch (Exception $e) {
+            Log::info('Error: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Đã xảy ra lỗi khi xác nhận đơn hàng.',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        catch (Exception $e)
-        {
-            Log::info('errro' . $e->getMessage());
-        }
+    
         return response()->json([
             'message' => 'Đơn hàng đã được xác nhận và chuyển sang trạng thái Đang giao.'
         ]);
     }
+    
 
     public function confirmReceived(Request $request, Order $order)
     {
@@ -201,6 +214,15 @@ class OrderController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+            $sellerIds = $order->items->map(function ($item) {
+                return $item->product->seller_id; // Assuming the `product` relationship exists and has `seller_id`
+            });
+            $sellerId = $sellerIds->unique()->first(); 
+            AdminController::sendNotification_system(
+                $sellerId, 
+                'Đơn hàng '. $order->id . ' của bạn đã được giao thành công.', 
+                'Giao hàng thành công'
+            );
         } catch (Exception $e) {
             Log::error('Error confirming receipt: ' . $e->getMessage());
             return response()->json([
@@ -220,24 +242,65 @@ class OrderController extends Controller
             return $item->product->seller_id; // Assuming the `product` relationship exists and has `seller_id`
         });
         $sellerId = $sellerIds->unique()->first(); // Get the first unique seller_id (assuming all products in the order have the same seller)
-        Log::info(auth()->user()->id);
-        if (auth()->user()->role == 'admin')
-        {
-            AdminController::sendNotification_user($order->user_id, 'Đơn hàng bị hủy bởi quản trị viên. Nguyên nhân: ' . $request->cancel_reason, ' Đơn hàng của bạn đã bị hủy');
+        
+        if (auth()->user()->role == 'admin') {
+            // Notification to the buyer
+            AdminController::sendNotification_system(
+                $order->user_id, 
+                'Đơn hàng bị hủy bởi quản trị viên. Nguyên nhân: ' . $request->cancel_reason, 
+                'Đơn hàng của bạn đã bị hủy'
+            );
+            
+            // Notification to the seller
             if ($sellerId) {
-                AdminController::sendNotification_user(
-                    $sellerId,  // Send the notification to the seller
-                    'Đơn hàng của bạn đã bị hủy. Nguyên nhân: ' . $request->cancel_reason,
+                AdminController::sendNotification_system(
+                    $sellerId, 
+                    'Đơn hàng của bạn đã bị hủy. Nguyên nhân: ' . $request->cancel_reason, 
                     'Thông báo về việc hủy đơn hàng'
                 );
             }
         }
+
+        if (auth()->user()->id == $sellerId) {
+            // Notification to the seller (confirmation of their action)
+            AdminController::sendNotification_system(
+                $sellerId, 
+                'Bạn đã hủy đơn hàng thành công. Đơn hàng đã được cập nhật trạng thái thành "Đã hủy".', 
+                'Xác nhận hủy đơn hàng'
+            );
+            
+            // Notification to the buyer
+            AdminController::sendNotification_system(
+                $order->user_id, 
+                'Đơn hàng của bạn đã bị hủy bởi người bán. Xin lỗi vì sự bất tiện này.', 
+                'Thông báo về việc hủy đơn hàng'
+            );
+        }
+        if (auth()->user()->id == $order->user_id) {
+            // Notification to the seller
+            AdminController::sendNotification_system(
+                $sellerId, 
+                'Khách hàng đã hủy đơn hàng số ' . $order->id . ' của bạn, vui lòng chú ý ngừng giao dịch này.', 
+                'Thông báo về việc hủy đơn hàng'
+            );
+    
+            // Notification to the buyer (confirmation of their action)
+            AdminController::sendNotification_system(
+                $order->user_id, 
+                'Bạn đã hủy đơn hàng thành công. Đơn hàng đã được cập nhật trạng thái thành "Đã hủy".', 
+                'Xác nhận hủy đơn hàng'
+            );
+        }
+    
+
+        // Update the order status to 'Đã hủy'
         $order->update(['status' => 'Đã hủy']);
-         
+        
         return response()->json([
             'message' => 'Đơn hàng đã được hủy thành công.'
         ]);
     }
+
 
 
 

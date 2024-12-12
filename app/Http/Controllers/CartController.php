@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\Admin\AdminController;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Payment;
@@ -120,8 +122,8 @@ class CartController extends Controller
 
             // Clear the cart items
             $cart->items()->delete();
-
-            DB::commit();
+            AdminController::sendNotification_system(auth()->user()->id, 'Bạn đã thanh toán thành công đơn hàng ' . $order->id . '. Đơn hàng sẽ được xác nhận và gửi đến bạn sớm nhất có thể. Vui lòng chú ý điện thoại', 'Thanh toán thành công');
+            DB::commit();;
 
             return redirect()->route('cart.view')->with('success', 'Thanh toán thành công, đơn hàng của bạn sẽ sớm được giao.');
 

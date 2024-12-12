@@ -34,7 +34,7 @@ h1 {
         @endif">
 
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">{{ $notification->sender }}</h5>
+                        <h5 class="mb-1">{{ $notification->title }}</h5>
                         <small>{{ $notification->created_at->diffForHumans() }}</small>
                     </div>
                     <p class="mb-1">{{ $notification->content }}</p>
@@ -45,5 +45,6 @@ h1 {
         </div>
     @endif
 </div>
+
 <br><br> <br><br> <br> <br> <br>
 @endsection

@@ -322,7 +322,7 @@ class AdminController extends Controller
             $user->save();
 
             // Send a notification to the user
-            $this->sendNotification_user($user, 'Yêu cầu bán sản phẩm đã được phê duyệt.','Yêu cầu bán sản phẩm của bạn đã được phê duyệt, xin chúc mừng,');
+            $this->sendNotification_user($user->id, 'Yêu cầu bán sản phẩm đã được phê duyệt.','Yêu cầu bán sản phẩm của bạn đã được phê duyệt, xin chúc mừng,');
 
             return response()->json(['message' => 'Selling right granted and notification sent.']);
         } catch (Exception $e) {
@@ -388,6 +388,20 @@ class AdminController extends Controller
 
         // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
     }
+    public static function sendNotification_system($receiver_id, $message, $title)
+    {
+        Notification::create([
+            'title' => $title,
+            'sender' => 'Hệ thống',
+            'content' => $message,
+            'receiver_type' => 'one',
+            'receiver_id' =>$receiver_id
+
+        ]);
+
+        // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
+    }
+
 
     public function updateDecorationImages(Request $request)
     {
