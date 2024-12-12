@@ -539,4 +539,10 @@ class AdminController extends Controller
     
             return redirect()->route('table.cophuc')->with('success', 'Item deleted successfully');
         }
+
+        public function showCophuc()
+        {
+            $cophuc = Cophuc::all();
+            return view('cophuc.index', compact('cophuc'));
+        }
 }
