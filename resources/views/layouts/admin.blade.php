@@ -105,18 +105,25 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Thông báo</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo2"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Giao diện</span>
                 </a>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Thông báo</h6>
-                        <a class="collapse-item" href="">Đơn hàng cần xử lý</a>
-                        <a class="collapse-item" href="{{route('admin.sendNotifications')}}">Gửi thông báo</a>   
+                        <h6 class="collapse-header">Giao diện</h6>
+                        <a class="collapse-item" href="{{route('admin.banner')}}">Banner</a>
+                        <a class="collapse-item" href="{{route('admin.decoration')}}">Trang trí</a>
+
                     </div>
                 </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('admin.sendNotifications')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Thông báo</span></a>
             </li>
 
             <!-- Nav Item - Charts -->
@@ -125,6 +132,7 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Lượt truy cập</span></a>
             </li>
+           
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.gallery')}}">
                     <i class="fas fa-fw fa-chart-area"></i>
