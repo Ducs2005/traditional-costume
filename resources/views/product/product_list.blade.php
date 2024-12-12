@@ -93,7 +93,7 @@
                 <div id="priceRangeLabel" class="price-label">Từ 0₫ đến 100,000₫</div>
             </div>
         </div>
-        @include ('product.product', ['type' => 'popular', 'currentProduct' => null] )
+        @include ('product.product', ['type' => 'popular', 'currentProduct' => null, 'products' =>$products] )
     </div>
 
     <div class="product product-discount">

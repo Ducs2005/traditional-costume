@@ -19,7 +19,7 @@
     const type = @json($type);
     const currentProduct = @json($currentProduct);
     const assetBaseUrl = "{{ asset('') }}";
-
+ //   const productByFilter = @json($products);
     console.log("Type:", type); // Output: "popular"
     console.log("Current Product:", currentProduct); // Output: Object with product details
 </script>

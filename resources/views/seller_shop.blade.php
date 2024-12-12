@@ -487,12 +487,11 @@
                 });
 
                 // Update the table data using AJAX
-                updateTable(data.products); // Pass the updated products from the response
             } else {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Không thể nhận, lỗi không xác định.',
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Thu nhập sẽ được chuyển về tài khoản của bạn trong thời gian sớm nhất.',
                     timer: 2000,
                     showConfirmButton: false
                 });

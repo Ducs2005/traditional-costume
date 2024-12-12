@@ -49,6 +49,8 @@ class Pagination {
     displayProducts(type = null, currentProduct = null) {
         // Clear existing content in the product container
         let filteredProducts = this.products;
+
+      
         if (type === 'popular') {
             // Sort products by the sold field in descending order
             filteredProducts = this.products.slice().sort((a, b) => b.sold - a.sold);
@@ -71,7 +73,6 @@ class Pagination {
         const paginatedProducts = filteredProducts.slice(start, end);
 
         this.productContainer.innerHTML = ''; // Clear existing content
-        console.log(paginatedProducts);
         if (paginatedProducts.length === 0) {
             this.productContainer.innerHTML = '<p>No products to display.</p>';
             return;

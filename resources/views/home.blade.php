@@ -67,7 +67,7 @@
             @foreach($prd as $prds)
                 <div class="intro_card">
                     <div class="intro_img">
-                        <img src="{{ $prds->image }}" alt="intro">
+                        <img src="{{ asset($prds->image )}}" alt="intro">
                     </div>
                     <div class="intro_content">
                         <div>
@@ -106,7 +106,7 @@
             @foreach($featureProducts as $feature)
                 <div class="product">
                     <div class="image">
-                        <img class="img-fluid mb-3" src="{{ $feature->img_path }}" alt="">
+                        <img class="img-fluid mb-3" src="{{ asset($feature->img_path) }}" alt="">
                     </div>
                     <div class="feature_content">
                         <div class="star">
@@ -154,7 +154,7 @@
         <div class="gallery_image_box">
             @foreach($gallery as $gallery)
             <div class="gallery_image">
-                <img src="{{ $gallery->img_path }}" alt="">
+                <img src="{{ asset($gallery->img_path) }}" alt="">
             </div>
             @endforeach
         </div>

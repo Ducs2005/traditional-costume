@@ -11,6 +11,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProductImage;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 
 class SellerController extends Controller
@@ -72,13 +73,17 @@ class SellerController extends Controller
     {
 
 
-        // Reset `sold` to 0 for all products of the seller
+        try {// Reset `sold` to 0 for all products of the seller
         Product::where('seller_id', auth()->id())->update(['sold' => 0]);
 
         // Fetch updated product list for the seller
         $products = Product::where('seller_id', auth()->id())->get();
 
         // Return success response with the updated products
+        } catch (Exception $e)
+        {
+            Log::info($e->getMessage());
+        }
         return response()->json([
             'success' => true,
             'products' => $products

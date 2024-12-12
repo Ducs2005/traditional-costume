@@ -128,6 +128,7 @@ header .menu {
     transform: translateX(-80%);
     margin-top: 10px;
     border-radius: 15px;
+    height:auto;
 }
 
 .sub-menu li {

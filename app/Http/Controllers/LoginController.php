@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cophuc;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -111,7 +112,10 @@ class LoginController extends Controller
         $gallery = Product::orderBy('img_path', 'asc')
                         ->take(10)
                         ->get();
-        return view('home', compact('featureProducts', 'gallery'));
+     $prd = Cophuc::all();
+     
+
+        return view('home', compact('featureProducts', 'gallery', 'prd'));
     }
 
     public function logout() {

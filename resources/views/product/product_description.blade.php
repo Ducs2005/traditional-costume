@@ -77,10 +77,10 @@
                     <!-- Product Tags -->
                     <div class="product-tags mb-3">
                         <ul class="list-inline">
-                            <li class="list-inline-item"><a href="#" class="badge bg-secondary">{{ $product->color ? $product->color->name : 'No Color' }}</a></li>
-                            <li class="list-inline-item"><a href="#" class="badge bg-secondary">{{ $product->button ? $product->button->name : 'No Button' }}</a></li>
-                            <li class="list-inline-item"><a href="#" class="badge bg-secondary">{{ $product->material ? $product->material->name : 'No Material' }}</a></li>
-                            <li class="list-inline-item"><a href="#" class="badge bg-secondary">{{ $product->type ? $product->type->name : 'No Type' }}</a></li>
+                            <li class="list-inline-item"><a href="{{url('/category/color/' .  $product->color->id)}}" class="badge bg-secondary">{{ $product->color ? $product->color->name : 'No Color' }}</a></li>
+                            <li class="list-inline-item"><a href="{{url('/category/button/' .  $product->button->id)}}" class="badge bg-secondary">{{ $product->button ? $product->button->name : 'No Button' }}</a></li>
+                            <li class="list-inline-item"><a href="{{url('/category/material/' .  $product->material->id)}}" class="badge bg-secondary">{{ $product->material ? $product->material->name : 'No Material' }}</a></li>
+                            <li class="list-inline-item"><a href="{{url('/category/type/' .  $product->type->id)}}" class="badge bg-secondary">{{ $product->type ? $product->type->name : 'No Type' }}</a></li>
                         </ul>
                     </div>
 

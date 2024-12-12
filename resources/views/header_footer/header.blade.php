@@ -29,9 +29,9 @@
         </div>
         <div class="menubar">
             <ul>
-                <li><a href="{{ url('/') }}">Trang chủ</a></li>
+                <li><a href="{{ url('/') }}"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
                 <li class="dropdown">
-                    <a href="{{ url('/product_type') }}" class="dropdown-toggle">Cổ phục</a>
+                    <a href="{{ url('/product_type') }}" class="dropdown-toggle"> <i class="fa-solid fa-person-dress"></i> Cổ phục</a>
                     <ul class="sub-menu">
                         <li><a href="{{ url('/product_type/ao-giao-linh') }}">Áo giao lĩnh</a></li>
                         <li><a href="{{ url('/product_type/ao-vien-linh') }}">Áo viên lĩnh</a></li>
@@ -39,8 +39,7 @@
                     </ul>
                 </li>
 
-                <li> <a href="{{ url('/product-list') }}" > Cửa hàng </a> </li>
-                <li><a href="#team">Về chúng tôi</a></li>
+                <li> <a href="{{ url('/product-list') }}" ><i class="fa-solid fa-shop"></i> Cửa hàng  </a> </li>
                 <li class="dropdown">
                      <a href="#"><i class="fa-solid fa-bell"></i> Thông báo <span id="unread-count" class="badge bg-danger" style="display:none;"></span> </a>
                      <ul class="sub-menu">
@@ -54,11 +53,9 @@
 
                 <!-- Check if the user is logged -->
                 @if (Auth::check())
-                <li>
-                    <a href="#" id="chat-toggle">Tin nhắn</a>
-                </li>
+                
                 <li class="dropdown">
-                    <a href="#"><i class="fa-solid fa-user"></i></a>
+                    <a href="#"><i class="fa-solid fa-user"></i> Tài khoản</a>
                     <ul class="sub-menu">
                         <li><a href="{{ route ('account.profile') }}">Trang cá nhân</a></li>
                         <li>
@@ -67,13 +64,18 @@
                         <li><a href="{{ route('account.logout') }}">Đăng xuất</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="{{ url('/view_cart') }}"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng</a>
+                </li>
+                <li>
+                    <a href="#" id="chat-toggle"><i class="fa-solid fa-message"></i> Tin nhắn</a>
+                </li>
+                
                 @else
-                    <li><a href="{{ route('account.login') }}">Đăng nhập</a></li>
+                    <li><a href="{{ route('account.login') }}"><i class="fa-solid fa-right-to-bracket"></i> Đăng nhập</a></li>
                 @endif
 
-                <li>
-                    <a href="{{ url('/view_cart') }}"><i class="fa-solid fa-cart-shopping"></i></a>
-                </li>
+                
             </ul>
             <div class="menu">
                 <label for="chk1">
