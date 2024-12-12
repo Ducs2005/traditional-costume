@@ -65,42 +65,52 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
 Route::get('/admin', [AdminController::class, 'checkAuth'])->name('admin.checkAuth');
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login/request', [AdminController::class, 'login'])->name('login.request');
 Route::get('/admin/forgotPassword', function() {
     return view('admin_views.forgotPassword');
 })->name('admin.forgotPassword');
-Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-Route::get('/admin/open-shop', [AdminController::class, 'openShop'])->name('admin.openShop');
-Route::get('/admin/user/{id}', [AdminController::class, 'getUserDetails'])->name('admin.getUserDetails');
-Route::get('/admin/accessTime', [AccessTimeController::class, 'index'])->name('admin.accessTime');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::get('/admin/open-shop', [AdminController::class, 'openShop'])->name('admin.openShop');
+    Route::get('/admin/user/{id}', [AdminController::class, 'getUserDetails'])->name('admin.getUserDetails');
+    Route::get('/admin/accessTime', [AccessTimeController::class, 'index'])->name('admin.accessTime');
 
-Route::get('/admin/dashboard', [AccessTimeController::class, 'index'])->name('admin.dashboard');
-Route::get('/admin/table/user', [AdminController::class, 'showUsers'])->name('table.user');
-Route::get('/admin/table/product', [AdminController::class, 'showProducts'])->name('table.product');
-Route::get('/admin/table/payment', [AdminController::class, 'showPayment'])->name('table.payment');
+    Route::get('/admin/dashboard', [AccessTimeController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/table/user', [AdminController::class, 'showUsers'])->name('table.user');
+    Route::get('/admin/table/product', [AdminController::class, 'showProducts'])->name('table.product');
+    Route::get('/admin/table/payment', [AdminController::class, 'showPayment'])->name('table.payment');
 
-Route::put('/admin/table/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
-Route::get('/admin/table/user/destroy{{id}}', [AdminController::class, 'create'])->name('user.destroy');
-Route::get('/admin/table/user/edit', [AdminController::class, 'create'])->name('product.edit');
-Route::delete('/admin/table/product/destroy/{id}', [AdminController::class, 'deleteProduct'])->name('product.destroy');
-Route::put('admin/product/update', [AdminController::class, 'updateProduct'])->name('product.update');
-Route::get('/admin/table/order', [AdminController::class, 'showOrder'])->name('table.order');
-Route::get('/admin/table/order2', [AdminController::class, 'showOrder'])->name('order.update');
-Route::post('/admin/user/{userId}/accept-selling-right', [AdminController::class, 'acceptSellingRight']);
-Route::post('/admin/user/{userId}/reject-selling-right', [AdminController::class, 'rejectSellingRight']);
-Route::get('/admin/sendNotifications', [AdminController::class, 'sendNotifications'])->name('admin.sendNotifications');
-Route::post('/admin/notification/send', [AdminController::class, 'sendNotification'])->name('notifications.send');
-Route::get('/admin/gallery', [AdminController::class, 'showGallery'])->name('admin.gallery');
+    Route::put('/admin/table/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
+    Route::get('/admin/table/user/destroy{{id}}', [AdminController::class, 'create'])->name('user.destroy');
+    Route::get('/admin/table/user/edit', [AdminController::class, 'create'])->name('product.edit');
+    Route::delete('/admin/table/product/destroy/{id}', [AdminController::class, 'deleteProduct'])->name('product.destroy');
+    Route::put('admin/product/update', [AdminController::class, 'updateProduct'])->name('product.update');
+    Route::get('/admin/table/order', [AdminController::class, 'showOrder'])->name('table.order');
+    Route::get('/admin/table/order2', [AdminController::class, 'showOrder'])->name('order.update');
+    Route::post('/admin/user/{userId}/accept-selling-right', [AdminController::class, 'acceptSellingRight']);
+    Route::post('/admin/user/{userId}/reject-selling-right', [AdminController::class, 'rejectSellingRight']);
+    Route::get('/admin/sendNotifications', [AdminController::class, 'sendNotifications'])->name('admin.sendNotifications');
+    Route::post('/admin/notification/send', [AdminController::class, 'sendNotification'])->name('notifications.send');
+    Route::get('/admin/gallery', [AdminController::class, 'showGallery'])->name('admin.gallery');
 
 
-Route::post('/colors', [GalleryController::class, 'storeColor'])->name('color.store');
-Route::post('/buttons', [GalleryController::class, 'storeButton'])->name('button.store');
-Route::post('/type', [GalleryController::class, 'storeType'])->name('type.store');
-Route::post('/material', [GalleryController::class, 'storeMaterial'])->name('material.store');
+    Route::post('/colors', [GalleryController::class, 'storeColor'])->name('color.store');
+    Route::post('/buttons', [GalleryController::class, 'storeButton'])->name('button.store');
+    Route::post('/type', [GalleryController::class, 'storeType'])->name('type.store');
+    Route::post('/material', [GalleryController::class, 'storeMaterial'])->name('material.store');
+    // Routes for editing and updating records
+    Route::put('/colors/{id}', [GalleryController::class, 'updateColor'])->name('color.update');
+    Route::put('/buttons/{id}', [GalleryController::class, 'updateButton'])->name('button.update');
+    Route::put('/materials/{id}', [GalleryController::class, 'updateMaterial'])->name('material.update');
+    Route::put('/types/{id}', [GalleryController::class, 'updateType'])->name('type.update');
 
+    Route::delete('/color/{id}', [GalleryController::class, 'destroyColor'])->name('color.destroy');
+    Route::delete('/button/{id}', [GalleryController::class, 'destroyButton'])->name('button.destroy');
+    Route::delete('/material/{id}', [GalleryController::class, 'destroyMaterial'])->name('material.destroy');
+    Route::delete('/type/{id}', [GalleryController::class, 'destroyType'])->name('type.destroy');
+});
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
 
@@ -108,14 +118,6 @@ Route::post('/send-message', [MessageController::class, 'sendMessage'])->middlew
 Route::get('/forgot_password', [ForgotPasswordController::class, 'forgotpass']);
 Route::post('/reset_pwd', [ForgotPasswordController::class, 'reset_pwd']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('api/pusher-config', function () {
-        return response()->json([
-            'key' => config('broadcasting.connections.pusher.key'), // Pusher Key
-            'cluster' => config('broadcasting.connections.pusher.options.cluster'), // Pusher Cluster
-        ]);
-    });
-});
 
 Route::get('/new_pwd', [ForgotPasswordController::class, 'new_pwd']);
 Route::post('/reset_new_pwd', [ForgotPasswordController::class, 'reset_new_pwd']);

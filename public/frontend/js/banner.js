@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log(baseUrl);
     let bannerIndex = 0; // Start at the first banner
     const banners = [
-        baseUrl + "/frontend/img/banner/banner5.png",
+        baseUrl + "/frontend/img/banner/56.jpg",
         baseUrl + "/frontend/img/banner/banner7.png",
         baseUrl + "/frontend/img/banner/banner8.png",
         baseUrl + "/frontend/img/banner/banner6.png"

@@ -48,7 +48,7 @@
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-danger" onclick="handleCancelOrder(event)">Hủy</button>
                                                 </form>
-                                                @endif
+                                                @endif  
                                     </tr>
                                 @endforeach
                             </tbody>
