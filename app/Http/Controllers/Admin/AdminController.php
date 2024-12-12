@@ -443,5 +443,99 @@ class AdminController extends Controller
         return view('admin_views.gallery', compact('colors', 'buttons', 'materials', 'types'));
     }
 
+        public function indexCophuc()
+    {
+        $cophuc = Cophuc::all(); // Retrieve all data from the database
+        return view('admin.cophuc.index', compact('cophuc'));
+    }
 
+    // Edit 
+    public function editCophuc($id)
+    {
+        $cophuc = Cophuc::findOrFail($id);
+        return view('cophuc.edit', compact('cophuc'));
+    }
+
+    public function updateCophuc(Request $request, $id)
+    {
+        // Validate the input data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'detail' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validate image format and size
+        ]);
+
+        // Find the Cophuc by its ID
+        $cophuc = Cophuc::findOrFail($id);
+
+        // Update the fields
+        $cophuc->name = $request->name;
+        $cophuc->detail = $request->detail;
+        $cophuc->description = $request->description;
+
+        // If a new image is uploaded, handle the file upload
+        if ($request->hasFile('image')) {
+            // Delete the old image file if it exists
+            if (File::exists(public_path($cophuc->image))) {
+                File::delete(public_path($cophuc->image));
+            }
+
+            // Store the new image
+            $path = $request->file('image')->store('images/cophuc');
+            $cophuc->image = $path;
+        }
+
+        // Save the updated Cophuc record
+        $cophuc->save();
+
+        // Redirect back with success message
+        return redirect()->route('table.cophuc')->with('success', 'Item updated successfully');
+    }
+
+    public function createCophuc(Request $request)
+{   
+    // Nếu là GET request, trả về view để tạo mới
+    return view('cophuc.create');
+}
+
+    public function storeCophuc(Request $request)
+    {
+        // Validate the input data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'detail' => 'nullable|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validate image format and size
+        ]);
+    
+        // Create a new Cophuc instance
+        $cophuc = new Cophuc();
+        $cophuc->name = $request->name;
+        $cophuc->detail = $request->detail;
+        $cophuc->description = $request->description;
+    
+        // Handle file upload for the image
+        if ($request->hasFile('image')) {
+            // Store the image in the "images/cophuc" folder
+            $path = $request->file('image')->store('images/cophuc', 'public');
+            $cophuc->image = $path;
+        }
+    
+        // Save the new Cophuc record to the database
+        $cophuc->save();
+    
+        // Redirect back with success message
+        return redirect()->route('table.cophuc')->with('success', 'Item created successfully');
+    }
+    
+    
+        // Delete
+        public function destroyCophuc($id)
+        {
+            $cophuc = Cophuc::findOrFail($id);
+            $cophuc->delete();
+    
+            return redirect()->route('table.cophuc')->with('success', 'Item deleted successfully');
+        }
 }
