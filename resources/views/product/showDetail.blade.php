@@ -14,10 +14,6 @@
                     <p><strong class="text-uppercase" style="color: #000;">Mô tả:</strong> {{ $cophuc->description }}</p>
                     <p><strong class="text-uppercase" style="color: #000;">Chi tiết:</strong> {{ $cophuc->detail }}</p>
                 </div>
-                
-                <a href="{{ route('product.product_type') }}" class="btn" style="position: absolute; bottom: -100px; right: 20px; border-radius: 12px; padding: 12px 20px; font-family: 'Georgia', serif; border: 1px solid #b58900; background-color: #f7e5a3; color: #8b5d33; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    Quay lại
-                </a>
             </div>
         </div>
     </div>
