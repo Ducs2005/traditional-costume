@@ -64,62 +64,22 @@
     <section class="section_container intro_container" id="intro">
         <h2 class="intro_header">TÌM HIỂU THÊM CÁC LOẠI TRANG PHỤC CỔ</h2>
         <div class="intro_grid">
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
+            @foreach($prd as $prds)
+                <div class="intro_card">
+                    <div class="intro_img">
+                        <img src="{{ $prds->image }}" alt="intro">
+                    </div>
+                    <div class="intro_content">
+                        <div>
+                            <h4>{{ $prds->name }}</h4>
+                            <div class="span">
+                                <a href="{{ route('showDetail', $prds->id) }}" class="btn">Xem Chi Tiết</a>
+                                <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 

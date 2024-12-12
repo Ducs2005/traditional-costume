@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Color;
 use App\Models\Button;
+use App\Models\Cophuc;
 use App\Models\Material;
 
 use App\Models\Type;
@@ -239,7 +240,8 @@ class ProductController extends Controller
         $gallery = Product::orderBy('img_path', 'asc')
                         ->take(10)
                         ->get();
-        return view('home', compact('featureProducts', 'gallery'));
+        $prd = Cophuc::all();
+        return view('home', compact('featureProducts', 'gallery', 'prd'));
     }
 
     public function showCategory($attribute, $id)
