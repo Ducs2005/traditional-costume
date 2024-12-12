@@ -21,6 +21,9 @@ class CophucController extends Controller
         // Trả về view với thông tin chi tiết
         return view('product.showDetail', compact('cophuc'));
     }
+
+
+
 }
 
 

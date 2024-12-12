@@ -86,7 +86,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/table/user', [AdminController::class, 'showUsers'])->name('table.user');
     Route::get('/admin/table/product', [AdminController::class, 'showProducts'])->name('table.product');
     Route::get('/admin/table/payment', [AdminController::class, 'showPayment'])->name('table.payment');
-
+    Route::get('/admin/table/cophuc', [AdminController::class, 'showCophuc'])->name('table.cophuc');
+    
     Route::put('/admin/table/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
     Route::get('/admin/table/user/destroy{{id}}', [AdminController::class, 'create'])->name('user.destroy');
     Route::get('/admin/table/user/edit', [AdminController::class, 'create'])->name('product.edit');
@@ -99,7 +100,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/sendNotifications', [AdminController::class, 'sendNotifications'])->name('admin.sendNotifications');
     Route::post('/admin/notification/send', [AdminController::class, 'sendNotification'])->name('notifications.send');
     Route::get('/admin/gallery', [AdminController::class, 'showGallery'])->name('admin.gallery');
-
+    Route::get('/admin/table/cophuc/create', [AdminController::class, 'createCophuc'])->name('cophuc.create');
+    Route::post('cophuc/store/', [AdminController::class, 'storeCophuc'])->name('cophuc.store');
+    Route::get('/cophuc/edit/{id}', [AdminController::class, 'editCophuc'])->name('cophuc.edit');
+    Route::delete('cophuc/destroy/{id}', [AdminController::class, 'destroyCophuc'])->name('cophuc.destroy');  
+    Route::put('/cophuc/update/{id}', [AdminController::class, 'updateCophuc'])->name('cophuc.update'); 
 
     Route::post('/colors', [GalleryController::class, 'storeColor'])->name('color.store');
     Route::post('/buttons', [GalleryController::class, 'storeButton'])->name('button.store');
