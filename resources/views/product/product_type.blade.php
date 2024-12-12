@@ -8,7 +8,7 @@
         @else
         @foreach ($cophuc as $item)
         <div class="product-card">
-            <img src="{{ asset($item->image) }}" class="card-img-top" alt="{{ $item->name }}">
+            <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top" alt="{{ $item->name }}">
             <h2>{{ $item->name }}</h2>
             <p>{{ $item->description }}</p>
             <a href="{{ route('showDetail', $item->id) }}" class="btn">Xem Chi Tiết</a>
