@@ -6,7 +6,7 @@
         <h2 class="text-center text-dark font-weight-bold mb-4" style="font-family: 'Georgia', serif; color: #333;">{{ $cophuc->name }}</h2>
         <div class="row">
             <div class="col-md-6 text-center mb-4 mb-md-0">
-                <img src="{{ asset($cophuc->image) }}" alt="{{ $cophuc->name }}" class="product-image img-fluid rounded shadow-sm" style="max-width: 100%; height: auto; border: 2px solid #333; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                <img src="{{ asset('storage/' . $cophuc->image) }}" alt="{{ $cophuc->name }}" class="product-image img-fluid rounded shadow-sm" style="max-width: 100%; height: auto; border: 2px solid #333; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
             </div>
             <div class="col-md-6">
                 <div class="product-description mb-4" style="color: #333;">
