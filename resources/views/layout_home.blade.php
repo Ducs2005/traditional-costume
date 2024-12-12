@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/home.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/view_cart.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/productList.css') }}">
+    <script src="{{ asset('frontend/js/add_to_cart_buy.js') }}"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{{ asset('frontend/js/brand.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">

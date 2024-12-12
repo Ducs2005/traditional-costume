@@ -44,23 +44,23 @@ class ProductController extends Controller
     {
         // Eager load the product with its related attributes including the seller (User)
         $product = Product::with(['color', 'productImages', 'material', 'button', 'type', 'seller', 'ratings.user'])->findOrFail($id);
-    
+
         // Calculate the average rating
         $averageRating = $product->ratings->isNotEmpty()
             ? $product->ratings->avg('rating')
             : 5;
-    
+
         // Get the number of ratings
         $numberOfRatings = $product->ratings->count();
-    
+
         // Add the average rating and number of ratings as attributes
         $product->average_rating = $averageRating;
         $product->number_of_ratings = $numberOfRatings;
-    
+
         // Pass the product to the view
         return view('product.product_description', compact('product'));
     }
-    
+
 
 
 
@@ -106,7 +106,7 @@ class ProductController extends Controller
         } elseif ($request->sort_order === 'byPriceDecrease') {
             $query->orderBy('price', 'desc');
         }
-    
+
 
 
         // Get the products
@@ -115,17 +115,17 @@ class ProductController extends Controller
             $averageRating = $product->ratings->isNotEmpty()
                 ? $product->ratings->avg('rating')
                 : 5;
-    
+
             // Get the number of ratings
             $numberOfRatings = $product->ratings->count();
-    
+
             // Add the average rating and number of ratings to the product attributes
             $product->average_rating = $averageRating;
             $product->number_of_ratings = $numberOfRatings;
-    
+
             return $product;
         });
-    
+
 
         return response()->json(['products' => $products]);
     }
@@ -227,6 +227,16 @@ class ProductController extends Controller
         $product->save();
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật thành công.');
+    }
+
+    public function product_home() {
+        $featureProducts = Product::orderBy('created_at', 'desc')
+                        ->take(4)
+                        ->get();
+        $gallery = Product::orderBy('img_path', 'asc')
+                        ->take(10)
+                        ->get();
+        return view('home', compact('featureProducts', 'gallery'));
     }
 }
 
