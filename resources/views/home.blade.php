@@ -128,10 +128,10 @@
         <div class="overlay_shop">
         <div class="content">
             <h4>Shop name</h4>
-            <h1>Autumn Collection
-                <br>UP TO 20% OFF
+            <h1>Mở cửa hàng cá nhân
+                <br>NHIỀU ƯU ĐÃI HẤP DẪN
             </h1>
-            <button class="text-uppercase">Shop now</button>
+            <button class="text-uppercase">Truy cập nhanh</button>
         </div>
     </section>
 
@@ -202,27 +202,27 @@
 
     <!-- section about us -->
     <section class="team" id="team">
-        <h1>Our <span> Team</span></h1>
+        <h1>Nhóm 10</h1>
         <div class="team_box">
             <div class="profile">
-                <img src="{{ asset('frontend/img/member/PND.png') }}" alt="">
+                <img src="https://i.pinimg.com/736x/a0/a8/46/a0a846db2c036d3a8fcf739bb5707e43.jpg" alt="">
                 <div class="info">
                     <h2 class="name">Pham Ngoc Duc</h2>
-                    <p class="info_p">23JIT_Nhóm trưởng</p>
+                    <p class="info_p">23IT059_Nhóm trưởng</p>
                 </div>
             </div>
             <div class="profile">
-                <img src="{{ asset('frontend/img/member/DTP.jpg') }}" alt="">
+                <img src="https://i.pinimg.com/736x/80/b2/1f/80b21fc7cb615e1a3b23bbd41e5dc455.jpg" alt="">
                 <div class="info">
                     <h2 class="name">Dam Thanh Phuong</h2>
-                    <p class="info_p">23JIT_Thành viên</p>
+                    <p class="info_p">23IT219_Thành viên</p>
                 </div>
             </div>
             <div class="profile">
-                <img src="{{ asset('frontend/img/member/PHN.png') }}" alt="">
+                <img src="https://i.pinimg.com/736x/78/9e/28/789e281493d6f7fce03e194589952c27.jpg" alt="">
                 <div class="info">
                     <h2 class="name">Pham Hoang Nguyen</h2>
-                    <p class="info_p">23JIT_Thành viên</p>
+                    <p class="info_p">23IT.EB06EB065_Thành viên</p>
                 </div>
             </div>
         </div>
