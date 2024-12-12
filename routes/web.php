@@ -15,6 +15,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\CophucController;
 
 Route::get('/', [ProductController::class, 'product_home']);
 Route::get('/product-list', [ProductController::class, 'productList'])->name('products.list');
@@ -160,3 +161,7 @@ Route::get('/notification', [NotificationController::class, 'show'])->name('noti
 Route::post('/notifications/unread-count', [NotificationController::class, 'getUnreadCount'])->name('notifications.unreadCount');
 
 Route::post('/rate-product', [RatingController::class, 'store'])->name('rate.product');
+
+Route::get('/product_type', [CophucController::class, 'showCophuc'])->name('product.product_type');
+Route::get('/product/{id}', [CophucController::class, 'show'])->name('showDetail');
+
