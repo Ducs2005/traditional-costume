@@ -35,6 +35,13 @@
                 @endforeach
             </select>
 
+            <select id="colorSelect" onchange="filterProducts()">
+                <option value="">Màu sắc</option>
+                @foreach($colors as $color)
+                    <option value="{{ $color->id }}">{{ $color->name }}</option>
+                @endforeach
+            </select>
+
             <select id="buttonSelect" onchange="filterProducts()">
                 <option value="">Loại nút</option>
                 @foreach($buttons as $button)
