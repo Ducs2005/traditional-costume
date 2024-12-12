@@ -107,22 +107,22 @@ class Pagination {
 
                 <div class="product-attributes">
                     <div class="attribute-group">
-                        <a href="/products/category/${product.color ? product.color.name : 'No Color'}" class="category-label">
+                        <a href="${baseUrl}/category/color/${product.color ? product.color.id : 0}" class="category-label">
                             ${product.color ? product.color.name : 'No Color'}
                         </a>
                     </div>
                     <div class="attribute-group">
-                        <a href="/products/category/${product.material ? product.material.name : 'No Material'}" class="category-label">
+                        <a href="${baseUrl}/category/material/${product.material ? product.material.id : 0}" class="category-label">
                             ${product.material ? product.material.name : 'No Material'}
                         </a>
                     </div>
                     <div class="attribute-group">
-                        <a href="/products/category/${product.button ? product.button.name : 'No Button'}" class="category-label">
+                        <a href="${baseUrl}/category/button/${product.button ? product.button.id : 0}" class="category-label">
                             ${product.button ? product.button.name : 'No Button'}
                         </a>
                     </div>
                     <div class="attribute-group">
-                        <a href="/products/category/${product.type ? product.type.name : 'No Type'}" class="category-label">
+                        <a href="${baseUrl}/category/type/${product.type ? product.type.id : 0}" class="category-label">
                             ${product.type ? product.type.name : 'No Type'}
                         </a>
                     </div>
@@ -197,6 +197,7 @@ class Pagination {
     filterProducts() {
         // Get the selected values from the dropdowns
         const colorId = document.getElementById('colorSelect').value;
+        const typeId = document.getElementById('typeSelect').value;
         const materialId = document.getElementById('materialSelect').value;
         const buttonId = document.getElementById('buttonSelect').value;
         const sortOrder = document.getElementById('buttonSort').value;
@@ -209,6 +210,7 @@ class Pagination {
             color_id: colorId,
             material_id: materialId,
             button_id: buttonId,
+            type_id: typeId,
             sort_order: sortOrder,
             search: searchQuery,
             price_min: minPrice,
@@ -242,7 +244,6 @@ class Pagination {
             // Display the filtered products
             this.products = data.products; // Update the products array
             this.currentPage = 1; // Reset to the first page
-            console.log(this.products);
             this.displayProducts(this.products.slice(0, this.itemsPerPage)); // Display the first page of filtered products
         })
         .catch(error => {
@@ -251,7 +252,7 @@ class Pagination {
     }
 }
 
-pagination = new Pagination(9); // Display 9 products per page on load
+pagination = new Pagination(12); // Display 9 products per page on load
 function filterProducts()
 {
     pagination.filterProducts();

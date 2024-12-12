@@ -75,13 +75,13 @@
     </div>
 
     @vite(['resources/js/app.js'])
+    
     <script>
         const fetchMessagesUrl = "{{ url('/fetch-messages') }}";
         const sendMessageUrl = "{{ url('/send-message') }}";
-        
     </script>
-    <script src="{{asset('frontend/js/chat.js')}}"></script>
   
+  <script src="{{asset('frontend/js/chat.js')}}"></script>
 
 </body>
 </html>

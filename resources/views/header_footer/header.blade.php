@@ -113,20 +113,7 @@
             });
         });
 
-        var chatWindow = document.getElementById('chat-window');
-        console.log(chatWindow); // Debugging: Check if chat window is found
-
-        document.getElementById('chat-toggle').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default anchor behavior
-            console.log("Chat toggle clicked!"); // Debugging: Log when clicked
-            if (chatWindow.style.display === "none" || chatWindow.style.display === "") {
-                chatWindow.style.display = "block"; // Show the chat window
-                console.log("Chat window displayed!"); // Debugging: Log when displayed
-            } else {
-                //chatWindow.style.display = "none"; // Hide the chat window
-               // console.log("Chat window hidden!"); // Debugging: Log when hidden
-            }
-        });
+        
     </script>
 </body>
 </html>

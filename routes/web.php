@@ -56,6 +56,8 @@ Route::get('/own_shop', [SellerController::class, 'viewShop'])->name('ownShop.vi
 
 Route::get('/api/products', [ProductController::class, 'getProducts']);
 Route::post('api/products/filter', [ProductController::class, 'filterProducts']);
+Route::get('/category/{attribute}/{id}', [ProductController::class, 'showCategory'])->name('category.show');
+
 
 Route::get('/product_description/{id}', [ProductController::class, 'show'])->name('product.description');
 

@@ -73,6 +73,9 @@ class ProductController extends Controller
         if ($request->filled('color_id')) {
             $query->where('color_id', $request->color_id);
         }
+        if ($request->filled('type_id')) {
+            $query->where('type_id', $request->type_id);
+        }
         if ($request->filled('material_id')) {
             $query->where('material_id', $request->material_id);
         }
@@ -143,14 +146,14 @@ class ProductController extends Controller
     public function productList()
     {
             $products = Product::with('type')->get();
-            $type = Type::all();
+            $types = Type::all();
             $colors = Color::all();
             $materials = Material::all();
             $buttons = Button::all();
 
             $discountedProducts = Product::whereBetween('price', [100000, 300000])->get();
             $popularProducts = Product::where('sold', '>=', 100)->get();
-            return view('product.product_list', compact('products', 'type', 'colors', 'materials', 'buttons', 'discountedProducts', 'popularProducts'));
+            return view('product.product_list', compact('products', 'types', 'colors', 'materials', 'buttons', 'discountedProducts', 'popularProducts'));
     }
 
     public function create()
@@ -203,7 +206,7 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product', 'types'));
     }
 
-    public function update(Request $request, $id)
+    public function update($attribute, $id)
     {
         $request->validate([
             'name' => 'required',
@@ -228,5 +231,47 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật thành công.');
     }
+
+    public function showCategory($attribute, $id)
+    {
+        $attributeData = null;
+
+        // Switch case to fetch attribute data based on the type
+        switch ($attribute) {
+            case 'color':
+                $attributeData = Color::findOrFail($id);
+                break;
+
+            case 'material':
+                $attributeData = Material::findOrFail($id);
+                break;
+
+            case 'button':
+                $attributeData = Button::findOrFail($id);
+                break;
+
+            case 'type':
+                $attributeData = Type::findOrFail($id);
+                break;
+
+            default:
+                abort(404, 'Invalid attribute type');
+        }
+
+        // Fetch all products to show in the view (optional)
+        $products = Product::with('type')->get();
+
+        // Retrieve other data
+        $types = Type::all();
+        $colors = Color::all();
+        $materials = Material::all();
+        $buttons = Button::all();
+        $discountedProducts = Product::whereBetween('price', [100000, 300000])->get();
+        $popularProducts = Product::where('sold', '>=', 100)->get();
+
+        // Pass data to the view
+        return view('product.product_list', compact('products', 'colors', 'materials', 'buttons', 'types', 'attribute', 'id', 'attributeData', 'discountedProducts', 'popularProducts'));
+    }
+
 }
 

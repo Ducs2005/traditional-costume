@@ -31,23 +31,43 @@
             <select id="materialSelect" onchange="filterProducts()">
                 <option value="">Chất liệu</option>
                 @foreach($materials as $material)
-                    <option value="{{ $material->id }}">{{ $material->name }}</option>
+                    <option value="{{ $material->id }}" 
+                        {{ isset($attributeData) && $attribute === 'material' && $attributeData->id === $material->id ? 'selected' : '' }}>
+                        {{ $material->name }}
+                    </option>
                 @endforeach
             </select>
 
             <select id="colorSelect" onchange="filterProducts()">
                 <option value="">Màu sắc</option>
                 @foreach($colors as $color)
-                    <option value="{{ $color->id }}">{{ $color->name }}</option>
+                    <option value="{{ $color->id }}" 
+                        {{ isset($attributeData) && $attribute === 'color' && $attributeData->id === $color->id ? 'selected' : '' }}>
+                        {{ $color->name }}
+                    </option>
                 @endforeach
             </select>
 
             <select id="buttonSelect" onchange="filterProducts()">
                 <option value="">Loại nút</option>
                 @foreach($buttons as $button)
-                    <option value="{{ $button->id }}">{{ $button->name }}</option>
+                    <option value="{{ $button->id }}" 
+                        {{ isset($attributeData) && $attribute === 'button' && $attributeData->id === $button->id ? 'selected' : '' }}>
+                        {{ $button->name }}
+                    </option>
                 @endforeach
             </select>
+
+            <select id="typeSelect" onchange="filterProducts()">
+                <option value="">Thể loại</option>
+                @foreach($types as $type)
+                    <option value="{{ $type->id }}" 
+                        {{ isset($attributeData) && $attribute === 'type' && $attributeData->id === $type->id ? 'selected' : '' }}>
+                        {{ $type->name }}
+                    </option>
+                @endforeach
+            </select>
+
             <select id="buttonSort" onchange="filterProducts()">
                 <option value="">Sắp xếp</option>
                     <option value="byName">A-Z</option>
@@ -73,7 +93,7 @@
                 <div id="priceRangeLabel" class="price-label">Từ 0₫ đến 100,000₫</div>
             </div>
         </div>
-        @include ('product.product', ['type' => 'popular', 'currentProduct' => null])
+        @include ('product.product', ['type' => 'popular', 'currentProduct' => null] )
     </div>
 
     <div class="product product-discount">

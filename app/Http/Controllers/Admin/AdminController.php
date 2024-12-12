@@ -50,13 +50,24 @@ class AdminController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            return redirect()->intended('admin/dashboard')->with('success', 'You are logged in!');
+
+            // Check if the authenticated user has an admin role
+            if (Auth::user()->role === 'admin') { // Adjust this condition based on your role structure
+                return redirect()->intended('admin/dashboard')->with('success', 'You are logged in!');
+            }
+
+            // Log the user out if they are not an admin
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Access denied. You do not have administrator privileges.',
+            ]);
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
+
     public function logout(Request $request)
     {
         Auth::logout();
