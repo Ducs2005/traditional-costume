@@ -4,20 +4,19 @@
 
     <!-- section home -->
     <section class="main-home">
-        <div class="main-text">
-            <h1>TRANG PHỤC CỔ VIỆT NAM</h1>
-             <p>
-                Những trang phục cổ Việt Nam không chỉ dừng lại ở việc là di tích quý báu của lịch sử nước nhà
-                mà còn đại diện những nét đặc trưng của nền văn hoá dân tộc.
-            </p>
-            <a href="#" class="main-btn">Tìm hiểu <i class="fa-solid fa-right-long"></i></a>
-        </div>
+            <div class="main-text">
+                <h1>TRANG PHỤC CỔ VIỆT NAM</h1>
+                 <p>
+                    Những trang phục cổ Việt Nam không chỉ dừng lại ở việc là di tích quý báu của lịch sử nước nhà
+                    mà còn đại diện những nét đặc trưng của nền văn hoá dân tộc.
+                </p>
+                <a href="#" class="main-btn">Tìm hiểu <i class="fa-solid fa-right-long"></i></a>
+            </div>
 
-        <div class="down-arrow">
-            <a href="#intro" class="down"><i class="fa-solid fa-angle-down"></i></a>
-        </div>
+            <div class="down-arrow">
+                <a href="#intro" class="down"><i class="fa-solid fa-angle-down"></i></a>
+            </div>
     </section>
-
     <div class="banner">
         <div class="slider" style="--quantity: 8">
             <div class="item" style="--position: 1">
@@ -125,8 +124,9 @@
     </section>
 
     {{-- section shop --}}
-    <section class="shop my-2 py-5" id="shop">
-        <div class="my-5 py-4">
+    <section class="shop my-2 py-5 text-center" id="shop">
+        <div class="overlay_shop">
+        <div class="content">
             <h4>Shop name</h4>
             <h1>Autumn Collection
                 <br>UP TO 20% OFF
@@ -138,15 +138,15 @@
     {{-- section feature --}}
     <section class="feature" id="feature" class="my-5 pb-5">
         <div class="feature_container text-center">
-            <h3>Sản phẩm nổi bật</h3>
+            <h3>Sản phẩm mới</h3>
             <hr class="mx-auto">
-            <p>Bạn có thể tìm và mua sản phẩm tại đây</p>
+            <p>Bạn có thể tìm và mua sản phẩm <a href="{{ URL::to('/product-list') }}">tại đây</a></p>
         </div>
         <div class="product_feature">
-            <div class="">
+            @foreach($featureProducts as $feature)
                 <div class="product">
                     <div class="image">
-                        <img class="img-fluid mb-3" src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="">
+                        <img class="img-fluid mb-3" src="{{ $feature->img_path }}" alt="">
                     </div>
                     <div class="feature_content">
                         <div class="star">
@@ -156,100 +156,50 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                         </div>
-                        <h5 class="p-name">Name</h5>
-                        <h4 class="p-price">500000VND</h4>
-                        <button type="button" id="submitPaymentBtn" class="buy-btn btn btn-primary mt-3">Mua ngay</button>
+                        <h5 class="p-name">{{ $feature->name }}</h5>
+                        <h4 class="p-price">{{ number_format($feature->price, 0, ',', '.')}}</h4>
+                        @if(Auth::check())
+                        <form id="add-to-cart-form-{{ $feature->id }}" action="{{ route('cart.add') }}" method="POST" class="cart_home">
+                            @csrf
+                            <input type="hidden" name="product_id" class="product_id" value="{{ $feature->id }}">
+                            <button type="button" class="payment-btn buy-btn btn btn-primary mt-3" data-id="{{ $feature->id }}">Thêm vào giỏ hàng</button>
+                        </form>
+                        <form id="payment-form-{{ $feature->id }}" action="{{ route('payment.process') }}" method="POST" class="cart_home payment_form">
+                            @csrf
+                            <input type="hidden" id="cartTotal" name="cartTotal" value="{{ floor($feature->price) }}">
+                            <div hidden class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="vnpay" value="vnpay" required checked>
+                                <label class="form-check-label" for="vnpay">
+                                    Thanh toán qua VNPay
+                                </label>
+                            </div>
+                            <input type="hidden" name="product_id" class="product_id" value="{{ $feature->id }}">
+                            <button type="button" class="buyBtn buy-btn btn btn-primary mt-3" data-id="{{ $feature->id }}">Mua ngay</button>
+                        </form>
+                        @else
+                        <button type="button" class="payment buy-btn btn btn-primary mt-3" data-id="{{ $feature->id }}">Thêm vào giỏ hàng</button>
+                        <button type="button" class="buy buy-btn btn btn-primary mt-3" data-id="{{ $feature->id }}">Mua ngay</button>
+                        @endif
                     </div>
                 </div>
-            </div>
-            <div class="">
-                <div class="product">
-                    <div class="image">
-                        <img class="img-fluid mb-3" src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="">
-                    </div>
-                    <div class="feature_content">
-                        <div class="star">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h5 class="p-name">Name</h5>
-                        <h4 class="p-price">500000VND</h4>
-                        <button class="buy-btn">Mua ngay</button>
-                    </div>
-                </div>
-            </div>
-            <div class="">
-                <div class="product">
-                    <div class="image">
-                        <img class="img-fluid mb-3" src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="">
-                    </div>
-                    <div class="feature_content">
-                        <div class="star">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h5 class="p-name">Name</h5>
-                        <h4 class="p-price">500000VND</h4>
-                        <button class="buy-btn">Mua ngay</button>
-                    </div>
-                </div>
-            </div>
-            <div class="">
-                <div class="product">
-                    <div class="image">
-                        <img class="img-fluid mb-3" src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="">
-                    </div>
-                    <div class="feature_content">
-                        <div class="star">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h5 class="p-name">Name</h5>
-                        <h4 class="p-price">500000VND</h4>
-                        <button class="buy-btn">Mua ngay</button>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
+
 
     {{-- section gallery --}}
     <section class="gallery" id="gallery">
         <h1>Our <span>Gallery</span>
         </h1>
         <div class="gallery_image_box">
+            @foreach($gallery as $gallery)
             <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
+                <img src="{{ $gallery->img_path }}" alt="">
             </div>
-            <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
-            </div>
-            <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
-            </div>
-            <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
-            </div>
-            <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
-            </div>
-            <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
-            </div>
-            <div class="gallery_image">
-                <img src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/458188243_1303613630964337_4884720372193226172_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=EreU3EHLzz8Q7kNvgEaT1BP&_nc_zt=23&_nc_ht=scontent.fdad3-4.fna&_nc_gid=A4AxioftPNT0qcZ0PBN1CHK&oh=00_AYDzCMIr42F9D4XMC7-RH3_cA5Z8Kukj4dw24YTn_oDttg&oe=675D88DB" alt="">
-            </div>
+            @endforeach
         </div>
     </section>
+
     <!-- section about us -->
     <section class="team" id="team">
         <h1>Our <span> Team</span></h1>

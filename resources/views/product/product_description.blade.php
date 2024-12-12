@@ -111,7 +111,8 @@
                         <button disabled type="submit" class="add-to-cart-btn" style="background-color:grey">Add to Cart</button>
                         @else
                         <button type="submit" class="add-to-cart-btn" >Add to Cart</button>
-                        @endif                    </form>
+                        @endif
+                    </form>
                 </div>
             </div>
         </div>
@@ -148,7 +149,7 @@
             });
         </script>
     @endif
-      
+
     <script>
         function setImage(imagePath) {
             document.getElementById('productImage').src = imagePath;
@@ -178,7 +179,7 @@
                 }
             });
         @endif
-        
+
     </script>
 
     <!-- Bootstrap JS and Popper.js -->

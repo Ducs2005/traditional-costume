@@ -16,10 +16,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RatingController;
 
-Route::get('/', function () {
-    return view('home');
-});
-
+Route::get('/', [ProductController::class, 'product_home']);
 Route::get('/product-list', [ProductController::class, 'productList'])->name('products.list');
 
 Route::get('/product_type', function () {

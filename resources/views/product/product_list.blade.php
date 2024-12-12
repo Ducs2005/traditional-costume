@@ -98,7 +98,6 @@
 
     <div class="product product-discount">
         <div class="tag-container">
-
             <div class="centered-text" id="listType">Chỉ từ ...đ</div>
             <br>
         </div>

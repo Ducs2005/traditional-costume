@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -104,7 +105,13 @@ class LoginController extends Controller
     }
 
     public function home() {
-        return view('home');
+        $featureProducts = Product::orderBy('created_at', 'desc')
+                        ->take(4)
+                        ->get();
+        $gallery = Product::orderBy('img_path', 'asc')
+                        ->take(10)
+                        ->get();
+        return view('home', compact('featureProducts', 'gallery'));
     }
 
     public function logout() {

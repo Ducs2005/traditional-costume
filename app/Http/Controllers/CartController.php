@@ -23,13 +23,13 @@ class CartController extends Controller
         // If cart exists, get the cart items along with product details
         if ($cart) {
             $cartItems = $cart->items()->with('product')->get(); // This will retrieve the cart items with product details
-        } else {    
+        } else {
             $cartItems = []; // No cart found
         }
         // Pass the cart items to the view
         return view('view_cart', compact('cartItems'));
     }
-    
+
     public function removeItem(CartItem $cartItem)
     {
         $cartItem->delete();  // Deletes the cart item
@@ -131,11 +131,6 @@ class CartController extends Controller
             return redirect()->route('cart.view')->with('error', $e->getMessage());
         }
     }
-
-
-
-
-
 
     public function addToCart(Request $request)
     {
