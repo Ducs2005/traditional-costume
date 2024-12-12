@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Type;
+use App\Models\Cophuc;
 use Illuminate\Support\Facades\Http;
 
 use Exception;
