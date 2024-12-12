@@ -15,6 +15,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\CophucController;
 
 Route::get('/', [ProductController::class, 'product_home']);
 Route::get('/product-list', [ProductController::class, 'productList'])->name('products.list');
@@ -48,6 +49,10 @@ Route::group(['prefix' => 'account'], function() {
 
 Route::get('profile', [LoginController::class, 'profile'])->name('account.profile');
 Route::post('/update-avatar', [AccountController::class, 'updateAvatar'])->name('update-avatar');
+
+Route::get('change-password', [AccountController::class, 'showChangePasswordForm'])->name('change.password');
+Route::post('change-password', [AccountController::class, 'changePassword'])->name('change.password.submit');
+
 
 Route::get('/view_cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::get('/own_shop', [SellerController::class, 'viewShop'])->name('ownShop.view');
@@ -167,3 +172,7 @@ Route::post('/notifications/unread-count', [NotificationController::class, 'getU
 
 Route::post('/rate-product', [RatingController::class, 'store'])->name('rate.product');
 Route::post('seller/product/update/{id}', [SellerController::class, 'update'])->name('seller.update');
+
+Route::get('/product_type', [CophucController::class, 'showCophuc'])->name('product.product_type');
+Route::get('/product/{id}', [CophucController::class, 'show'])->name('showDetail');
+

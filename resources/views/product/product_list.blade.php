@@ -27,62 +27,62 @@
             </div>
 
             <input type="text" id="productSearch" placeholder="Search products..." onkeyup="filterProducts()">
+            <div class="select">
+                <select id="materialSelect" onchange="filterProducts()">
+                    <option value="">Chất liệu</option>
+                    @foreach($materials as $material)
+                        <option value="{{ $material->id }}"
+                            {{ isset($attributeData) && $attribute === 'material' && $attributeData->id === $material->id ? 'selected' : '' }}>
+                            {{ $material->name }}
+                        </option>
+                    @endforeach
+                </select>
 
-            <select id="materialSelect" onchange="filterProducts()">
-                <option value="">Chất liệu</option>
-                @foreach($materials as $material)
-                    <option value="{{ $material->id }}" 
-                        {{ isset($attributeData) && $attribute === 'material' && $attributeData->id === $material->id ? 'selected' : '' }}>
-                        {{ $material->name }}
-                    </option>
-                @endforeach
-            </select>
+                <select id="colorSelect" onchange="filterProducts()">
+                    <option value="">Màu sắc</option>
+                    @foreach($colors as $color)
+                        <option value="{{ $color->id }}"
+                            {{ isset($attributeData) && $attribute === 'color' && $attributeData->id === $color->id ? 'selected' : '' }}>
+                            {{ $color->name }}
+                        </option>
+                    @endforeach
+                </select>
 
-            <select id="colorSelect" onchange="filterProducts()">
-                <option value="">Màu sắc</option>
-                @foreach($colors as $color)
-                    <option value="{{ $color->id }}" 
-                        {{ isset($attributeData) && $attribute === 'color' && $attributeData->id === $color->id ? 'selected' : '' }}>
-                        {{ $color->name }}
-                    </option>
-                @endforeach
-            </select>
+                <select id="buttonSelect" onchange="filterProducts()">
+                    <option value="">Loại nút</option>
+                    @foreach($buttons as $button)
+                        <option value="{{ $button->id }}"
+                            {{ isset($attributeData) && $attribute === 'button' && $attributeData->id === $button->id ? 'selected' : '' }}>
+                            {{ $button->name }}
+                        </option>
+                    @endforeach
+                </select>
 
-            <select id="buttonSelect" onchange="filterProducts()">
-                <option value="">Loại nút</option>
-                @foreach($buttons as $button)
-                    <option value="{{ $button->id }}" 
-                        {{ isset($attributeData) && $attribute === 'button' && $attributeData->id === $button->id ? 'selected' : '' }}>
-                        {{ $button->name }}
-                    </option>
-                @endforeach
-            </select>
+                <select id="typeSelect" onchange="filterProducts()">
+                    <option value="">Thể loại</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}"
+                            {{ isset($attributeData) && $attribute === 'type' && $attributeData->id === $type->id ? 'selected' : '' }}>
+                            {{ $type->name }}
+                        </option>
+                    @endforeach
+                </select>
 
-            <select id="typeSelect" onchange="filterProducts()">
-                <option value="">Thể loại</option>
-                @foreach($types as $type)
-                    <option value="{{ $type->id }}" 
-                        {{ isset($attributeData) && $attribute === 'type' && $attributeData->id === $type->id ? 'selected' : '' }}>
-                        {{ $type->name }}
-                    </option>
-                @endforeach
-            </select>
-
-            <select id="buttonSort" onchange="filterProducts()">
-                <option value="">Sắp xếp</option>
-                    <option value="byName">A-Z</option>
-                    <option value="byPriceDecrease">Theo giá giảm dần</option>
-                    <option value="byPriceIncrease">Theo giá tăng dần</option>
-            </select>
-            <select id="ratingFilter" onchange="filterProducts()">
-                <option value="">Lọc theo đánh giá</option>
-                <option value="1">1 sao trở lên</option>
-                <option value="2">2 sao trở lên</option>
-                <option value="3">3 sao trở lên</option>
-                <option value="4">4 sao trở lên</option>
-                <option value="5">5 sao</option>
-            </select>
-
+                <select id="buttonSort" onchange="filterProducts()">
+                    <option value="">Sắp xếp</option>
+                        <option value="byName">A-Z</option>
+                        <option value="byPriceDecrease">Theo giá giảm dần</option>
+                        <option value="byPriceIncrease">Theo giá tăng dần</option>
+                </select>
+                <select id="ratingFilter" onchange="filterProducts()">
+                    <option value="">Lọc theo đánh giá</option>
+                    <option value="1">1 sao trở lên</option>
+                    <option value="2">2 sao trở lên</option>
+                    <option value="3">3 sao trở lên</option>
+                    <option value="4">4 sao trở lên</option>
+                    <option value="5">5 sao</option>
+                </select>
+            </div>
             <div class="price-range-container">
                 <label for="priceRange">Lọc theo giá:</label>
                 <div class="range-slider">
@@ -98,7 +98,7 @@
 
     <div class="product product-discount">
         <div class="tag-container">
-            <div class="centered-text" id="listType">Chỉ từ ...đ</div>
+            <div class="centered-text" id="listType">Giá trung bình</div>
             <br>
         </div>
         <div class="list-item">
@@ -109,8 +109,13 @@
                 <div class="item product-item">
                     <img src="{{ asset($product->img_path) }}" alt="{{ $product->name }}">
                     <h4>{{ $product->name }}</h4>
-                    <div class="price">
-                        {{ number_format($product->price, 0, ',', '.') }} ₫
+                    <div class="price-rating">
+                        <div class="price">
+                            {{ number_format($product->price, 0, ',', '.') }} <span class="vnd-icon">₫</span>
+                        </div>
+                        <div class="rate">
+                            5 /5 <i class="fa-solid fa-star" style="color: gold;"></i> (0 đã đánh giá)
+                        </div>
                     </div>
                     <div class="product-attributes">
                         @if($product->color)
@@ -145,7 +150,7 @@
 
     <div class="product product-discount">
         <div class="tag-container">
-            <div class="centered-text" id="listType">Sản phẩm được yêu thích nhất</div>
+            <div class="centered-text" id="listType">Sản phẩm bán chạy nhất</div>
             <br>
         </div>
         <div class="list-item">
@@ -156,8 +161,13 @@
                 <div class="item product-item">
                     <img src="{{ asset($product->img_path) }}" alt="{{ $product->name }}">
                     <h4>{{ $product->name }}</h4>
-                    <div class="price">
-                        {{ number_format($product->price, 0, ',', '.') }} ₫
+                    <div class="price-rating">
+                        <div class="price">
+                            {{ number_format($product->price, 0, ',', '.') }} <span class="vnd-icon">₫</span>
+                        </div>
+                        <div class="rate">
+                            5 /5 <i class="fa-solid fa-star" style="color: gold;"></i> (0 đã đánh giá)
+                        </div>
                     </div>
                     <div class="product-attributes">
                         @if($product->color)

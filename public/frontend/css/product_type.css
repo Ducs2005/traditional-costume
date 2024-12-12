@@ -1,7 +1,7 @@
 .Category {
     padding: 40px 20px;  
     background-color: #f9f9f9;  
-    padding-top: 120px;
+    padding-top: 60px;
 }
  
 
@@ -34,6 +34,8 @@ h1 {
     flex-wrap: wrap;  
     gap: 30px;  
     justify-content: center;  
+    padding-top: 120px; 
+    padding-bottom: 50px; 
 }
 
 

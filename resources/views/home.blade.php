@@ -64,62 +64,22 @@
     <section class="section_container intro_container" id="intro">
         <h2 class="intro_header">TÌM HIỂU THÊM CÁC LOẠI TRANG PHỤC CỔ</h2>
         <div class="intro_grid">
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
+            @foreach($prd as $prds)
+                <div class="intro_card">
+                    <div class="intro_img">
+                        <img src="{{ $prds->image }}" alt="intro">
+                    </div>
+                    <div class="intro_content">
+                        <div>
+                            <h4>{{ $prds->name }}</h4>
+                            <div class="span">
+                                <a href="{{ route('showDetail', $prds->id) }}" class="btn">Xem Chi Tiết</a>
+                                <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="intro_card">
-                <div class="intro_img">
-                    <img src="https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/395142903_1090601565598879_6579661146883191639_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hECWPa7F0jgQ7kNvgHySWHV&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=ARYLWBzTgWCDejTmVS_sPd-&oh=00_AYDNMszHGZI8ot7QEjy9MtiHI_JV-NGMbvY6rY47c0zTkw&oe=675D8326" alt="intro">
-                </div>
-                <div class="intro_content">
-                    <div>
-                        <h4>Hoodies & Sweatshirts</h4>
-                        <div class="span">
-                            <a href="#">Explore now</a>
-                            <span><i class='bx bx-chevrons-right' style='color:#181818'  ></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -128,10 +88,10 @@
         <div class="overlay_shop">
         <div class="content">
             <h4>Shop name</h4>
-            <h1>Autumn Collection
-                <br>UP TO 20% OFF
+            <h1>Mở cửa hàng cá nhân
+                <br>NHIỀU ƯU ĐÃI HẤP DẪN
             </h1>
-            <button class="text-uppercase">Shop now</button>
+            <button class="text-uppercase">Truy cập nhanh</button>
         </div>
     </section>
 
@@ -189,7 +149,7 @@
 
     {{-- section gallery --}}
     <section class="gallery" id="gallery">
-        <h1>Our <span>Gallery</span>
+        <h1><span>Thu vien anh</span>
         </h1>
         <div class="gallery_image_box">
             @foreach($gallery as $gallery)
@@ -202,27 +162,27 @@
 
     <!-- section about us -->
     <section class="team" id="team">
-        <h1>Our <span> Team</span></h1>
+        <h1>Nhóm 10</h1>
         <div class="team_box">
             <div class="profile">
-                <img src="{{ asset('frontend/img/member/PND.png') }}" alt="">
+                <img src="https://i.pinimg.com/736x/a0/a8/46/a0a846db2c036d3a8fcf739bb5707e43.jpg" alt="">
                 <div class="info">
                     <h2 class="name">Pham Ngoc Duc</h2>
-                    <p class="info_p">23JIT_Nhóm trưởng</p>
+                    <p class="info_p">23IT059_Nhóm trưởng</p>
                 </div>
             </div>
             <div class="profile">
-                <img src="{{ asset('frontend/img/member/DTP.jpg') }}" alt="">
+                <img src="https://i.pinimg.com/736x/80/b2/1f/80b21fc7cb615e1a3b23bbd41e5dc455.jpg" alt="">
                 <div class="info">
                     <h2 class="name">Dam Thanh Phuong</h2>
-                    <p class="info_p">23JIT_Thành viên</p>
+                    <p class="info_p">23IT219_Thành viên</p>
                 </div>
             </div>
             <div class="profile">
-                <img src="{{ asset('frontend/img/member/PHN.png') }}" alt="">
+                <img src="https://i.pinimg.com/736x/78/9e/28/789e281493d6f7fce03e194589952c27.jpg" alt="">
                 <div class="info">
                     <h2 class="name">Pham Hoang Nguyen</h2>
-                    <p class="info_p">23JIT_Thành viên</p>
+                    <p class="info_p">23IT.EB06EB065_Thành viên</p>
                 </div>
             </div>
         </div>

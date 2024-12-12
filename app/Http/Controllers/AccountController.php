@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+
  class AccountController extends Controller
 {
     //Log out
@@ -35,7 +36,7 @@ use Auth;
             // Password is correct, log the user in
             // You can use Laravel's authentication here if needed
             return redirect('/home');
-        
+
         } else {
             // Invalid credentials, flash an error message and redirect back
             return redirect('/login')
@@ -98,8 +99,28 @@ use Auth;
         // Redirect to login page
         return redirect('/login');
         }
+
+        public function showChangePasswordForm()
+    {
+        return view('change-password');
     }
 
-    
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
 
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu cũ không đúng']);
+        }
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('account.profile')->with('status', 'Mật khẩu đã được thay đổi thành công');
+    }
+    }
 ?>

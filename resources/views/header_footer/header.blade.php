@@ -73,7 +73,6 @@
 
                 <li>
                     <a href="{{ url('/view_cart') }}"><i class="fa-solid fa-cart-shopping"></i></a>
-                    <a href="#"><i class="fa-solid fa-bell"></i></a>
                 </li>
             </ul>
             <div class="menu">
@@ -113,7 +112,7 @@
             });
         });
 
-        
+
     </script>
 </body>
 </html>

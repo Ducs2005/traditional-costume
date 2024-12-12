@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/home.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/view_cart.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/productList.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/product_type.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/products.css') }}">
     <script src="{{ asset('frontend/js/add_to_cart_buy.js') }}"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{{ asset('frontend/js/brand.js') }}"></script>
