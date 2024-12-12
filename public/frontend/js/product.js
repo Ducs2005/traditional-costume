@@ -89,7 +89,6 @@ class Pagination {
             productItem.addEventListener('click', () => {
                 window.location.href = `${baseUrl}/product_description/${product.id}`;
             });
-            console.log(product);
             const formattedPrice = Number(product.price).toLocaleString('vi-VN');
             // Generate product item HTML
             const imageUrl = assetBaseUrl + '/' + product.img_path;
@@ -243,6 +242,7 @@ class Pagination {
             // Display the filtered products
             this.products = data.products; // Update the products array
             this.currentPage = 1; // Reset to the first page
+            console.log(this.products);
             this.displayProducts(this.products.slice(0, this.itemsPerPage)); // Display the first page of filtered products
         })
         .catch(error => {

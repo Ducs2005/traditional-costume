@@ -67,6 +67,7 @@ class ProductController extends Controller
     public function filterProducts(Request $request)
     {
         $query = Product::query();
+        $query->with(['color', 'material', 'button', 'type']); // Add the necessary relationships here
 
         // Apply filters
         if ($request->filled('color_id')) {
