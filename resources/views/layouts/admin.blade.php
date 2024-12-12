@@ -71,7 +71,7 @@
                         <a class="collapse-item" href="{{route('table.user')}}">Người dùng</a>
                         <a class="collapse-item" href="{{route('table.product')}}">Sản phẩm</a>
                         <a class="collapse-item" href="{{route('table.payment')}}">Thanh toán</a>
-
+                        <a class="collapse-item" href="{{route('table.cophuc')}}">Trưng bày</a>
                     </div>
                 </div>
             </li>
