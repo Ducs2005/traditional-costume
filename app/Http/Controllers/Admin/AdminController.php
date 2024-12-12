@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Psy\Readline\Hoa\Console;
 
 class AdminController extends Controller
 {
@@ -388,6 +389,50 @@ class AdminController extends Controller
         // You could also send an email, or use a notification channel (like Pusher, SMS, etc.) here
     }
 
+    public function updateDecorationImages(Request $request)
+    {
+        $request->validate([
+            'img1' => 'nullable|image|mimes:jpg|max:2048',
+            'img2' => 'nullable|image|mimes:jpg|max:2048',
+            'img3' => 'nullable|image|mimes:jpg|max:2048',
+            'img4' => 'nullable|image|mimes:jpg|max:2048',
+            'img5' => 'nullable|image|mimes:jpg|max:2048',
+            'img6' => 'nullable|image|mimes:jpg|max:2048',
+            'img7' => 'nullable|image|mimes:jpg|max:2048',
+            'img8' => 'nullable|image|mimes:jpg|max:2048',
+        ]);
+
+        // Define the specific names for the images
+        $imageNames = [
+            'img1' => 'trangphuc1.jpg',
+            'img2' => 'trangphuc2.jpg',
+            'img3' => 'trangphuc3.jpg',
+            'img4' => 'trangphuc4.jpg',
+            'img5' => 'trangphuc5.jpg',
+            'img6' => 'trangphuc6.jpg',
+            'img7' => 'trangphuc7.jpg',
+            'img8' => 'trangphuc8.jpg',
+        ];
+
+        // Loop through the images and save them with the specified names
+        for ($i = 1; $i <= 8; $i++) {
+            $imageKey = 'img' . $i;
+
+            if ($request->hasFile($imageKey)) {
+                $image = $request->file($imageKey);
+                $imageName = $imageNames[$imageKey]; // Get the custom name for the image
+
+                // Store the image directly in the public/frontend/img/home directory
+                $destinationPath = public_path('frontend/img/home');
+                $image->move($destinationPath, $imageName); // This will replace any existing file with the same name
+            }
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+
+        
     public function showGallery()
     {
         $colors = Color::all();         // Assuming Color is a model for the color data

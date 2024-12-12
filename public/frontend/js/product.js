@@ -7,7 +7,7 @@ class Pagination {
         this.currentPage = 1; // Start on the first page
         this.productContainer = document.querySelector('.list-item');
         this.paginationContainer = document.querySelector('.pagination');
-
+        
         // Ensure that the elements exist before adding event listeners
         this.initEventListeners();
 
@@ -38,6 +38,7 @@ class Pagination {
             })
             .then(data => {
                 this.products = data; // Assign the fetched products to the array
+
                 this.displayProducts(type, currentProduct); // Display the products on initial load
                 this.updatePagination();
             })
@@ -70,7 +71,7 @@ class Pagination {
         const paginatedProducts = filteredProducts.slice(start, end);
 
         this.productContainer.innerHTML = ''; // Clear existing content
-
+        console.log(paginatedProducts);
         if (paginatedProducts.length === 0) {
             this.productContainer.innerHTML = '<p>No products to display.</p>';
             return;
@@ -136,6 +137,10 @@ class Pagination {
 
     // Method to update pagination controls
     updatePagination() {
+        if (type == 'related')
+        {
+            return;
+        }
         this.paginationContainer.innerHTML = ''; // Clear existing controls
 
         const totalPages = Math.ceil(this.products.length / this.itemsPerPage);

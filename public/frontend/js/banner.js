@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         baseUrl + "/frontend/img/banner/banner8.png",
         baseUrl + "/frontend/img/banner/banner6.png"
     ];
-
+ 
     const bannerTexts = [
         {
             title: 'Ao Dai - A Symbol of Vietnamese Culture',

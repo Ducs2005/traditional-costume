@@ -194,6 +194,64 @@ class SellerController extends Controller
             ], 500);
         }
     }
+    public function update(Request $request, $id)
+    {
+        // Validate and process the form data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:1',
+            'color' => 'required|exists:colors,id',
+            'button' => 'required|exists:button,id',
+            'type' => 'required|exists:type,id',
+            'material' => 'required|exists:materials,id',
+            'representative_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'detail_imgs' => 'nullable|array',
+            'detail_imgs.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        // Find the product by ID
+        $product = Product::findOrFail($id);
+
+        // Update the product with the new data
+        $product->name = $validatedData['name'];
+        $product->description = $validatedData['description'];
+        $product->price = $validatedData['price'];
+        $product->quantity = $validatedData['quantity'];
+        $product->color_id = $validatedData['color'];
+        $product->button_id = $validatedData['button'];
+        $product->type_id = $validatedData['type'];
+        $product->material_id = $validatedData['material'];
+
+        // Handle file upload for the representative image
+        if ($request->hasFile('representative_img')) {
+            $representativeImg = $request->file('representative_img');
+            $fileName = time() . '_' . $representativeImg->getClientOriginalName();
+            $representativeImg->move(public_path('images/representative'), $fileName);
+            $product->representative_img = $fileName;
+        }
+
+        // Handle file uploads for detail images
+        if ($request->hasFile('detail_imgs')) {
+            $detailImgs = $request->file('detail_imgs');
+            $detailImageNames = [];
+            foreach ($detailImgs as $img) {
+                $fileName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('images/details'), $fileName);
+                $detailImageNames[] = $fileName;
+            }
+            $product->detail_imgs = json_encode($detailImageNames); // Store file names as JSON
+        }
+
+        // Save the updated product
+        $product->save();
+        Log::info('tpoiws dc day');
+        // Redirect or respond as needed
+        return redirect()->back()->with('success', 'Product updated successfully.');
+    }
+
+
 
 
 

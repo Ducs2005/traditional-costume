@@ -110,6 +110,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/button/{id}', [GalleryController::class, 'destroyButton'])->name('button.destroy');
     Route::delete('/material/{id}', [GalleryController::class, 'destroyMaterial'])->name('material.destroy');
     Route::delete('/type/{id}', [GalleryController::class, 'destroyType'])->name('type.destroy');
+
+    Route::get('/admin/banner', [AdminController::class, 'sendNotifications'])->name('admin.banner');
+    Route::get('/admin/decorations', [AdminController::class, function(){
+        return view('admin_views.decoration');
+    }])->name('admin.decoration');
+    Route::post('/decoration/update', [AdminController::class, 'updateDecorationImages'])->middleware('auth')->name('updateDecorationImages');
+
+    
+
+
 });
 
 Route::post('/send-message', [MessageController::class, 'sendMessage'])->middleware('auth');
@@ -146,7 +156,7 @@ Route::get('/order-details/{orderId}', action: [OrderController::class, 'getOrde
 Route::get('seller/view_order', [OrderController::class, 'seller_view'])->name('seller.viewOrder');
 Route::get('seller/order-details/{orderId}', action: [OrderController::class, 'getOrderSeller'])->name('seller.order.detail');
 Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
-Route::post('/orders/{order}/confirm-received', [OrderController::class, 'confirmReceived'])->name('orders.confirm');
+Route::post('/orders/{order}/confirm-received', [OrderController::class, 'confirmReceived'])->name('confirm.received');
 Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
 Route::post('/vnpay/createPayment', [PaymentController::class, 'createVnpayPayment'])->name('vnpay.createPayment');
@@ -156,3 +166,4 @@ Route::get('/notification', [NotificationController::class, 'show'])->name('noti
 Route::post('/notifications/unread-count', [NotificationController::class, 'getUnreadCount'])->name('notifications.unreadCount');
 
 Route::post('/rate-product', [RatingController::class, 'store'])->name('rate.product');
+Route::post('seller/product/update/{id}', [SellerController::class, 'update'])->name('seller.update');

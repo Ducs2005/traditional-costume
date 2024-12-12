@@ -1,232 +1,272 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layout_home')
+@section('content_homePage')
+<br> <br> <br> <br> <br> <br>
 
-    <title>Shopping Cart</title>
-
-    <!-- Update CSS link with asset helper -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/view_cart.css') }}"> <!-- Link to the CSS file -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Thêm link CSS của Cropper.js -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-
-    <!-- Thêm script của Cropper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
-
-</head>
-
-<!-- Include header and chat window -->
-@include('header_footer.header')
-@include('chat.chat_window')
-
-<body>
-    <!-- Modal for Adding Product -->
-
-
-    <div id="requestModal" class="modal" style="display: none;">
+<div id="requestModal" class="modal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>Nhập thông tin</h2>
-            <form id="requestForm" method="POST" action="{{ route('seller.request') }}">
-                @csrf
-                <input type="text" id="shop_name" name="shop_name"  required placeholder="Tên cửa hàng"></input>
-                <input type="text" id="phone_number" name="phone_number" required placeholder="Số điện thoại">
-                <!-- <input type="text" id="address" name="address"  required placeholder="Địa chỉ"></input> -->
-                <select id="province" name="province" onchange="fetchDistricts(this.value)">
-                    <option value="">Tỉnh/Thành phố</option>
-                </select>
-
-                <select id="district" name="district" onchange="fetchWards(this.value)">
-                    <option value="">Quận/Huyện</option>
-                </select>
-
-                <select id="ward" name="ward">
-                    <option value="">Xã/Phường</option>
-                </select>
-
-
-
-                <button type="submit" class="submit-btn">Gửi yêu cầu</button>
-            </form>
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestModalLabel">Nhập thông tin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="requestForm" method="POST" action="{{ route('seller.request') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="shop_name" class="form-label">Tên cửa hàng</label>
+                        <input type="text" id="shop_name" name="shop_name" class="form-control" required placeholder="Tên cửa hàng">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Số điện thoại</label>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" required placeholder="Số điện thoại">
+                    </div>
+                    <div class="mb-3">
+                        <label for="province" class="form-label">Tỉnh/Thành phố</label>
+                        <select id="province" name="province" class="form-select" onchange="fetchDistricts(this.value)">
+                            <option value="">Chọn Tỉnh/Thành phố</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="district" class="form-label">Quận/Huyện</label>
+                        <select id="district" name="district" class="form-select" onchange="fetchWards(this.value)">
+                            <option value="">Chọn Quận/Huyện</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ward" class="form-label">Xã/Phường</label>
+                        <select id="ward" name="ward" class="form-select">
+                            <option value="">Chọn Xã/Phường</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 
-    <br> <br> <br> <br> <br> <br>
-    <div class="cart-container">
-        <h1 class="cart-title">Cửa hàng của tôi</h1>
+<div class="container my-5">
+    <h1 class="text-center cart-title">Cửa hàng của tôi</h1>
 
-        @if($selling_right == 'no')
-
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Tên</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Đã bán</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="info" colspan="5" class="product" style="text-align: center;">
-                        Bạn chưa có quyền bán sản phẩm   <span style="margin-left: 10px;"> <button class="checkout-btn" style="font-size: medium;" onclick="openModal()">Yêu cầu bán sản phẩm</button>
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        @elseif($selling_right == 'waiting')
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Tên</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Đã bán</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="info" colspan="5" class="product" style="text-align: center;">
-                        Yêu cầu mở cửa hàng của bạn đang được phê duyệt.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br>  <br> <br>
-
-        @else
-            <div id="addProductModal" class="modal" style="display: none;">
-                <div class="modal-content">
-                    <span class="close-btn" onclick="closeAddProductModal()">&times;</span>
-                    <h2>Thêm sản phẩm mới</h2>
-                    <form id="addProductForm" method="POST"  enctype="multipart/form-data">
-                        @csrf
-                        <!-- Product Name -->
-                        <input type="text" id="name" name="name" required placeholder="Tên sản phẩm" />
-
-                        <!-- Product Description -->
-                        <textarea id="description" name="description" required placeholder="Mô tả sản phẩm"></textarea>
-                        <!-- Product Price -->
-                        <input type="number" id="price" name="price" required placeholder="Đơn giá" />
-
-                        <!-- Product Quantity -->
-                        <input type="number" id="quantity" name="quantity" required placeholder="Số lượng" />
-
-                        <!-- Product Color (Option Box) -->
-                        <select style="width:22%" id="color" name="color" required>
+    @if($selling_right == 'no')
+        <div class="alert alert-warning text-center" role="alert">
+            Bạn chưa có quyền bán sản phẩm.
+            <button class="btn btn-primary mt-2" onclick="openModal()">Yêu cầu bán sản phẩm</button>
+        </div>
+    @elseif($selling_right == 'waiting')
+        <div class="alert alert-info text-center" role="alert">
+            Yêu cầu mở cửa hàng của bạn đang được phê duyệt.
+        </div>
+    @else
+    <div id="addProductModal" class="modal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 80%; width: 80%; margin-left: 25%; margin-right: 20%;"> <!-- Add modal-dialog-centered to center the modal -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <form id="addProductForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <input type="text" id="name" name="name" class="form-control" style="width: 94%" required placeholder="Tên sản phẩm">
+                    </div>
+                    <div class="mb-3">
+                        <textarea id="description" name="description" class="form-control" style="width: 94%"  required placeholder="Mô tả sản phẩm"></textarea>
+                    </div>
+                    <div class="mb-3 d-flex">
+                        <input type="number" id="price" name="price" class="form-control me-3" style="width: 46%" required placeholder="Đơn giá">
+                        <input type="number" id="quantity" name="quantity" class="form-control" style="width: 46%" required placeholder="Số lượng">
+                    </div>
+                    <div class="mb-3">
+                        <select id="color" name="color" class="form-select"  style="width: 94%" required>
                             <option value="">Chọn màu</option>
                             @foreach ($colors as $color)
                                 <option value="{{ $color->id }}">{{ $color->name }}</option>
                             @endforeach
                         </select>
-
-                        <!-- Product Button (Option Box) -->
-                        <select style="width:22%" id="button" name="button" required>
+                    </div>
+                    <div class="mb-3">
+                        <select id="button" name="button" class="form-select"  style="width: 94%" required>
                             <option value="">Chọn nút</option>
                             @foreach ($buttons as $button)
                                 <option value="{{ $button->id }}">{{ $button->name }}</option>
                             @endforeach
                         </select>
-
-                        <!-- Product Type (Option Box) -->
-                        <select style="width:23%" id="type" name="type" required>
+                    </div>
+                    <div class="mb-3">
+                        <select id="type" name="type" class="form-select"  style="width: 94%" required>
                             <option value="">Chọn loại</option>
                             @foreach ($types as $type)
                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
                             @endforeach
                         </select>
-                        <select style="width:23%" id="material" name="material" required>
+                    </div>
+                    <div class="mb-3">
+                        <select id="material" name="material" class="form-select"  style="width: 94%" required>
                             <option value="">Chọn chất liệu</option>
                             @foreach ($materials as $material)
                                 <option value="{{ $material->id }}">{{ $material->name }}</option>
                             @endforeach
                         </select>
-
-                        <!-- Product Representative Image (display after selection) -->
-                        <div id="representativePreview" style="width: 50%; float: left;">
+                    </div>
+                    <div id="representativePreview" style="width: 50%; float: left;">
                             <img id="representativeImg" style="width: 100%; display: none;" />
                         </div>
 
                         <!-- Product Detail Images (display after selection) -->
-                        <div id="detailPreview" style="width: 100%; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
-                            <!-- Images will be displayed here -->
+                    <div id="detailPreview" style="width: 100%; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
+                        <!-- Images will be displayed here -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="representative_img" class="form-label">Hình đại diện</label>
+                        <input type="file" id="representative_img" name="representative_img" class="form-control" accept="image/*" required onchange="loadImageForCrop(event)">
+                    </div>
+                    <div class="mb-3">
+                        <label for="detail_imgs" class="form-label">Hình chi tiết</label>
+                        <input type="file" id="detail_imgs" name="detail_imgs[]" class="form-control" accept="image/*" multiple required onchange="previewDetailImages(event)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Đã bán</th>
+                    <th>Kho</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($products as $product)
+                    <tr>
+                        <td>
+                            <a href="{{ url('/product_description/' . $product->id) }}" style="text-decoration: none; color: black;">
+                                <img src="{{ asset($product->img_path) }}" alt="Product Image" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                {{ $product->name }}
+                            </a>
+                        </td>
+                        <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
+                        <td>
+                            <input type="number" name="sold" value="{{ $product->sold }}" min="0" class="form-control" required readonly>
+                        </td>
+                        <td>
+                            <input type="number" name="quantity" value="{{ $product->quantity }}" min="1" class="form-control" required readonly>
+                        </td>
+                        <td style="display: flex;">
+                        <form action="{{ route('shop.remove', $product->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+                        <!-- Button to open the modal -->
+                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">Xem chi tiết</button>
+                    </td>
+
+    <!-- Modal for editing product -->
+    <div class="modal fade" id="editProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ $product->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel{{ $product->id }}">Chỉnh sửa sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action={{ route('seller.update', ['id' => $product->id]) }} method="POST" id="updateProductForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <input type="text" id="name{{ $product->id }}" name="name" class="form-control" style="width: 94%" value="{{ $product->name }}" required>
                         </div>
-
-                        <!-- Input for Representative Image -->
-                        <input type="file" id="representative_img" name="representative_img" accept="image/*" required onchange="loadImageForCrop(event)" />
-
-                        <!-- Input for Detail Images -->
-                        <input type="file" id="detail_imgs" name="detail_imgs[]" accept="image/*" multiple required onchange="previewDetailImages(event)" />
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="submit-btn">Thêm sản phẩm</button>
+                        <div class="mb-3">
+                            <textarea id="description{{ $product->id }}" name="description" class="form-control" style="width: 94%" required>{{ $product->description }}</textarea>
+                        </div>
+                        <div class="mb-3" style="display:flex;">
+                            <input type="number" id="price{{ $product->id }}" name="price" class="form-control" style="width: 46% ; margin-right: 1%;" value="{{ $product->price }}" required>
+                        
+                            <input type="number" id="quantity{{ $product->id }}" name="quantity" class="form-control" style="width: 46%" value="{{ $product->quantity }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <select id="color{{ $product->id }}" name="color" class="form-select" style="width: 94%" required>
+                                @foreach ($colors as $color)
+                                    <option value="{{ $color->id }}" {{ $product->color_id == $color->id ? 'selected' : '' }}>{{ $color->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <select id="button{{ $product->id }}" name="button" class="form-select" style="width: 94%" required>
+                                @foreach ($buttons as $button)
+                                    <option value="{{ $button->id }}" {{ $product->button_id == $button->id ? 'selected' : '' }}>{{ $button->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <select id="type{{ $product->id }}" name="type" class="form-select" style="width: 94%" required>
+                                @foreach ($types as $type)
+                                    <option value="{{ $type->id }}" {{ $product->type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <select id="material{{ $product->id }}" name="material" class="form-select" style="width: 94%" required>
+                                @foreach ($materials as $material)
+                                    <option value="{{ $material->id }}" {{ $product->material_id == $material->id ? 'selected' : '' }}>{{ $material->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div id="representativePreview" style="width: 50%; float: left;">
+                            <img id="representativeImg" style="width: 100%; display: none;" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="file" id="representative_img{{ $product->id }}" name="representative_img" class="form-control" accept="image/*" onchange="loadImageForCrop(event)">
+                        </div>
+                        <div class="mb-3">
+                            <input type="file" id="detail_imgs{{ $product->id }}" name="detail_imgs[]" class="form-control" accept="image/*" multiple onchange="previewDetailImages(event)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                     </form>
                 </div>
             </div>
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Sản phẩm</th>
-                        <th>Đơn giá</th>
-                        <th>Đã bán</th>
-                        <th>Kho</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        @forEach($products as $product)
-                        <tr>
-                            <td class="product">
-                                <!-- Wrap product name and image with a link to the product description page -->
-                                <a style="text-decoration: none; color: black;" href="{{ url('/product_description/' . $product->id) }}">
-                                    <img src="{{ asset( $product->img_path) }}" alt="Product Image">
-                                    <span>{{ $product->name }}</span>
-                                </a>
-                            </td>
-                            <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
-                            <td>
-                                <input type="number" name="sold" value="{{ $product->sold }}" min="0" class="quantity-input" required readonly>
-                            </td>
-                            <td> <input type="number" name="quantity" value="{{ $product->quantity }}" min="1" class="quantity-input" required readonly></td>
-                            <td class="action">
-                                <!-- Form to remove item -->
-                                <form action="{{ route('shop.remove', $product->id) }}" method="POST" class="remove-item-form" onsubmit="confirmDelete(event)" style="margin: 0;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="remove-btn">Xóa</button>
-                                </form>
-
-
-
-                            </td>
-
-
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <div class="cart-summary">
-                <p>Thu nhập: <strong id="income"></strong></p>
-                <button class="checkout-btn" style="background-color: green;" onclick="openAddProductModal()">Thêm sản phẩm</button>
-                <button class="checkout-btn" onclick="requestSelling()">Nhận</button>
-
-            </div>
-        @endif
+        </div>
     </div>
 
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between mt-4">
+            <p><strong>Thu nhập:</strong> <span id="income"></span></p>
+            <div>
+                <button class="btn btn-success" onclick="openAddProductModal()">Thêm sản phẩm</button>
+                <button class="btn btn-info" onclick="requestSelling()">Nhận</button>
+            </div>
+        </div>
+        <td style="display: flex;">
+   
+
+
+    @endif
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+
+<!-- Thêm script của Cropper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 <script>
         // Open the modal
     function openAddProductModal() {
         document.getElementById('addProductModal').style.display = 'flex';
+        document.getElementById('addProductModal').setAttribute('aria-hidden', 'false');
+        document.body.setAttribute('aria-hidden', 'true');  
     }
 
     // Close the modal
@@ -635,6 +675,8 @@
         });
     }
 
+    
+
 
 
 </script>
@@ -643,7 +685,4 @@
 
 <br> <br> <br>
 
-<!-- Include footer -->
-@include('header_footer.footer')
-
-</html>
+@endsection
